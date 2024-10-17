@@ -23,6 +23,7 @@ export const useCalc = (): OutParams => {
             height,
             interval,
             nominalPower,
+            start,
         },
         changeHeight,
     } = useContext(AppContext);
@@ -34,6 +35,10 @@ export const useCalc = (): OutParams => {
     });
 
     useEffect(() => {
+        if (!start) {
+            return;
+        }
+
         const timeInterval = setInterval(() => {
             const newH = calcH(height, interval, velocity, mode);
             const lastIndex = params.reactivity.length - 1;
@@ -64,7 +69,7 @@ export const useCalc = (): OutParams => {
         return () => {
             clearInterval(timeInterval);
         };
-    }, [interval, velocity, mode]);
+    }, [interval, velocity, mode, start]);
 
     return params;
 };

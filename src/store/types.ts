@@ -8,11 +8,12 @@ export type StateType = {
     power: number;
     interval: number;
     nominalPower: number;
+    start: boolean;
 };
 export type ActionTypeType = keyof typeof Actions;
 export type ActionType = {
     type: ActionTypeType;
-    payload: any;
+    payload?: any;
 };
 export type AppContextType = {
     state: StateType;
@@ -23,6 +24,7 @@ export type AppContextType = {
     changePower: (value: number) => void;
     changeNominalPower: (value: number) => void;
     changeInterval: (value: number) => void;
+    changeStart: () => void;
 };
 
 export type initialStateType = {
@@ -33,6 +35,7 @@ export type initialStateType = {
     power: number;
     interval: number;
     nominalPower: number;
+    start: boolean;
 };
 
 export enum OPERATING_MODE {

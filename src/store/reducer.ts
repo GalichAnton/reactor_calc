@@ -7,6 +7,16 @@ export const Reducer = (state: StateType, action: ActionType) => {
             return { ...state, v: action.payload };
         case Actions.CHANGE_MODE:
             return { ...state, mode: action.payload };
+        case Actions.CHANGE_HEIGHT:
+            return { ...state, height: action.payload };
+        case Actions.CHANGE_INTERVAL:
+            return { ...state, interval: action.payload };
+        case Actions.CHANGE_NOMINAL_POWER:
+            return { ...state, nominalPower: action.payload };
+        case Actions.CHANGE_PLAY_OFF:
+            return { ...state, start: !state.start };
+        case Actions.CHANGE_POWER:
+            return { ...state, power: action.payload };
         default:
             return state;
     }

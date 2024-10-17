@@ -1,6 +1,7 @@
 import { useContext } from 'react';
 
-import { Card, Col, Form, InputNumber, Radio, Row } from 'antd';
+import { PlayCircleOutlined } from '@ant-design/icons';
+import { Button, Card, Col, Form, InputNumber, Radio, Row } from 'antd';
 
 import { AppContext } from '../../store';
 import { OPERATING_MODE } from '../../store/types.ts';
@@ -23,6 +24,7 @@ const AppForm = () => {
         changePower,
         changeInterval,
         changeNominalPower,
+        changeStart,
     } = useContext(AppContext);
 
     const onChangeVelocityHandler = (value: number | null) => {
@@ -153,6 +155,17 @@ const AppForm = () => {
                         </Form.Item>
                     </Col>
                 </Row>
+                <Col span={6}>
+                    <Form.Item id={'interval'} label={'Интервал расчета'}>
+                        <Button
+                            type="primary"
+                            icon={<PlayCircleOutlined />}
+                            onChange={changeStart}
+                        >
+                            Старт
+                        </Button>
+                    </Form.Item>
+                </Col>
             </Form>
         </Card>
     );

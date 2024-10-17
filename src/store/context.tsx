@@ -12,6 +12,7 @@ const initialState: initialStateType = {
     power: 0,
     nominalPower: 2.7e8,
     interval: 1,
+    start: false,
 };
 
 const AppContext = createContext<AppContextType>({
@@ -23,6 +24,7 @@ const AppContext = createContext<AppContextType>({
     changePower: () => undefined,
     changeInterval: () => undefined,
     changeNominalPower: () => undefined,
+    changeStart: () => undefined,
 });
 
 const { Provider } = AppContext;
@@ -61,6 +63,9 @@ const StateProvider = ({
         },
         changeNominalPower: (value: number) => {
             dispatch({ type: Actions.CHANGE_NOMINAL_POWER, payload: value });
+        },
+        changeStart: () => {
+            dispatch({ type: Actions.CHANGE_PLAY_OFF });
         },
     };
 
