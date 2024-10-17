@@ -7,16 +7,22 @@ import { AppContextType, initialStateType, OPERATING_MODE } from './types.ts';
 const initialState: initialStateType = {
     velocity: 0,
     mode: OPERATING_MODE.STOP,
-    reactivity: 0,
+    startReactivity: 0,
     height: 0,
+    power: 0,
+    nominalPower: 2.7e8,
+    interval: 1,
 };
 
 const AppContext = createContext<AppContextType>({
     state: initialState,
     changeVelocity: () => undefined,
     changeMode: () => undefined,
-    changeReactivity: () => undefined,
+    changeStartReactivity: () => undefined,
     changeHeight: () => undefined,
+    changePower: () => undefined,
+    changeInterval: () => undefined,
+    changeNominalPower: () => undefined,
 });
 
 const { Provider } = AppContext;
@@ -41,11 +47,20 @@ const StateProvider = ({
         changeMode: (value: OPERATING_MODE) => {
             dispatch({ type: Actions.CHANGE_MODE, payload: value });
         },
-        changeReactivity: (value: number) => {
-            dispatch({ type: Actions.CHANGE_REACTIVITY, payload: value });
+        changeStartReactivity: (value: number) => {
+            dispatch({ type: Actions.CHANGE_START_REACTIVITY, payload: value });
         },
         changeHeight: (value: number) => {
-            dispatch({ type: Actions.CHANGE_REACTIVITY, payload: value });
+            dispatch({ type: Actions.CHANGE_HEIGHT, payload: value });
+        },
+        changePower: (value: number) => {
+            dispatch({ type: Actions.CHANGE_POWER, payload: value });
+        },
+        changeInterval: (value: number) => {
+            dispatch({ type: Actions.CHANGE_INTERVAL, payload: value });
+        },
+        changeNominalPower: (value: number) => {
+            dispatch({ type: Actions.CHANGE_NOMINAL_POWER, payload: value });
         },
     };
 
