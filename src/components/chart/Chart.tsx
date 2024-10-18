@@ -99,7 +99,7 @@ const Chart = () => {
                     yAxisId="power"
                     dataKey="power"
                     type="number"
-                    domain={[0, 20e9]}
+                    domain={[0, 20e3]}
                     allowDataOverflow
                     label={{
                         value: 'power',
