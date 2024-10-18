@@ -102,6 +102,7 @@ const AppForm = () => {
                                 placeholder={'Мощность номинальная'}
                                 value={nominalPower}
                                 onChange={onChangeNominalPowerHandler}
+                                addonAfter={'Вт'}
                             />
                         </Form.Item>
                     </Col>
@@ -129,6 +130,7 @@ const AppForm = () => {
                                 placeholder={'Мощность'}
                                 disabled={true}
                                 value={power}
+                                addonAfter={'Вт'}
                             />
                         </Form.Item>
                     </Col>
