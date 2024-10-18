@@ -85,7 +85,11 @@ const AppForm = () => {
     };
 
     return (
-        <Card style={{ width: '100%' }}>
+        <Card
+            style={{ width: '100%', boxShadow: '0 4px 30px #0000001a' }}
+            title={'Введите значения'}
+            size={'small'}
+        >
             <Form layout={'vertical'}>
                 <Row gutter={[8, 8]}>
                     <Col span={6}>
@@ -111,6 +115,7 @@ const AppForm = () => {
                                 placeholder={'Высота реактора'}
                                 value={reactorHeight}
                                 onChange={onChangeReactorHeightHandler}
+                                addonAfter={'см'}
                             />
                         </Form.Item>
                     </Col>
@@ -182,15 +187,18 @@ const AppForm = () => {
                             />
                         </Form.Item>
                     </Col>
-                    <Col span={4}>
+                    <Col span={6}>
                         <Form.Item
                             id={'control'}
-                            label={<strong>Режим работы</strong>}
+                            label={<strong>Режим работы стержней</strong>}
                         >
                             <Radio.Group
                                 value={mode}
                                 onChange={(e) => changeMode(e.target.value)}
                             >
+                                <Radio.Button value={OPERATING_MODE.STOP}>
+                                    Остановить
+                                </Radio.Button>
                                 <Radio.Button value={OPERATING_MODE.UP}>
                                     Вверх
                                 </Radio.Button>

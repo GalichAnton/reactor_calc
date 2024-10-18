@@ -15,6 +15,7 @@ export const useCalc = (): ReactorParams => {
             interval,
             nominalPower,
             start,
+            reactorHeight,
         },
         changeHeight,
         changePower,
@@ -38,7 +39,6 @@ export const useCalc = (): ReactorParams => {
     useEffect(() => {
         if (
             velocity !== 0 &&
-            mode !== 0 &&
             height !== 0 &&
             interval !== 0 &&
             nominalPower !== 0 &&
@@ -51,6 +51,7 @@ export const useCalc = (): ReactorParams => {
                 power: [0.5 * nominalPower],
                 c: [(nominalPower * betta) / (lambda * Lambda)],
                 rel: [1],
+                reactorHeight,
             };
 
             setParams(initialParams);
@@ -72,6 +73,7 @@ export const useCalc = (): ReactorParams => {
         nominalPower,
         start,
         params,
+        reactorHeight,
     ]);
 
     useEffect(() => {
@@ -85,6 +87,15 @@ export const useCalc = (): ReactorParams => {
             if (!currentParams.params) {
                 return;
             }
+
+            if (currentHeight >= currentParams.params.reactorHeight) {
+                heightRef.current = reactorHeight;
+            }
+
+            if (currentHeight <= 0) {
+                heightRef.current = 0;
+            }
+
             const lastIndex = currentParams.params.reactivity.length - 1;
 
             const newParams = calcPower({
@@ -97,14 +108,7 @@ export const useCalc = (): ReactorParams => {
                 mode: currentParams.mode,
                 nominalPower,
             });
-
-            if (newParams.newH >= 373) {
-                newParams.newH = 373;
-            }
-
-            if (newParams.newH <= 0) {
-                newParams.newH = 0;
-            }
+            console.log('newParams', newParams);
 
             changeHeight(newParams.newH);
             changePower(newParams.newPower);

@@ -5,4 +5,5 @@ export interface ReactorParams {
     c: number[];
     rel: number[];
     height: number[];
+    reactorHeight: number;
 }

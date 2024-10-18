@@ -42,5 +42,6 @@ export const calcPower = (props: Props) => {
         newRo,
         newPower,
         rel,
+        dH,
     };
 };
