@@ -18,7 +18,11 @@ export const Reducer = (state: StateType, action: ActionType) => {
         case Actions.CHANGE_POWER:
             return { ...state, power: action.payload };
         case Actions.CHANGE_REACTOR_HEIGHT:
-            return { ...state, reactorHeight: action.payload };
+            return {
+                ...state,
+                reactorHeight: action.payload,
+                height: action.payload / 2,
+            };
         case Actions.CHANGE_START_REACTIVITY:
             return { ...state, startReactivity: action.payload };
         default:

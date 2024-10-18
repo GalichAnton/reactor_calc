@@ -5,6 +5,7 @@ import {
     Legend,
     Line,
     LineChart,
+    ReferenceLine,
     Tooltip,
     XAxis,
     YAxis,
@@ -64,7 +65,7 @@ const Chart = () => {
                     yAxisId="rel"
                     dataKey="rel"
                     type="number"
-                    domain={[1, 50]}
+                    domain={[0, 5]}
                     allowDataOverflow
                     label={{
                         value: 'rel',
@@ -81,7 +82,7 @@ const Chart = () => {
                     yAxisId="reactivity"
                     dataKey="reactivity"
                     type="number"
-                    domain={[-0.01, 0.009]}
+                    domain={[-0.005, 0.005]}
                     allowDataOverflow
                     label={{
                         value: 'reactivity',
@@ -99,7 +100,7 @@ const Chart = () => {
                     yAxisId="power"
                     dataKey="power"
                     type="number"
-                    domain={[0, 20e3]}
+                    domain={[0, 5e3]}
                     allowDataOverflow
                     label={{
                         value: 'power',
@@ -115,6 +116,8 @@ const Chart = () => {
                 />
                 <Tooltip labelFormatter={(label) => `Время (с): ${label}`} />
                 <CartesianGrid stroke="#eee" strokeDasharray="5 5" />
+                <ReferenceLine y={1} stroke="darkblue" yAxisId={'rel'} />
+                <ReferenceLine y={0} stroke="darkblue" yAxisId={'reactivity'} />
                 <Line
                     name="Мощность/(0.5×номинальная мощность)"
                     type="monotone"

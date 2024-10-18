@@ -90,7 +90,7 @@ const AppForm = () => {
             title={'Введите значения'}
             size={'small'}
         >
-            <Form layout={'vertical'}>
+            <Form layout={'vertical'} disabled={start}>
                 <Row gutter={[8, 8]}>
                     <Col span={6}>
                         <Form.Item
@@ -128,7 +128,6 @@ const AppForm = () => {
                             <InputNumber
                                 style={{ width: '100%' }}
                                 placeholder={'Мощность'}
-                                disabled={true}
                                 value={power}
                                 addonAfter={'МВт'}
                             />
@@ -197,6 +196,7 @@ const AppForm = () => {
                             <Radio.Group
                                 value={mode}
                                 onChange={(e) => changeMode(e.target.value)}
+                                disabled={false}
                             >
                                 <Radio.Button value={OPERATING_MODE.STOP}>
                                     Остановить
@@ -211,27 +211,16 @@ const AppForm = () => {
                         </Form.Item>
                     </Col>
                 </Row>
-                <Col span={3}>
-                    <Form.Item
-                        id={'interval'}
-                        label={<strong>Запуск расчета</strong>}
-                    >
-                        <Button
-                            type="primary"
-                            icon={
-                                start ? (
-                                    <LoadingOutlined />
-                                ) : (
-                                    <PlayCircleOutlined />
-                                )
-                            }
-                            onClick={changeStart}
-                        >
-                            {start ? 'Стоп' : 'Старт'}
-                        </Button>
-                    </Form.Item>
-                </Col>
             </Form>
+            <Col span={3}>
+                <Button
+                    type="primary"
+                    icon={start ? <LoadingOutlined /> : <PlayCircleOutlined />}
+                    onClick={changeStart}
+                >
+                    {start ? 'Стоп' : 'Старт'}
+                </Button>
+            </Col>
         </Card>
     );
 };

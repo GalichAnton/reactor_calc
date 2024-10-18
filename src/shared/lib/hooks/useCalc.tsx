@@ -23,7 +23,7 @@ export const useCalc = (): ReactorParams => {
     } = useContext(AppContext);
 
     const [params, setParams] = useState<ReactorParams | null>(null);
-
+    console.log(params);
     const paramsRef = useRef({ params, velocity, interval, mode });
     const heightRef = useRef(height);
 
@@ -37,19 +37,13 @@ export const useCalc = (): ReactorParams => {
 
     // Инициализируем params только один раз, когда все значения доступны
     useEffect(() => {
-        if (
-            velocity !== 0 &&
-            height !== 0 &&
-            interval !== 0 &&
-            nominalPower !== 0 &&
-            params === null
-        ) {
+        if (start && params === null) {
             const initialParams = {
                 time: [0],
                 height: [height],
                 reactivity: [startReactivity],
                 power: [0.5 * nominalPower],
-                c: [(nominalPower * betta) / (lambda * Lambda)],
+                c: [(0.5 * nominalPower * betta) / (lambda * Lambda)],
                 rel: [1],
                 reactorHeight,
             };
@@ -64,17 +58,7 @@ export const useCalc = (): ReactorParams => {
                 mode,
             };
         }
-    }, [
-        velocity,
-        mode,
-        startReactivity,
-        height,
-        interval,
-        nominalPower,
-        start,
-        params,
-        reactorHeight,
-    ]);
+    }, [start]);
 
     useEffect(() => {
         if (!start) {
@@ -106,6 +90,7 @@ export const useCalc = (): ReactorParams => {
                 velocity: currentParams.velocity,
                 interval: currentParams.interval,
                 mode: currentParams.mode,
+                reactorHeight: currentParams.params.reactorHeight,
                 nominalPower,
             });
             console.log('newParams', newParams);
