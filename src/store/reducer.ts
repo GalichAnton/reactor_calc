@@ -4,7 +4,7 @@ import { ActionType, StateType } from './types.ts';
 export const Reducer = (state: StateType, action: ActionType) => {
     switch (action.type) {
         case Actions.CHANGE_VELOCITY:
-            return { ...state, v: action.payload };
+            return { ...state, velocity: action.payload };
         case Actions.CHANGE_MODE:
             return { ...state, mode: action.payload };
         case Actions.CHANGE_HEIGHT:
@@ -17,6 +17,10 @@ export const Reducer = (state: StateType, action: ActionType) => {
             return { ...state, start: !state.start };
         case Actions.CHANGE_POWER:
             return { ...state, power: action.payload };
+        case Actions.CHANGE_REACTOR_HEIGHT:
+            return { ...state, reactorHeight: action.payload };
+        case Actions.CHANGE_START_REACTIVITY:
+            return { ...state, startReactivity: action.payload };
         default:
             return state;
     }

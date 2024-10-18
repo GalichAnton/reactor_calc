@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 
-import { PlayCircleOutlined } from '@ant-design/icons';
+import { LoadingOutlined, PlayCircleOutlined } from '@ant-design/icons';
 import { Button, Card, Col, Form, InputNumber, Radio, Row } from 'antd';
 
 import { AppContext } from '../../store';
@@ -16,15 +16,17 @@ const AppForm = () => {
             power,
             interval,
             nominalPower,
+            start,
+            reactorHeight,
         },
         changeMode,
         changeVelocity,
         changeStartReactivity,
         changeHeight,
-        changePower,
         changeInterval,
         changeNominalPower,
         changeStart,
+        changeReactorHeight,
     } = useContext(AppContext);
 
     const onChangeVelocityHandler = (value: number | null) => {
@@ -51,13 +53,13 @@ const AppForm = () => {
         changeHeight(value);
     };
 
-    const onChangePowerHandler = (value: number | null) => {
-        if (value === null || value === undefined) {
-            return;
-        }
-
-        changePower(value);
-    };
+    // const onChangePowerHandler = (value: number | null) => {
+    //     if (value === null || value === undefined) {
+    //         return;
+    //     }
+    //
+    //     changePower(value);
+    // };
 
     const onChangeIntervalHandler = (value: number | null) => {
         if (value === null || value === undefined) {
@@ -67,6 +69,13 @@ const AppForm = () => {
         changeInterval(value);
     };
 
+    const onChangeReactorHeightHandler = (value: number | null) => {
+        if (value === null || value === undefined) {
+            return;
+        }
+
+        changeReactorHeight(value);
+    };
     const onChangeNominalPowerHandler = (value: number | null) => {
         if (value === null || value === undefined) {
             return;
@@ -78,10 +87,14 @@ const AppForm = () => {
     return (
         <Card style={{ width: '100%' }}>
             <Form layout={'vertical'}>
-                <Row gutter={[16, 16]}>
+                <Row gutter={[8, 8]}>
                     <Col span={6}>
-                        <Form.Item id={'power'} label={'Мощность номинальная'}>
+                        <Form.Item
+                            id={'power'}
+                            label={<strong>Мощность номинальная</strong>}
+                        >
                             <InputNumber
+                                style={{ width: '100%' }}
                                 placeholder={'Мощность номинальная'}
                                 value={nominalPower}
                                 onChange={onChangeNominalPowerHandler}
@@ -89,17 +102,38 @@ const AppForm = () => {
                         </Form.Item>
                     </Col>
                     <Col span={6}>
-                        <Form.Item id={'power'} label={'Мощность'}>
+                        <Form.Item
+                            id={'reactorHeight'}
+                            label={<strong>Высота реактора</strong>}
+                        >
                             <InputNumber
-                                placeholder={'Мощность'}
-                                value={power}
-                                onChange={onChangePowerHandler}
+                                style={{ width: '100%' }}
+                                placeholder={'Высота реактора'}
+                                value={reactorHeight}
+                                onChange={onChangeReactorHeightHandler}
                             />
                         </Form.Item>
                     </Col>
                     <Col span={6}>
-                        <Form.Item id={'velocity'} label={'Скорость'}>
+                        <Form.Item
+                            id={'power'}
+                            label={<strong>Мощность</strong>}
+                        >
                             <InputNumber
+                                style={{ width: '100%' }}
+                                placeholder={'Мощность'}
+                                disabled={true}
+                                value={power}
+                            />
+                        </Form.Item>
+                    </Col>
+                    <Col span={6}>
+                        <Form.Item
+                            id={'velocity'}
+                            label={<strong>Скорость</strong>}
+                        >
+                            <InputNumber
+                                style={{ width: '100%' }}
                                 placeholder={'Скорость'}
                                 addonAfter={'см/с'}
                                 value={velocity}
@@ -108,8 +142,12 @@ const AppForm = () => {
                         </Form.Item>
                     </Col>
                     <Col span={6}>
-                        <Form.Item id={'height'} label={'Высота'}>
+                        <Form.Item
+                            id={'height'}
+                            label={<strong>Начальная высота</strong>}
+                        >
                             <InputNumber
+                                style={{ width: '100%' }}
                                 placeholder={'Высота'}
                                 addonAfter={'см'}
                                 value={height}
@@ -118,8 +156,12 @@ const AppForm = () => {
                         </Form.Item>
                     </Col>
                     <Col span={6}>
-                        <Form.Item id={'ro'} label={'Реактивность'}>
+                        <Form.Item
+                            id={'ro'}
+                            label={<strong>Реактивность</strong>}
+                        >
                             <InputNumber
+                                style={{ width: '100%' }}
                                 placeholder={'Реактивность'}
                                 value={startReactivity}
                                 onChange={onChangeStartReactivityHandler}
@@ -127,8 +169,12 @@ const AppForm = () => {
                         </Form.Item>
                     </Col>
                     <Col span={6}>
-                        <Form.Item id={'interval'} label={'Интервал расчета'}>
+                        <Form.Item
+                            id={'interval'}
+                            label={<strong>Интервал расчета</strong>}
+                        >
                             <InputNumber
+                                style={{ width: '100%' }}
                                 placeholder={'Интервал'}
                                 value={interval}
                                 onChange={onChangeIntervalHandler}
@@ -136,15 +182,15 @@ const AppForm = () => {
                             />
                         </Form.Item>
                     </Col>
-                    <Col span={6}>
-                        <Form.Item id={'control'} label={'Режим работы'}>
+                    <Col span={4}>
+                        <Form.Item
+                            id={'control'}
+                            label={<strong>Режим работы</strong>}
+                        >
                             <Radio.Group
                                 value={mode}
                                 onChange={(e) => changeMode(e.target.value)}
                             >
-                                <Radio.Button value={OPERATING_MODE.STOP}>
-                                    Стоп
-                                </Radio.Button>
                                 <Radio.Button value={OPERATING_MODE.UP}>
                                     Вверх
                                 </Radio.Button>
@@ -155,14 +201,23 @@ const AppForm = () => {
                         </Form.Item>
                     </Col>
                 </Row>
-                <Col span={6}>
-                    <Form.Item id={'interval'} label={'Интервал расчета'}>
+                <Col span={3}>
+                    <Form.Item
+                        id={'interval'}
+                        label={<strong>Запуск расчета</strong>}
+                    >
                         <Button
                             type="primary"
-                            icon={<PlayCircleOutlined />}
-                            onChange={changeStart}
+                            icon={
+                                start ? (
+                                    <LoadingOutlined />
+                                ) : (
+                                    <PlayCircleOutlined />
+                                )
+                            }
+                            onClick={changeStart}
                         >
-                            Старт
+                            {start ? 'Стоп' : 'Старт'}
                         </Button>
                     </Form.Item>
                 </Col>

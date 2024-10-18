@@ -10,9 +10,11 @@ const initialState: initialStateType = {
     startReactivity: 0,
     height: 0,
     power: 0,
-    nominalPower: 2.7e8,
     interval: 1,
     start: false,
+    nominalPower: 0,
+    reactorHeight: 0,
+    process: 0,
 };
 
 const AppContext = createContext<AppContextType>({
@@ -25,6 +27,8 @@ const AppContext = createContext<AppContextType>({
     changeInterval: () => undefined,
     changeNominalPower: () => undefined,
     changeStart: () => undefined,
+    changeReactorHeight: () => undefined,
+    changeProcess: () => undefined,
 });
 
 const { Provider } = AppContext;
@@ -64,8 +68,14 @@ const StateProvider = ({
         changeNominalPower: (value: number) => {
             dispatch({ type: Actions.CHANGE_NOMINAL_POWER, payload: value });
         },
+        changeReactorHeight: (value: number) => {
+            dispatch({ type: Actions.CHANGE_REACTOR_HEIGHT, payload: value });
+        },
         changeStart: () => {
             dispatch({ type: Actions.CHANGE_PLAY_OFF });
+        },
+        changeProcess: (value: number) => {
+            dispatch({ type: Actions.CHANGE_PROCESS, payload: value });
         },
     };
 
