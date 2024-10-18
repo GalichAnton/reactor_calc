@@ -3,7 +3,7 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - master  # Или ваша основная ветка
+      - main  # Или ваша основная ветка
 
 permissions:
   contents: read
@@ -20,7 +20,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '20.17.0'  # Или ваша версия Node.js
+          node-version: '20.17.0'  # Замените на вашу версию Node.js
 
       - name: Install dependencies
         run: npm ci
@@ -28,8 +28,10 @@ jobs:
       - name: Build the project
         run: npm run build
 
-      - name: Deploy to GitHub Pages
+      - name: Upload artifact for GitHub Pages
         uses: actions/upload-pages-artifact@v1
+        with:
+          path: './dist'
 
   deploy:
     needs: build-and-deploy
@@ -39,8 +41,6 @@ jobs:
       id-token: write
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Deploy to GitHub Pages
-        id: deployment
         uses: actions/deploy-pages@v1
