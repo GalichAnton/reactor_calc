@@ -6,7 +6,7 @@ import AppForm from '../components/form/AppForm.tsx';
 
 const Main = () => {
     return (
-        <Layout>
+        <Layout style={{ minHeight: '100vh' }}>
             <Layout.Content>
                 <Row gutter={[0, 16]}>
                     <Col span={24}>
@@ -17,8 +17,7 @@ const Main = () => {
                     </Col>
                 </Row>
             </Layout.Content>
-            <Layout.Footer>
-                {' '}
+            <Layout.Footer style={{ textAlign: 'center'}}>
                 Developed by Anton Galich{' '}
                 <Button
                     type="text"
