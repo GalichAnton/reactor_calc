@@ -18,7 +18,7 @@ const Main = () => {
                 </Row>
             </Layout.Content>
             <Layout.Footer style={{ textAlign: 'center'}}>
-                Developed by Anton Galich{' '}
+                Developed by Anton Galich
                 <Button
                     type="text"
                     icon={<GithubFilled />}

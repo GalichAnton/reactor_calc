@@ -23,7 +23,7 @@ export const useCalc = (): ReactorParams => {
     } = useContext(AppContext);
 
     const [params, setParams] = useState<ReactorParams | null>(null);
-    console.log(params);
+
     const paramsRef = useRef({ params, velocity, interval, mode });
     const heightRef = useRef(height);
 
@@ -93,7 +93,6 @@ export const useCalc = (): ReactorParams => {
                 reactorHeight: currentParams.params.reactorHeight,
                 nominalPower,
             });
-            console.log('newParams', newParams);
 
             changeHeight(newParams.newH);
             changePower(newParams.newPower);

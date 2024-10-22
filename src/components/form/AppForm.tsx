@@ -109,11 +109,11 @@ const AppForm = () => {
                     <Col span={6}>
                         <Form.Item
                             id={'reactorHeight'}
-                            label={<strong>Высота реактора</strong>}
+                            label={<strong>Высота АЗ</strong>}
                         >
                             <InputNumber
                                 style={{ width: '100%' }}
-                                placeholder={'Высота реактора'}
+                                placeholder={'Высота АЗ'}
                                 value={reactorHeight}
                                 onChange={onChangeReactorHeightHandler}
                                 addonAfter={'см'}
@@ -141,7 +141,7 @@ const AppForm = () => {
                             <InputNumber
                                 style={{ width: '100%' }}
                                 placeholder={'Скорость'}
-                                addonAfter={'см/с'}
+                                addonAfter={'см/c'}
                                 value={velocity}
                                 onChange={onChangeVelocityHandler}
                             />
@@ -150,11 +150,11 @@ const AppForm = () => {
                     <Col span={6}>
                         <Form.Item
                             id={'height'}
-                            label={<strong>Начальная высота</strong>}
+                            label={<strong>Положение группы ОР СУЗ</strong>}
                         >
                             <InputNumber
                                 style={{ width: '100%' }}
-                                placeholder={'Высота'}
+                                placeholder={'Положение группы ОР СУЗ'}
                                 addonAfter={'см'}
                                 value={height}
                                 onChange={onChangeHeightHandler}
@@ -177,14 +177,15 @@ const AppForm = () => {
                     <Col span={6}>
                         <Form.Item
                             id={'interval'}
-                            label={<strong>Интервал расчета</strong>}
+                            label={<strong>Шаг интегрирования</strong>}
                         >
                             <InputNumber
                                 style={{ width: '100%' }}
-                                placeholder={'Интервал'}
+                                placeholder={'Шаг интегрирования'}
                                 value={interval}
                                 onChange={onChangeIntervalHandler}
                                 addonAfter={'с'}
+                                step="0.01"
                             />
                         </Form.Item>
                     </Col>

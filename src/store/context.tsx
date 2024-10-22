@@ -5,15 +5,15 @@ import { Reducer } from './reducer.ts';
 import { AppContextType, initialStateType, OPERATING_MODE } from './types.ts';
 
 const initialState: initialStateType = {
-    velocity: 0,
+    velocity: 2,
     mode: OPERATING_MODE.STOP,
     startReactivity: 0,
-    height: 0,
+    height: 187.5,
     power: 0,
-    interval: 1,
+    interval: 0.1,
     start: false,
-    nominalPower: 0,
-    reactorHeight: 0,
+    nominalPower: 1000,
+    reactorHeight: 373,
     process: 0,
 };
 
