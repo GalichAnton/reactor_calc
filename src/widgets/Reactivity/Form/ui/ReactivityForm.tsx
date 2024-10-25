@@ -1,12 +1,13 @@
 import { useContext } from 'react';
 
 import { LoadingOutlined, PlayCircleOutlined } from '@ant-design/icons';
-import { Button, Card, Col, Form, InputNumber, Radio, Row } from 'antd';
+import { AppButton } from '@shared/ui';
+import { Card, Col, Form, InputNumber, Radio, Row } from 'antd';
 
-import { AppContext } from '../../store';
-import { OPERATING_MODE } from '../../store/types.ts';
+import { AppContext } from '../../../../store';
+import { OPERATING_MODE } from '../../../../store/types.ts';
 
-const AppForm = () => {
+export const ReactivityForm = () => {
     const {
         state: {
             velocity,
@@ -214,16 +215,14 @@ const AppForm = () => {
                 </Row>
             </Form>
             <Col span={3}>
-                <Button
+                <AppButton
                     type="primary"
                     icon={start ? <LoadingOutlined /> : <PlayCircleOutlined />}
                     onClick={changeStart}
                 >
                     {start ? 'Стоп' : 'Старт'}
-                </Button>
+                </AppButton>
             </Col>
         </Card>
     );
 };
-
-export default AppForm;

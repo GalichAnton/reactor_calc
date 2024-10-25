@@ -1,8 +1,8 @@
 import { useContext, useEffect, useRef, useState } from 'react';
 
-import { AppContext } from '../../../store';
+import { ReactorParams } from '../../../../entities/reactor/model/types/reactorParams.ts';
+import { AppContext } from '../../../../store';
 import { betta, Lambda, lambda } from '../../constants/general.ts';
-import { ReactorParams } from '../../types/reactorParams.ts';
 import { calcPower } from '../utils/calcPower.ts';
 
 export const useCalc = (): ReactorParams => {

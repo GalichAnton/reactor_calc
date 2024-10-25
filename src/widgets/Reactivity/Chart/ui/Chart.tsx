@@ -1,5 +1,6 @@
 import { useState } from 'react';
 
+import { useCalc } from '@features/reactivityCalc';
 import {
     CartesianGrid,
     Legend,
@@ -12,9 +13,8 @@ import {
 } from 'recharts';
 
 import styles from './chart.module.css';
-import { useCalc } from '../../shared/lib/hooks/useCalc.tsx';
 
-const Chart = () => {
+export const Chart = () => {
     const params = useCalc();
     const data = params?.time?.map((t, i) => ({
         time: t,
@@ -150,5 +150,3 @@ const Chart = () => {
         </div>
     );
 };
-
-export default Chart;

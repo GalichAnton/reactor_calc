@@ -11,12 +11,21 @@
     "isolatedModules": true,
     "moduleDetection": "force",
     "noEmit": true,
-
+    "baseUrl": ".",
     /* Linting */
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+
+    "paths": {
+      "@app/*": ["/src/app/*"],
+      "@features/*": ["/src/features/*"],
+      "@widgets/*": ["/src/widgets/*"],
+      "@pages/*": ["/src/pages/*"],
+      "@entities/*": ["/src/entities/*"],
+      "@shared/*": ["/src/shared/*"]
+    }
   },
   "include": ["vite.config.ts"]
 }

@@ -1,4 +1,4 @@
-import { betta, k, Lambda, lambda } from '../../constants/general.ts';
+import { betta, k, Lambda, lambda } from '../../constants/general';
 
 interface Props {
     prevPower: number;

@@ -1,11 +1,11 @@
 import './App.css';
-import Main from './pages/Main.tsx';
+import ReactivityPage from './pages/Reactivity/ReactivityPage.tsx';
 import { StateProvider } from './store';
 
 function App() {
     return (
         <StateProvider>
-            <Main />
+            <ReactivityPage />
         </StateProvider>
     );
 }
