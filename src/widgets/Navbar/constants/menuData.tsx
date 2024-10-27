@@ -1,6 +1,6 @@
 import type { HTMLAttributeAnchorTarget, ReactNode } from 'react';
 
-import { InteractionOutlined, UnorderedListOutlined } from '@ant-design/icons';
+import { DeploymentUnitOutlined, LineChartOutlined } from '@ant-design/icons';
 import {
     getRouteNeutronCalc,
     getRouteReactivityCalc,
@@ -24,13 +24,13 @@ const divider = {
 export const menuData: MenuDataItem[] = [
     {
         title: 'Реактивность',
-        icon: <InteractionOutlined />,
+        icon: <LineChartOutlined />,
         route: getRouteReactivityCalc(),
     },
     divider,
     {
         title: 'Нейтронный',
-        icon: <UnorderedListOutlined />,
+        icon: <DeploymentUnitOutlined />,
         route: getRouteNeutronCalc(),
     },
 ];

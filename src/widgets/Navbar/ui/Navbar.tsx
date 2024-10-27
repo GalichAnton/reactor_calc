@@ -1,5 +1,4 @@
-import React from 'react';
-
+import { useTheme } from '@shared/lib/hooks';
 import { Menu } from 'antd';
 import { useLocation } from 'react-router-dom';
 
@@ -8,7 +7,6 @@ import type { MenuItem } from '../types/menuItem';
 import styles from './Navbar.module.css';
 import { menuData } from '../constants/menuData';
 import { processMenuData } from '../lib/processMenuItems';
-import { useTheme } from '@shared/lib/hooks';
 
 export const Navbar = () => {
     const { theme } = useTheme();

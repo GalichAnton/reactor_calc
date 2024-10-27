@@ -60,7 +60,7 @@ export const Chart = () => {
                 [styles.dark]: !isLight(theme),
             })}
         >
-            <LineChart width={1100} height={500} data={data}>
+            <LineChart width={1000} height={500} data={data}>
                 <XAxis
                     dataKey="time"
                     type="number"
