@@ -10,11 +10,19 @@ export function processMenuData(menuData: MenuDataItem[]) {
         }
 
         if (value.title === 'divider') {
-            return getItem(undefined, `divider-${i}`, undefined, 'divider', undefined, value.style);
+            return getItem(
+                undefined,
+                `divider-${i}`,
+                undefined,
+                'divider',
+                undefined,
+                value.style,
+            );
         }
 
-        const children = value.children?.map((child: MenuDataItem, index: number) =>
-            processItem(child.route ?? String(index), child, index)
+        const children = value.children?.map(
+            (child: MenuDataItem, index: number) =>
+                processItem(child.route ?? String(index), child, index),
         );
 
         return getItem(
@@ -22,13 +30,12 @@ export function processMenuData(menuData: MenuDataItem[]) {
                 route: value.route,
                 text: value.title,
                 target: value.target,
-                trackFn: value.trackFn,
             }),
             value.route ?? key,
             value.icon,
             undefined,
             children,
-            value.style
+            value.style,
         );
     }
 

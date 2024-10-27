@@ -1,8 +1,6 @@
 import type { FC } from 'react';
-import React from 'react';
 
 import { DoubleLeftOutlined, DoubleRightOutlined } from '@ant-design/icons';
-
 import { Button, Text } from '@shared/ui';
 
 interface CollapseBtnProps {
@@ -10,7 +8,7 @@ interface CollapseBtnProps {
     collapse: boolean;
 }
 
-export const CollapseBtn: FC<CollapseBtnProps> = props => {
+export const CollapseBtn: FC<CollapseBtnProps> = (props) => {
     const { collapse, toggleCollapse } = props;
     return (
         <Button
