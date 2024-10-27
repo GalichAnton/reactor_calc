@@ -1,0 +1,25 @@
+.isLayout {
+    height: 100%;
+    padding: 28px 24px;
+}
+
+.isLayout > :global(.ant-card-body) {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.withShadow {
+    box-shadow: 0 4px 30px 0 #0000001a;
+}
+
+.withoutPadding > :global(.ant-card-body) {
+    padding: 0;
+}
+
+.fullWidth {
+    width: 100%;
+}
+
+.fullHeight {
+    height: 100%;
+}

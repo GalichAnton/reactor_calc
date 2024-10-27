@@ -1,0 +1,8 @@
+.Navbar:global(.ant-menu) {
+    border-inline-end: none !important;
+}
+
+.Navbar:global(.ant-menu .ant-menu-item-divider) {
+    margin: 5px 0;
+    background: #fafafa;
+}

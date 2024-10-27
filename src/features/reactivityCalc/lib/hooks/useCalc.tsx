@@ -1,125 +1,98 @@
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useEffect } from 'react';
 
-import { ReactorParams } from '../../../../entities/reactor/model/types/reactorParams.ts';
-import { AppContext } from '../../../../store';
+import { ReactorParams } from '@entities/reactor';
+
 import { betta, Lambda, lambda } from '../../constants/general.ts';
+import { useReactivityStore } from '../../model/store.ts';
 import { calcPower } from '../utils/calcPower.ts';
 
-export const useCalc = (): ReactorParams => {
+export const useCalc = () => {
     const {
-        state: {
-            velocity,
-            mode,
-            startReactivity,
-            height,
-            interval,
-            nominalPower,
-            start,
-            reactorHeight,
-        },
+        velocity,
+        mode,
+        startReactivity,
+        height,
+        interval,
+        nominalPower,
+        start,
+        reactorHeight,
+        params,
         changeHeight,
+        changeCalcHeight,
         changePower,
         changeStartReactivity,
-    } = useContext(AppContext);
-
-    const [params, setParams] = useState<ReactorParams | null>(null);
-
-    const paramsRef = useRef({ params, velocity, interval, mode });
-    const heightRef = useRef(height);
-
+        updateCalcParams,
+    } = useReactivityStore();
+    console.log('params', params);
     useEffect(() => {
-        paramsRef.current = { params, velocity, interval, mode };
-    }, [params, velocity, mode, interval, height]);
-
-    useEffect(() => {
-        heightRef.current = height;
-    }, [height]);
-
-    // Инициализируем params только один раз, когда все значения доступны
-    useEffect(() => {
-        if (start && params === null) {
+        if (start && !params) {
+            console.log('here');
             const initialParams = {
-                time: [0],
-                height: [height],
-                reactivity: [startReactivity],
-                power: [0.5 * nominalPower],
-                c: [(0.5 * nominalPower * betta) / (lambda * Lambda)],
-                rel: [1],
+                time: 0,
+                height: height,
+                reactivity: startReactivity,
+                power: 0.5 * nominalPower,
+                c: (0.5 * nominalPower * betta) / (lambda * Lambda),
+                rel: 1,
                 reactorHeight,
             };
 
-            setParams(initialParams);
-
-            // Обновляем реф после инициализации
-            paramsRef.current = {
-                params: initialParams,
-                velocity,
-                interval,
-                mode,
-            };
+            updateCalcParams(initialParams);
         }
     }, [start]);
 
     useEffect(() => {
-        if (!start) {
+        if (!start || !params) {
             return;
         }
 
         const timeInterval = setInterval(() => {
-            const currentParams = paramsRef.current;
-            const currentHeight = heightRef.current;
-            if (!currentParams.params) {
+            const currentState = useReactivityStore.getState();
+            console.log('currentState.params', currentState.params);
+            if (!currentState.params) {
                 return;
             }
-
-            if (currentHeight >= currentParams.params.reactorHeight) {
-                heightRef.current = reactorHeight;
+            const lastIndex = currentState.params.calcReactivity.length - 1;
+            const currentHeight = currentState.params.calcHeight[lastIndex];
+            const currentTime = currentState.params.calcTime[lastIndex];
+            if (currentHeight >= reactorHeight) {
+                changeCalcHeight(reactorHeight);
             }
 
             if (currentHeight <= 0) {
-                heightRef.current = 0;
+                changeCalcHeight(0);
             }
-
-            const lastIndex = currentParams.params.reactivity.length - 1;
 
             const newParams = calcPower({
                 prevH: currentHeight,
-                prevRo: currentParams.params.reactivity[lastIndex],
-                prevPower: currentParams.params.power[lastIndex],
-                prevC: currentParams.params.c[lastIndex],
-                velocity: currentParams.velocity,
-                interval: currentParams.interval,
-                mode: currentParams.mode,
-                reactorHeight: currentParams.params.reactorHeight,
+                prevRo: currentState.params.calcReactivity[lastIndex],
+                prevPower: currentState.params.calcPower[lastIndex],
+                prevC: currentState.params.calcC[lastIndex],
+                velocity: velocity,
+                interval: interval,
+                mode: currentState.mode,
+                reactorHeight: currentState.reactorHeight,
                 nominalPower,
             });
 
             changeHeight(newParams.newH);
             changePower(newParams.newPower);
             changeStartReactivity(newParams.newRo);
-            // Обновляем состояние и реф
-            setParams((prev) => {
-                if (!prev) {
-                    return null;
-                }
-                const updatedParams = {
-                    ...prev,
-                    height: [...prev.height, newParams.newH],
-                    time: [...prev.time, prev.time[lastIndex] + interval],
-                    reactivity: [...prev.reactivity, newParams.newRo],
-                    power: [...prev.power, newParams.newPower],
-                    c: [...prev.c, newParams.newC],
-                    rel: [...prev.rel, newParams.rel],
-                };
-                paramsRef.current.params = updatedParams;
-                return updatedParams;
+
+            updateCalcParams({
+                height: newParams.newH,
+                time: currentTime + interval,
+                reactivity: newParams.newRo,
+                power: newParams.newPower,
+                c: newParams.newC,
+                rel: newParams.rel,
             });
         }, interval * 1000);
 
         return () => {
             clearInterval(timeInterval);
         };
-    }, [interval, velocity, mode, start, height]);
+    }, [interval, velocity, mode, start, height, params]);
 
     return params || ({} as ReactorParams);
 };

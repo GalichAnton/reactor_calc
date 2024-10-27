@@ -1,6 +1,8 @@
 import { useState } from 'react';
 
-import { useCalc } from '@features/reactivityCalc';
+import { useCalc, useReactivityStore } from '@features/reactivityCalc';
+import { useTheme } from '@shared/lib/hooks';
+import classNames from 'classnames';
 import {
     CartesianGrid,
     Legend,
@@ -14,14 +16,31 @@ import {
 
 import styles from './chart.module.css';
 
+const lightThemeColors = {
+    text: '#000',
+    grid: '#333',
+    reactivity: 'red',
+    rel: '#8884d8',
+    power: '#82ca9d',
+};
+
+const darkThemeColors = {
+    text: '#fff',
+    grid: '#eee',
+    reactivity: '#ff6666',
+    rel: '#7a66ff',
+    power: '#66cc99',
+};
+
 export const Chart = () => {
-    const params = useCalc();
-    const data = params?.time?.map((t, i) => ({
+    const { isLight, theme } = useTheme();
+    const params = useReactivityStore((state) => state.params);
+    useCalc();
+    const data = params?.calcTime?.map((t, i) => ({
         time: t,
-        rel: params.rel[i].toExponential(3),
-        power: params.power[i].toExponential(3),
-        reactivity: params.reactivity[i].toExponential(3),
-        // c: params.c[i].toExponential(),
+        rel: params?.calcRel[i].toExponential(3),
+        power: params?.calcPower[i].toExponential(3),
+        reactivity: params?.calcReactivity[i].toExponential(3),
     }));
 
     const [showRel, setShowRel] = useState(true);
@@ -33,9 +52,15 @@ export const Chart = () => {
         xTicks.push(i);
     }
 
+    const themeColors = isLight(theme) ? lightThemeColors : darkThemeColors;
+
     return (
-        <div className={styles.chartContainer}>
-            <LineChart width={1100} height={400} data={data}>
+        <div
+            className={classNames(styles.chartContainer, {
+                [styles.dark]: !isLight(theme),
+            })}
+        >
+            <LineChart width={1200} height={600} data={data}>
                 <XAxis
                     dataKey="time"
                     type="number"
@@ -48,6 +73,7 @@ export const Chart = () => {
                         value: 'Время (с)',
                         position: 'insideBottomRight',
                         offset: 0,
+                        style: { fill: themeColors.text },
                     }}
                 />
                 <Legend
@@ -59,6 +85,9 @@ export const Chart = () => {
                         } else if (data.dataKey === 'power') {
                             setShowPower(!showPower);
                         }
+                    }}
+                    wrapperStyle={{
+                        color: themeColors.text,
                     }}
                 />
                 <YAxis
@@ -72,10 +101,10 @@ export const Chart = () => {
                         angle: -90,
                         offset: 50,
                         position: 'insideTop',
-                        style: { fill: '#8884d8' },
+                        style: { fill: themeColors.rel },
                     }}
                     tick={{
-                        fill: '#8884d8',
+                        fill: themeColors.rel,
                     }}
                 />
                 <YAxis
@@ -89,10 +118,10 @@ export const Chart = () => {
                         angle: -90,
                         offset: 50,
                         position: 'insideTop',
-                        style: { fill: 'red' },
+                        style: { fill: themeColors.reactivity },
                     }}
                     tick={{
-                        fill: 'red',
+                        fill: themeColors.reactivity,
                     }}
                     tickFormatter={(value) => value.toExponential()}
                 />
@@ -107,15 +136,24 @@ export const Chart = () => {
                         angle: -90,
                         offset: 50,
                         position: 'insideTop',
-                        style: { fill: '#82ca9d' },
+                        style: { fill: themeColors.power },
                     }}
                     tick={{
-                        fill: '#82ca9d',
+                        fill: themeColors.power,
                     }}
                     tickFormatter={(value) => value.toExponential()}
                 />
-                <Tooltip labelFormatter={(label) => `Время (с): ${label}`} />
-                <CartesianGrid stroke="#eee" strokeDasharray="5 5" />
+                <Tooltip
+                    labelFormatter={(label) => `Время (с): ${label}`}
+                    contentStyle={{
+                        backgroundColor: isLight(theme) ? '#fff' : '#333',
+                        color: themeColors.text,
+                    }}
+                />
+                <CartesianGrid
+                    stroke={themeColors.grid}
+                    strokeDasharray="5 5"
+                />
                 <ReferenceLine y={1} stroke="darkblue" yAxisId={'rel'} />
                 <ReferenceLine y={0} stroke="darkblue" yAxisId={'reactivity'} />
                 <Line
@@ -123,7 +161,7 @@ export const Chart = () => {
                     type="monotone"
                     dataKey="rel"
                     yAxisId="rel"
-                    stroke="#8884d8"
+                    stroke={themeColors.rel}
                     isAnimationActive={false}
                     dot={false}
                     hide={!showRel}
@@ -133,7 +171,7 @@ export const Chart = () => {
                     name="Реактивность"
                     dataKey="reactivity"
                     yAxisId="reactivity"
-                    stroke="red"
+                    stroke={themeColors.reactivity}
                     dot={false}
                     hide={!showReactivity}
                 />
@@ -142,7 +180,7 @@ export const Chart = () => {
                     type="monotone"
                     dataKey="power"
                     yAxisId={'power'}
-                    stroke="#82ca9d"
+                    stroke={themeColors.power}
                     dot={false}
                     hide={!showPower}
                 />

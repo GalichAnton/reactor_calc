@@ -1,25 +1,20 @@
-import { useContext } from 'react';
-
 import { LoadingOutlined, PlayCircleOutlined } from '@ant-design/icons';
-import { AppButton } from '@shared/ui';
+import { OPERATING_MODE, useReactivityStore } from '@features/reactivityCalc';
+import { Button } from '@shared/ui';
 import { Card, Col, Form, InputNumber, Radio, Row } from 'antd';
-
-import { AppContext } from '../../../../store';
-import { OPERATING_MODE } from '../../../../store/types.ts';
 
 export const ReactivityForm = () => {
     const {
-        state: {
-            velocity,
-            mode,
-            startReactivity,
-            height,
-            power,
-            interval,
-            nominalPower,
-            start,
-            reactorHeight,
-        },
+        velocity,
+        mode,
+        startReactivity,
+        height,
+        power,
+        interval,
+        nominalPower,
+        start,
+        reactorHeight,
+
         changeMode,
         changeVelocity,
         changeStartReactivity,
@@ -28,7 +23,7 @@ export const ReactivityForm = () => {
         changeNominalPower,
         changeStart,
         changeReactorHeight,
-    } = useContext(AppContext);
+    } = useReactivityStore();
 
     const onChangeVelocityHandler = (value: number | null) => {
         if (value === null || value === undefined) {
@@ -215,13 +210,13 @@ export const ReactivityForm = () => {
                 </Row>
             </Form>
             <Col span={3}>
-                <AppButton
+                <Button
                     type="primary"
                     icon={start ? <LoadingOutlined /> : <PlayCircleOutlined />}
                     onClick={changeStart}
                 >
                     {start ? 'Стоп' : 'Старт'}
-                </AppButton>
+                </Button>
             </Col>
         </Card>
     );

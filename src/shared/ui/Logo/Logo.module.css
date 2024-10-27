@@ -1,0 +1,30 @@
+.logo {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    height: 100%;
+    padding: 10px;
+}
+
+.img {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    margin-right: 10px;
+}
+
+.text {
+    color: white;
+    font-size: 20px;
+}
+
+.collapsed {
+    justify-content: center;
+
+}
+
+.collapsed .img {
+    margin-right: 0;
+}

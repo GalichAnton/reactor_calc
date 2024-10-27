@@ -1,0 +1,1 @@
+export { getActionName } from './getActionName';
