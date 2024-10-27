@@ -5,4 +5,5 @@ export { Logo } from './Logo/Logo';
 export { CollapseBtn } from './CollapseBtn/CollapseBtn';
 export { Tooltip } from './Tooltip/Tooltip';
 export { Spinner } from './Spinner/Spinner';
+export { Select } from './Select/Select';
 export * from './Typography/Typography';
