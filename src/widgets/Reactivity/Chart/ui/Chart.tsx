@@ -5,6 +5,7 @@ import { useTheme } from '@shared/lib/hooks';
 import classNames from 'classnames';
 import {
     CartesianGrid,
+    Label,
     Legend,
     Line,
     LineChart,
@@ -22,6 +23,7 @@ const lightThemeColors = {
     reactivity: 'red',
     rel: '#8884d8',
     power: '#82ca9d',
+    height: '#0c233d',
 };
 
 const darkThemeColors = {
@@ -30,22 +32,26 @@ const darkThemeColors = {
     reactivity: '#ff6666',
     rel: '#7a66ff',
     power: '#66cc99',
+    height: '#389aff',
 };
 
 export const Chart = () => {
     const { isLight, theme } = useTheme();
     const params = useReactivityStore((state) => state.params);
+    const reactorHeight = useReactivityStore((state) => state.reactorHeight);
     useCalc();
     const data = params?.calcTime?.map((t, i) => ({
         time: t,
         rel: params?.calcRel[i].toExponential(3),
         power: params?.calcPower[i].toExponential(3),
         reactivity: params?.calcReactivity[i].toExponential(3),
+        height: params?.calcHeight[i],
     }));
 
     const [showRel, setShowRel] = useState(true);
     const [showReactivity, setShowReactivity] = useState(true);
     const [showPower, setShowPower] = useState(true);
+    const [showHeight, setShowHeight] = useState(true);
 
     const xTicks = [];
     for (let i = 0; i <= 120; i += 2) {
@@ -84,6 +90,8 @@ export const Chart = () => {
                             setShowReactivity(!showReactivity);
                         } else if (data.dataKey === 'power') {
                             setShowPower(!showPower);
+                        } else if (data.dataKey === 'height') {
+                            setShowHeight(!showHeight);
                         }
                     }}
                     wrapperStyle={{
@@ -143,6 +151,24 @@ export const Chart = () => {
                     }}
                     tickFormatter={(value) => value.toExponential()}
                 />
+                <YAxis
+                    yAxisId="height"
+                    dataKey="height"
+                    type="number"
+                    domain={[100, reactorHeight]}
+                    allowDataOverflow
+                    orientation="right"
+                    label={{
+                        value: 'Высота',
+                        angle: -90,
+                        offset: 50,
+                        position: 'insideTop',
+                        style: { fill: themeColors.height },
+                    }}
+                    tick={{
+                        fill: themeColors.height,
+                    }}
+                />
                 <Tooltip
                     labelFormatter={(label) => `Время (с): ${label}`}
                     contentStyle={{
@@ -154,8 +180,12 @@ export const Chart = () => {
                     stroke={themeColors.grid}
                     strokeDasharray="5 5"
                 />
-                <ReferenceLine y={1} stroke="darkblue" yAxisId={'rel'} />
-                <ReferenceLine y={0} stroke="darkblue" yAxisId={'reactivity'} />
+                <ReferenceLine y={1} stroke="darkblue" yAxisId={'rel'}>
+                    <Label value="Отношение = 1" position="insideTop" />
+                </ReferenceLine>
+                <ReferenceLine y={0} stroke="darkblue" yAxisId={'reactivity'}>
+                    <Label value="Реактивность = 0" position="insideTop" />
+                </ReferenceLine>
                 <Line
                     name="Мощность/(0.5×номинальная мощность)"
                     type="monotone"
@@ -183,6 +213,15 @@ export const Chart = () => {
                     stroke={themeColors.power}
                     dot={false}
                     hide={!showPower}
+                />
+                <Line
+                    name="Высота"
+                    type="monotone"
+                    dataKey="height"
+                    yAxisId={'height'}
+                    stroke={themeColors.height}
+                    dot={false}
+                    hide={!showHeight}
                 />
             </LineChart>
         </div>
