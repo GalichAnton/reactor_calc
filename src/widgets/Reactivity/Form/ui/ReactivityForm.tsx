@@ -98,7 +98,7 @@ export const ReactivityForm = () => {
                                 placeholder={'Мощность номинальная'}
                                 value={nominalPower}
                                 onChange={onChangeNominalPowerHandler}
-                                addonAfter={'МВт'}
+                                addonAfter={'Нейтронов'}
                             />
                         </Form.Item>
                     </Col>
@@ -125,7 +125,7 @@ export const ReactivityForm = () => {
                                 style={{ width: '100%' }}
                                 placeholder={'Мощность'}
                                 value={power}
-                                addonAfter={'МВт'}
+                                addonAfter={'Нейтронов'}
                             />
                         </Form.Item>
                     </Col>

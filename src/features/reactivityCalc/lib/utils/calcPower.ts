@@ -1,3 +1,5 @@
+import { roundToDecimal } from '@shared/lib/utils';
+
 import { betta, k, Lambda, lambda } from '../../constants/general';
 
 interface Props {
@@ -24,7 +26,7 @@ export const calcPower = (props: Props) => {
         nominalPower,
         reactorHeight,
     } = props;
-    let newH = prevH + velocity * mode * interval;
+    let newH = roundToDecimal(prevH + velocity * mode * interval, 2);
 
     if (newH >= reactorHeight) {
         newH = reactorHeight;
@@ -37,9 +39,11 @@ export const calcPower = (props: Props) => {
     const dH = (newH - prevH) / interval;
 
     const newRo = prevRo + k * interval * dH;
-    const newPower =
+    const newPower = roundToDecimal(
         (prevPower + interval * lambda * prevC) /
-        (1 - interval * ((newRo - betta) / Lambda));
+            (1 - interval * ((newRo - betta) / Lambda)),
+        2,
+    );
 
     const newC =
         prevC + interval * ((newPower * betta) / Lambda - lambda * prevC);
