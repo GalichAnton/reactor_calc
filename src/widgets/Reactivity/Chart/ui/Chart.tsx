@@ -41,11 +41,11 @@ export const Chart = () => {
     const reactorHeight = useReactivityStore((state) => state.reactorHeight);
     useCalc();
     const data = params?.calcTime?.map((t, i) => ({
-        time: t,
+        time: t.toFixed(1),
         rel: params?.calcRel[i].toExponential(3),
         power: params?.calcPower[i].toExponential(3),
         reactivity: params?.calcReactivity[i].toExponential(3),
-        height: params?.calcHeight[i],
+        height: params?.calcHeight[i].toFixed(2),
     }));
 
     const [showRel, setShowRel] = useState(true);
