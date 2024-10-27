@@ -23,10 +23,9 @@ export const useCalc = () => {
         changeStartReactivity,
         updateCalcParams,
     } = useReactivityStore();
-    console.log('params', params);
+
     useEffect(() => {
         if (start && !params) {
-            console.log('here');
             const initialParams = {
                 time: 0,
                 height: height,
