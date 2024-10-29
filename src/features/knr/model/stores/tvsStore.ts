@@ -7,6 +7,7 @@ import { immer } from 'zustand/middleware/immer';
 interface TVSStore {
     characteristics: TVS;
     setCharacteristic: <T extends keyof TVS>(key: T, value: TVS[T]) => void;
+    setCharacteristics: (value: TVS) => void;
 }
 
 const initialTVS: TVS = {
@@ -31,6 +32,12 @@ export const useTVSStore = create<TVSStore>()(
                     },
                     undefined,
                     getActionName('TVSStore', `setCharacteristic [${key}]`),
+                ),
+            setCharacteristics: (value) =>
+                set(
+                    (state) => (state.characteristics = value),
+                    undefined,
+                    getActionName('TVSStore', 'setCharacteristics'),
                 ),
         })),
     ),

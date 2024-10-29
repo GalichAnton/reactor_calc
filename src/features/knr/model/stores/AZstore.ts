@@ -11,6 +11,7 @@ interface AZStore {
         key: T,
         value: AZCharacteristics[T],
     ) => void;
+    setCharacteristics: (value: AZCharacteristics) => void;
 }
 
 const initialCharacteristics: AZCharacteristics = {
@@ -52,6 +53,12 @@ export const useAZStore = create<AZStore>()(
                     },
                     undefined,
                     getActionName('AZStore', `setCharacteristic [${key}]`),
+                ),
+            setCharacteristics: (value) =>
+                set(
+                    (state) => (state.characteristics = value),
+                    undefined,
+                    getActionName('AZStore', 'setCharacteristics'),
                 ),
         })),
     ),

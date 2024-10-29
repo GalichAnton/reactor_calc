@@ -11,6 +11,7 @@ interface ReactorStore {
         key: T,
         value: ReactorCharacteristics[T],
     ) => void;
+    setCharacteristics: (value: ReactorCharacteristics) => void;
 }
 
 const initialReactor: ReactorCharacteristics = {
@@ -35,6 +36,12 @@ export const useReactorStore = create<ReactorStore>()(
                     },
                     undefined,
                     getActionName('ReactorStore', `setCharacteristic [${key}]`),
+                ),
+            setCharacteristics: (value) =>
+                set(
+                    (state) => (state.characteristics = value),
+                    undefined,
+                    getActionName('ReactorStore', 'setCharacteristics'),
                 ),
         })),
     ),
