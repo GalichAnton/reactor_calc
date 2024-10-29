@@ -18,6 +18,7 @@ export const Page: FC<PageProps> = (props) => {
             size={'small'}
             className={styles.page}
             data-testid={dataTestId}
+            fullWidth
         >
             {children}
         </Space>

@@ -1,13 +1,13 @@
-import { TVS } from '@features/knr';
+import { TVS } from '@entities/KNR';
 import { getActionName } from '@shared/lib/utils';
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
 
 interface TVSStore {
-    characteristics: TVS;
-    setCharacteristic: <T extends keyof TVS>(key: T, value: TVS[T]) => void;
-    setCharacteristics: (value: TVS) => void;
+    TVSCharacteristics: TVS;
+    setTVSCharacteristic: <T extends keyof TVS>(key: T, value: TVS[T]) => void;
+    setTVSCharacteristics: (value: TVS) => void;
 }
 
 const initialTVS: TVS = {
@@ -23,21 +23,23 @@ const initialTVS: TVS = {
 export const useTVSStore = create<TVSStore>()(
     devtools(
         immer((set) => ({
-            characteristics: initialTVS,
+            TVSCharacteristics: initialTVS,
 
-            setCharacteristic: (key, value) =>
+            setTVSCharacteristic: (key, value) =>
                 set(
                     (state) => {
-                        state.characteristics[key] = value;
+                        state.TVSCharacteristics[key] = value;
                     },
                     undefined,
-                    getActionName('TVSStore', `setCharacteristic [${key}]`),
+                    getActionName('TVSStore', `setTVSCharacteristic [${key}]`),
                 ),
-            setCharacteristics: (value) =>
+            setTVSCharacteristics: (value) =>
                 set(
-                    (state) => (state.characteristics = value),
+                    (state) => {
+                        state.TVSCharacteristics = value;
+                    },
                     undefined,
-                    getActionName('TVSStore', 'setCharacteristics'),
+                    getActionName('TVSStore', 'setTVSCharacteristics'),
                 ),
         })),
     ),

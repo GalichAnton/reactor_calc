@@ -1,7 +1,12 @@
+import { KNRTabs } from '@widgets/KNR/Tabs';
 import { Page } from '@widgets/Page';
 
 const KNRPage = () => {
-    return <Page>NeutronCalcPage</Page>;
+    return (
+        <Page>
+            <KNRTabs />
+        </Page>
+    );
 };
 
 export default KNRPage;

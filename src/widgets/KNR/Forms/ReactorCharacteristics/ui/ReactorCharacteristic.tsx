@@ -1,136 +1,151 @@
-import { ReactorCharacteristics, useReactorStore } from '@features/knr';
-import { Button, Card } from '@shared/ui';
-import { Form, InputNumber } from 'antd';
+import { useEffect } from 'react';
+
+import { ReactorCharacteristics } from '@entities/KNR';
+import { useReactorStore } from '@features/KNR/setInitialValues';
+import { Col, Form, Grid, InputNumber, Row } from 'antd';
 
 export const ReactorCharacteristic = () => {
-    const { characteristics, setCharacteristics } = useReactorStore(
-        (state) => ({
-            characteristics: state.characteristics,
-            setCharacteristics: state.setCharacteristics,
-        }),
-    );
+    const { reactorCharacteristics, setReactorCharacteristics } =
+        useReactorStore();
+    const screens = Grid.useBreakpoint();
 
     const [form] = Form.useForm();
 
-    const onFinish = (values: ReactorCharacteristics) => {
-        setCharacteristics(values);
-        console.log('Characteristics Updated:', values);
-    };
+    useEffect(() => {
+        form.setFieldsValue(reactorCharacteristics);
+    }, [reactorCharacteristics]);
 
     const onValuesChange = (_: any, allValues: ReactorCharacteristics) => {
-        setCharacteristics(allValues);
+        setReactorCharacteristics(allValues);
     };
 
+    const span = screens.xl ? 4 : 6;
+
     return (
-        <Card withShadow>
-            <Form
-                form={form}
-                layout="vertical"
-                initialValues={characteristics}
-                onFinish={onFinish}
-                onValuesChange={onValuesChange}
-            >
-                <Form.Item
-                    label="Электрическая мощность (МВт)"
-                    name="electricalPower"
-                    rules={[
-                        {
-                            required: true,
-                            message:
-                                'Пожалуйста, введите электрическую мощность',
-                        },
-                    ]}
-                >
-                    <InputNumber />
-                </Form.Item>
+        <Form
+            form={form}
+            layout="vertical"
+            initialValues={reactorCharacteristics}
+            onValuesChange={onValuesChange}
+        >
+            <Row gutter={[8, 8]}>
+                <Col span={span}>
+                    <Form.Item
+                        label="Nel"
+                        tooltip="Электрическая мощность"
+                        name="electricalPower"
+                        rules={[
+                            {
+                                required: true,
+                                message:
+                                    'Пожалуйста, введите электрическую мощность',
+                            },
+                        ]}
+                    >
+                        <InputNumber addonAfter={'МВт'} />
+                    </Form.Item>
+                </Col>
 
-                <Form.Item
-                    label="Тепловая мощность (МВт)"
-                    name="thermalPower"
-                    rules={[
-                        {
-                            required: true,
-                            message: 'Пожалуйста, введите тепловую мощность',
-                        },
-                    ]}
-                >
-                    <InputNumber />
-                </Form.Item>
+                <Col span={span}>
+                    <Form.Item
+                        label="Ptepl"
+                        tooltip="Тепловая мощность"
+                        name="thermalPower"
+                        rules={[
+                            {
+                                required: true,
+                                message:
+                                    'Пожалуйста, введите тепловую мощность',
+                            },
+                        ]}
+                    >
+                        <InputNumber addonAfter={'МВт'} />
+                    </Form.Item>
+                </Col>
+                <Col span={span}>
+                    <Form.Item
+                        label="P1"
+                        tooltip="Давление в первом контуре"
+                        name="primaryCircuitPressure"
+                        rules={[
+                            {
+                                required: true,
+                                message:
+                                    'Пожалуйста, введите давление в первом контуре',
+                            },
+                        ]}
+                    >
+                        <InputNumber addonAfter={'МПа'} />
+                    </Form.Item>
+                </Col>
 
-                <Form.Item
-                    label="Давление в первом контуре (МПа)"
-                    name="primaryCircuitPressure"
-                    rules={[
-                        {
-                            required: true,
-                            message:
-                                'Пожалуйста, введите давление в первом контуре',
-                        },
-                    ]}
-                >
-                    <InputNumber />
-                </Form.Item>
+                <Col span={span}>
+                    <Form.Item
+                        label="Ttep"
+                        tooltip="Температура используемого теплоносителя"
+                        name="coolantTemperature"
+                        rules={[
+                            {
+                                required: true,
+                                message:
+                                    'Пожалуйста, введите температуру теплоносителя',
+                            },
+                        ]}
+                    >
+                        <InputNumber addonAfter={'K'} />
+                    </Form.Item>
+                </Col>
 
-                <Form.Item
-                    label="Температура теплоносителя (К)"
-                    name="coolantTemperature"
-                    rules={[
-                        {
-                            required: true,
-                            message:
-                                'Пожалуйста, введите температуру теплоносителя',
-                        },
-                    ]}
-                >
-                    <InputNumber />
-                </Form.Item>
+                <Col span={span}>
+                    <Form.Item
+                        label="Xu5"
+                        tooltip="Концентрация U-235 в топливе"
+                        name="uraniumEnrichment"
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Пожалуйста, введите обогащение урана',
+                            },
+                        ]}
+                    >
+                        <InputNumber addonAfter={'%'} />
+                    </Form.Item>
+                </Col>
 
-                <Form.Item
-                    label="Обогащение урана (%)"
-                    name="uraniumEnrichment"
-                    rules={[
-                        {
-                            required: true,
-                            message: 'Пожалуйста, введите обогащение урана',
-                        },
-                    ]}
-                >
-                    <InputNumber />
-                </Form.Item>
+                <Col span={span}>
+                    <Form.Item
+                        label="q AZ"
+                        tooltip="Энергонапряжённость активной зоны реактора"
+                        name="corePowerDensity"
+                        rules={[
+                            {
+                                required: true,
+                                message:
+                                    'Пожалуйста, введите энергонапряжённость активной зоны',
+                            },
+                        ]}
+                    >
+                        <InputNumber addonAfter={'МВт/м³'} />
+                    </Form.Item>
+                </Col>
 
-                <Form.Item
-                    label="Энергонапряжённость активной зоны (МВт/м³)"
-                    name="corePowerDensity"
-                    rules={[
-                        {
-                            required: true,
-                            message:
-                                'Пожалуйста, введите энергонапряжённость активной зоны',
-                        },
-                    ]}
-                >
-                    <InputNumber />
-                </Form.Item>
-
-                <Form.Item
-                    label="Высота активной зоны (см)"
-                    name="coreHeight"
-                    rules={[
-                        {
-                            required: true,
-                            message: 'Пожалуйста, введите высоту активной зоны',
-                        },
-                    ]}
-                >
-                    <InputNumber />
-                </Form.Item>
-
-                <Form.Item>
-                    <Button type="primary" htmlType="submit">
-                        Сохранить
-                    </Button>
-                </Form.Item>
-            </Form>
-        </Card>
+                <Col span={span}>
+                    <Form.Item
+                        label="Haz"
+                        tooltip="Высота активной зоны реактора"
+                        name="coreHeight"
+                        rules={[
+                            {
+                                required: true,
+                                message:
+                                    'Пожалуйста, введите высоту активной зоны',
+                            },
+                        ]}
+                    >
+                        <InputNumber addonAfter={'см'} />
+                    </Form.Item>
+                </Col>
+            </Row>
+        </Form>
     );
 };

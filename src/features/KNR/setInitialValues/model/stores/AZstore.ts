@@ -1,17 +1,16 @@
+import { AZCharacteristics } from '@entities/KNR';
 import { getActionName } from '@shared/lib/utils';
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
 
-import { AZCharacteristics } from '../types/AZCharacteristics';
-
 interface AZStore {
-    characteristics: AZCharacteristics;
-    setCharacteristic: <T extends keyof AZCharacteristics>(
+    AZCharacteristics: AZCharacteristics;
+    setAZCharacteristic: <T extends keyof AZCharacteristics>(
         key: T,
         value: AZCharacteristics[T],
     ) => void;
-    setCharacteristics: (value: AZCharacteristics) => void;
+    setAZCharacteristics: (value: AZCharacteristics) => void;
 }
 
 const initialCharacteristics: AZCharacteristics = {
@@ -37,7 +36,7 @@ const initialCharacteristics: AZCharacteristics = {
     fastNeutronReproductionCoefficient: 0,
     resonanceEscapeProbability: 0,
     secondaryNeutronsPerAbsorption235U: 0,
-    infiniteMediumNeutronMultiplicationCoefficient: 0,
+    infiniteNeutronMultiplicationCoefficient: 0,
     thermalNeutronAge: 0,
     diffusionLength: 0,
 };
@@ -45,20 +44,22 @@ const initialCharacteristics: AZCharacteristics = {
 export const useAZStore = create<AZStore>()(
     devtools(
         immer((set) => ({
-            characteristics: initialCharacteristics,
-            setCharacteristic: (key, value) =>
+            AZCharacteristics: initialCharacteristics,
+            setAZCharacteristic: (key, value) =>
                 set(
                     (state) => {
-                        state.characteristics[key] = value;
+                        state.AZCharacteristics[key] = value;
                     },
                     undefined,
                     getActionName('AZStore', `setCharacteristic [${key}]`),
                 ),
-            setCharacteristics: (value) =>
+            setAZCharacteristics: (value) =>
                 set(
-                    (state) => (state.characteristics = value),
+                    (state) => {
+                        state.AZCharacteristics = value;
+                    },
                     undefined,
-                    getActionName('AZStore', 'setCharacteristics'),
+                    getActionName('AZStore', 'setAZCharacteristics'),
                 ),
         })),
     ),

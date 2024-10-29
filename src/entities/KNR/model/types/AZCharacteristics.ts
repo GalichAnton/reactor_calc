@@ -115,7 +115,7 @@ export interface AZCharacteristics {
     /**
      * Коэффициент размножения нейтронов в бесконечной среде.
      */
-    infiniteMediumNeutronMultiplicationCoefficient: number; // k∞
+    infiniteNeutronMultiplicationCoefficient: number; // k∞
 
     /**
      * Возраст тепловых нейтронов, в квадратных сантиметрах.
