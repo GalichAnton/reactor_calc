@@ -1,7 +1,7 @@
 import { Page } from '@widgets/Page';
 
-const NeutronCalcPage = () => {
+const KNRPage = () => {
     return <Page>NeutronCalcPage</Page>;
 };
 
-export default NeutronCalcPage;
+export default KNRPage;

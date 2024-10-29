@@ -1,4 +1,4 @@
-import { NeutronCalc, ReactivityPage } from '@pages/index.ts';
+import { KNRPage, ReactivityPage } from '@pages/index.ts';
 import {
     AppRoutes,
     AppRoutesProps,
@@ -12,6 +12,6 @@ export const RouteConfig: Record<AppRoutesType, AppRoutesProps> = {
     },
     neutronCalc: {
         path: AppRoutes.neutronCalc,
-        element: <NeutronCalc />,
+        element: <KNRPage />,
     },
 };
