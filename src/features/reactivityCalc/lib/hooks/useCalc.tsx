@@ -1,8 +1,15 @@
 import { useEffect } from 'react';
 
 import { ReactorParams } from '@entities/reactor';
+import { calcPowerSix } from '@features/reactivityCalc/lib/utils/calcPowerSix.ts';
 
-import { betta, Lambda, lambda } from '../../constants/general.ts';
+import {
+    betta,
+    bettaSix,
+    Lambda,
+    lambda,
+    lambdaSix,
+} from '../../constants/general.ts';
 import { useReactivityStore } from '../../model/store.ts';
 import { calcPower } from '../utils/calcPower.ts';
 
@@ -22,6 +29,7 @@ export const useCalc = () => {
         changePower,
         changeStartReactivity,
         updateCalcParams,
+        isSix,
     } = useReactivityStore();
 
     useEffect(() => {
@@ -36,7 +44,19 @@ export const useCalc = () => {
                 reactorHeight,
             };
 
-            updateCalcParams(initialParams);
+            const initialSixParams = {
+                time: 0,
+                height: height,
+                reactivity: startReactivity,
+                power: 0.5 * nominalPower,
+                c: bettaSix.map((b, i) => {
+                    return (b * nominalPower) / (lambdaSix[i] * Lambda);
+                }),
+                rel: 1,
+                reactorHeight,
+            };
+
+            updateCalcParams(isSix ? initialSixParams : initialParams);
         }
     }, [start]);
 
@@ -47,7 +67,7 @@ export const useCalc = () => {
 
         const timeInterval = setInterval(() => {
             const currentState = useReactivityStore.getState();
-            console.log('currentState.params', currentState.params);
+
             if (!currentState.params) {
                 return;
             }
@@ -62,10 +82,13 @@ export const useCalc = () => {
                 changeCalcHeight(0);
             }
 
-            const newParams = calcPower({
+            const calcFn = isSix ? calcPowerSix : calcPower;
+
+            const newParams = calcFn({
                 prevH: currentHeight,
                 prevRo: currentState.params.calcReactivity[lastIndex],
                 prevPower: currentState.params.calcPower[lastIndex],
+                // @ts-ignore
                 prevC: currentState.params.calcC[lastIndex],
                 velocity: velocity,
                 interval: interval,

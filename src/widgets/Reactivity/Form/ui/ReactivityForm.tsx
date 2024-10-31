@@ -2,6 +2,7 @@ import { LoadingOutlined, PlayCircleOutlined } from '@ant-design/icons';
 import { OPERATING_MODE, useReactivityStore } from '@features/reactivityCalc';
 import { Button } from '@shared/ui';
 import { Card, Col, Form, InputNumber, Radio, Row } from 'antd';
+import Checkbox from 'antd/es/checkbox/Checkbox';
 
 export const ReactivityForm = () => {
     const {
@@ -14,8 +15,10 @@ export const ReactivityForm = () => {
         nominalPower,
         start,
         reactorHeight,
+        isSix,
 
         changeMode,
+        changeIsSix,
         changeVelocity,
         changeStartReactivity,
         changeHeight,
@@ -87,6 +90,12 @@ export const ReactivityForm = () => {
             size={'small'}
         >
             <Form layout={'vertical'} disabled={start}>
+                <Checkbox
+                    checked={isSix}
+                    onChange={(e) => changeIsSix(e.target.checked)}
+                >
+                    Шестигрупповое
+                </Checkbox>
                 <Row gutter={[8, 8]}>
                     <Col span={6}>
                         <Form.Item
