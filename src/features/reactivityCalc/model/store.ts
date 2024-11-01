@@ -21,10 +21,11 @@ type StateType = {
         calcTime: number[];
         calcReactivity: number[];
         calcPower: number[];
-        calcC: number[];
+        calcC: number[] | number[][];
         calcRel: number[];
         calcHeight: number[];
     };
+    isSix: boolean;
 };
 
 const initialState: StateType = {
@@ -39,6 +40,7 @@ const initialState: StateType = {
     reactorHeight: 373,
     process: 0,
     params: null,
+    isSix: false,
 };
 
 type ActionsType = {
@@ -53,6 +55,7 @@ type ActionsType = {
     changeReactorHeight: (value: number) => void;
     updateCalcParams: (value: ReactorParams) => void;
     changeCalcHeight: (value: number) => void;
+    changeIsSix: (value: boolean) => void;
 };
 
 type ReactivityStore = StateType & ActionsType;
@@ -153,7 +156,10 @@ export const useReactivityStore = create<ReactivityStore>()(
                         state.params.calcHeight.push(value.height);
                         state.params.calcReactivity.push(value.reactivity);
                         state.params.calcRel.push(value.rel);
+
+                        // @ts-ignore
                         state.params.calcC.push(value.c);
+
                         state.params.calcPower.push(value.power);
                     },
                     undefined,
@@ -167,6 +173,14 @@ export const useReactivityStore = create<ReactivityStore>()(
                     },
                     undefined,
                     getActionName('ReactivityStore', 'changeCalcHeight'),
+                ),
+            changeIsSix: (value) =>
+                set(
+                    (state) => {
+                        state.isSix = value;
+                    },
+                    undefined,
+                    getActionName('ReactivityStore', 'changeIsSix'),
                 ),
         })),
         { name: 'ReactivityStore' },
