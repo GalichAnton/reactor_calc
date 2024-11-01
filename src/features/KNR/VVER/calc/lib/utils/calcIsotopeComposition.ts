@@ -90,19 +90,44 @@ export function calculateReproductionCoefficient(
 }
 
 /**
- * Вычисляет фактор S8, который является отношением средней сечения поглощения 238U к 235U.
- *
+ * Вычисляет фактор Sa8, который является отношением средней сечения поглощения 238U к 235U.
  * @param {number} averageAbsorptionCrossSection238U - Среднее сечение поглощения 238U, в барнах.
  * @param {number} averageAbsorptionCrossSection235U - Среднее сечение поглощения 235U, в барнах.
- * @returns Отношение сечений поглощения (S8).
+ * @returns Отношение сечений поглощения (Sa8).
  */
-export function calculateS8(
+export function calculateSa8(
     averageAbsorptionCrossSection238U: number,
     averageAbsorptionCrossSection235U: number,
 ): number {
     return (
         averageAbsorptionCrossSection238U / averageAbsorptionCrossSection235U
     );
+}
+
+/**
+ * Вычисляет фактор Sf8, который является отношением средней сечения деления 238U к сечению поглощения 235U.
+ * @param {number} averageFissionCrossSection235U - Среднее сечение деления 238U, в барнах.
+ * @param {number} averageAbsorptionCrossSection235U - Среднее сечение поглощения 235U, в барнах.
+ * @returns Отношение сечений поглощения (Sf8).
+ */
+export function calculateSf8(
+    averageFissionCrossSection235U: number,
+    averageAbsorptionCrossSection235U: number,
+): number {
+    return averageFissionCrossSection235U / averageAbsorptionCrossSection235U;
+}
+
+/**
+ * Вычисляет фактор Sf9, который является отношением средней сечения деления 239Pu к сечению поглощения 235U.
+ * @param {number} averageFissionCrossSection239Pu - Среднее сечение деления 239Pu.
+ * @param {number} averageAbsorptionCrossSection235U - Среднее сечение поглощения 235U.
+ * @returns Отношение сечений поглощения (Sf9).
+ */
+export function calculateSf9(
+    averageFissionCrossSection239Pu: number,
+    averageAbsorptionCrossSection235U: number,
+): number {
+    return averageFissionCrossSection239Pu / averageAbsorptionCrossSection235U;
 }
 
 /**
@@ -128,12 +153,12 @@ interface CorrectionFactorParams {
 }
 
 /**
- * Вычисляет коррекционный фактор S9 для 239Pu с учетом различных ядерных параметров.
+ * Вычисляет коррекционный фактор Sa9 для 239Pu с учетом различных ядерных параметров.
  *
  * @param {CorrectionFactorParams} params - Объект, содержащий параметры для вычисления.
- * @returns {number} - Вычисленный коррекционный фактор S9 для 239Pu.
+ * @returns {number} - Вычисленный коррекционный фактор Sa9 для 239Pu.
  */
-export function calculateS9(params: CorrectionFactorParams): number {
+export function calculateSa9(params: CorrectionFactorParams): number {
     const {
         averageAbsorptionCrossSection239Pu,
         averageAbsorptionCrossSection235U,
@@ -238,7 +263,7 @@ export function calculateNuclearConcentrationU5(
  * @param {number} neutronGasTemperature - Температура в кельвинах.
  * @returns {number} - Усредненное микроскопическое сечение деления.
  */
-export function averageFissionCrossSection239Pu(
+export function calcAverageFissionCrossSection239Pu(
     neutronGasTemperature: number,
 ): number {
     return (
@@ -254,7 +279,7 @@ export function averageFissionCrossSection239Pu(
  * @param {number} neutronGasTemperature - Температура нейтронного газа.
  * @returns {number} - Усредненное микроскопическое сечение поглощения.
  */
-export function averageAbsorptionCrossSection239Pu(
+export function calcAverageAbsorptionCrossSection239Pu(
     neutronGasTemperature: number,
 ): number {
     return (
@@ -271,7 +296,7 @@ export function averageAbsorptionCrossSection239Pu(
  * @param {number} averageAbsorptionCrossSectionPu9 - Усредненное микроскопическое сечение поглощения.
  * @returns {number} - Число вторичных нейтронов на одно поглощение.
  */
-export function secondaryNeutronsPerAbsorption239Pu(
+export function calcSecondaryNeutronsPerAbsorption239Pu(
     averageFissionCrossSectionPu9: number,
     averageAbsorptionCrossSectionPu9: number,
 ): number {
