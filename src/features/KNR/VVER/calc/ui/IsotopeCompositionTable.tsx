@@ -3,13 +3,13 @@ import { useMemo } from 'react';
 import { Table } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 
-import { useAzCalc } from '../lib/hooks/useAzCalc.tsx';
-import { useAZPhysParamsStore } from '../model/store/azPhysParamsStore.ts';
+import { useCalcIsotopes } from '../lib/hooks/useCalcIsotopes.tsx';
+import { useIsotopeCompositionStore } from '../model/store/isotopeCompositionSore.ts';
 import { IsotopeComposition } from '../model/types/IsotopeComposition.ts';
 
 export const IsotopeCompositionTable = () => {
-    const { azPhysParams } = useAZPhysParamsStore();
-    useAzCalc();
+    const { isotopesParams } = useIsotopeCompositionStore();
+    useCalcIsotopes();
 
     const columns: ColumnsType<IsotopeComposition> = useMemo(() => {
         return [
@@ -33,7 +33,7 @@ export const IsotopeCompositionTable = () => {
                     <strong>Изменения изотопного состава</strong>
                 </>
             )}
-            dataSource={[azPhysParams]}
+            dataSource={[isotopesParams]}
             size={'small'}
             pagination={false}
             bordered

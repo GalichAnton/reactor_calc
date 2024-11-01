@@ -22,7 +22,7 @@ export default tseslint.config(
             import: imports,
         },
         rules: {
-            'max-len': [1, { code: 80 }],
+            'max-len': [1, { code: 120 }],
             '@typescript-eslint/no-explicit-any': 'off',
             'import/order': [
                 'warn',

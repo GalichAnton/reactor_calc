@@ -9,7 +9,10 @@ import {
 import { Presets } from '@widgets/KNR/Presets';
 import { Col, Divider, Row, Tabs, TabsProps } from 'antd';
 
-import { AZParamsTable } from '../../../../features/KNR/VVER/calc';
+import {
+    AZParamsTable,
+    IsotopeCompositionTable,
+} from '../../../../features/KNR/VVER/calc';
 
 export const KNRTabs = () => {
     const items: TabsProps['items'] = useMemo(() => {
@@ -45,6 +48,9 @@ export const KNRTabs = () => {
                     <Row gutter={[8, 8]}>
                         <Col span={24}>
                             <AZParamsTable />
+                        </Col>
+                        <Col span={24}>
+                            <IsotopeCompositionTable />
                         </Col>
                     </Row>
                 ),
