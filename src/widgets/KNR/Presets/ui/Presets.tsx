@@ -1,12 +1,15 @@
 import { useEffect, useState } from 'react';
 
 import { REACTOR_TYPES } from '@entities/reactor';
-import { useAZStore, useReactorStore } from '@features/KNR/setInitialValues';
-import { useTVSStore } from '@features/KNR/setInitialValues/model/stores/TVSStore.ts';
+import { useTVSStore } from '@features/KNR/VVER/setInitialValues/model/stores/TVSStore.ts';
 import { Select, Space, Text } from '@shared/ui';
 import { Radio, RadioChangeEvent } from 'antd';
 import { DefaultOptionType } from 'antd/es/select';
 
+import {
+    useAZStore,
+    useReactorStore,
+} from '../../../../features/KNR/VVER/setInitialValues';
 import { VVER_1000 } from '../constants/VVER_1000';
 
 export const Presets = () => {

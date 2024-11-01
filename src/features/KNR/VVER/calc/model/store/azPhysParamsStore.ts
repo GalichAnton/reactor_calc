@@ -3,7 +3,7 @@ import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
 
-import { AZPhysParams } from '../types/azPhysParams';
+import { AZPhysParams } from '../types/azPhysParams.ts';
 
 interface AZStore {
     azPhysParams: AZPhysParams;

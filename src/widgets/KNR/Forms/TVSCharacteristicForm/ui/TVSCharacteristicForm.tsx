@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 
 import { TVS } from '@entities/KNR';
-import { useTVSStore } from '@features/KNR/setInitialValues/model/stores/TVSStore.ts';
+import { useTVSStore } from '@features/KNR/VVER/setInitialValues/model/stores/TVSStore.ts';
 import { Select } from '@shared/ui';
 import { Col, Form, Grid, InputNumber, Row } from 'antd';
 

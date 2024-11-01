@@ -1,8 +1,9 @@
 import { useEffect } from 'react';
 
 import { AZCharacteristics } from '@entities/KNR';
-import { useAZStore } from '@features/KNR/setInitialValues';
 import { Col, Form, Grid, InputNumber, Row } from 'antd';
+
+import { useAZStore } from '../../../../../features/KNR/VVER/setInitialValues';
 
 export const AZCharacteristicsForm = () => {
     const { AZCharacteristics, setAZCharacteristics } = useAZStore();

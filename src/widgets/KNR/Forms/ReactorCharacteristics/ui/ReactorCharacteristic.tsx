@@ -1,8 +1,9 @@
 import { useEffect } from 'react';
 
 import { ReactorCharacteristics } from '@entities/KNR';
-import { useReactorStore } from '@features/KNR/setInitialValues';
 import { Col, Form, Grid, InputNumber, Row } from 'antd';
+
+import { useReactorStore } from '../../../../../features/KNR/VVER/setInitialValues';
 
 export const ReactorCharacteristic = () => {
     const { reactorCharacteristics, setReactorCharacteristics } =

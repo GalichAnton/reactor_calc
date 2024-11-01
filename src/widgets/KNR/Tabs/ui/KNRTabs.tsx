@@ -1,6 +1,5 @@
 import { useMemo } from 'react';
 
-import { AZParamsTable } from '@features/KNR/calcAz';
 import { Card, Space, Text } from '@shared/ui';
 import {
     TvsCharacteristicForm,
@@ -9,6 +8,8 @@ import {
 } from '@widgets/KNR/Forms';
 import { Presets } from '@widgets/KNR/Presets';
 import { Col, Divider, Row, Tabs, TabsProps } from 'antd';
+
+import { AZParamsTable } from '../../../../features/KNR/VVER/calc';
 
 export const KNRTabs = () => {
     const items: TabsProps['items'] = useMemo(() => {

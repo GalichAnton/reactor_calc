@@ -1,12 +1,13 @@
 import { useEffect } from 'react';
 
+import { roundToDecimal } from '@shared/lib/utils';
+
 import {
     useAZStore,
     useReactorStore,
     useTVSStore,
-} from '@features/KNR/setInitialValues';
-import { roundToDecimal } from '@shared/lib/utils';
-
+} from '../../../setInitialValues';
+import { useAZPhysParamsStore } from '../../model/store/azPhysParamsStore.ts';
 import {
     calculateAZDiameter,
     calculateAZVolume,
@@ -14,8 +15,7 @@ import {
     calculateKeffective,
     calculateNumberOfTVS,
     calculateReactivity,
-} from '..//utils/calcAZ.ts';
-import { useAZPhysParamsStore } from '../../model/store/azPhysParamsStore';
+} from '../utils/calcAZ.ts';
 
 export const useAzCalc = () => {
     const { setAZPhysParams } = useAZPhysParamsStore();

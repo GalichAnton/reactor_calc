@@ -1,11 +1,11 @@
 import { useMemo } from 'react';
 
-import { useAzCalc } from '@features/KNR/calcAz/lib/hooks/useAzCalc.tsx';
+import { useAzCalc } from '@features/KNR/VVER/calc/lib/hooks/useAzCalc.tsx';
 import { Table } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 
-import { useAZPhysParamsStore } from '../model/store/azPhysParamsStore';
-import { AZPhysParams } from '../model/types/azPhysParams';
+import { useAZPhysParamsStore } from '../model/store/azPhysParamsStore.ts';
+import { AZPhysParams } from '../model/types/azPhysParams.ts';
 
 export const AZParamsTable = () => {
     const { azPhysParams } = useAZPhysParamsStore();
