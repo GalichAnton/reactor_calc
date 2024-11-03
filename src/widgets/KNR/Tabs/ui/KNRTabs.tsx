@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 
+import { ZRelationTab } from '@features/KNR/VVER/calc/ui/ZRelationTab/ZRelationTab.tsx';
 import { Card, Space, Text } from '@shared/ui';
 import {
     TvsCharacteristicForm,
@@ -54,6 +55,11 @@ export const KNRTabs = () => {
                         </Col>
                     </Row>
                 ),
+            },
+            {
+                key: '2',
+                label: 'Зависимости от z',
+                children: <ZRelationTab />,
             },
         ];
     }, []);

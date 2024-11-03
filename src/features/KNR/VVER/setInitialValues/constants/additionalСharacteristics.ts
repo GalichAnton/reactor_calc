@@ -42,3 +42,8 @@ export const DECAY_CONSTANT_XE = 2.09e-5;
  * Микроскопическое сечение поглощения для изотопа Xe-135, в барнах.
  */
 export const MICRO_SIGMA_A_XE135 = 2.65e6;
+
+/**
+ * Z - для построения зависимостей.
+ */
+export const START_Z = Array.from({ length: 401 }, (_, i) => i * 0.005);

@@ -19,9 +19,9 @@ export interface IsotopeComposition {
     Sa9: number;
 
     /**
-     * Фактор S8 деления.
+     * Фактор S5 деления.
      */
-    Sf8: number;
+    Sf5: number;
 
     /**
      * Фактор S9 деления.
@@ -39,18 +39,12 @@ export interface IsotopeComposition {
     averageAbsorptionCrossSection239Pu: number;
 
     /**
+     * Средняя удельная мощность, выделяемая в единице объема топлива
+     */
+    averageSpecificByVolumePower: number;
+
+    /**
      * Число вторичных нейтронов на 1 акт поглощения плутонием-239
      */
     secondaryNeutronsPerAbsorption239Pu: number;
 }
-// /**
-//  * Средняя ядерная концентрация U-235.
-//  * Линейная концентрация ядер урана-235 в топливе, влияющая на эффективность реакции.
-//  */
-// averageNuclearDensityU235: number;
-//
-// /**
-//  * Средняя ядерная концентрация Pu-239.
-//  * Линейная концентрация ядер плутония-239, которая определяет его роль в цепной реакции.
-//  */
-// averageNuclearDensityPu239: number;

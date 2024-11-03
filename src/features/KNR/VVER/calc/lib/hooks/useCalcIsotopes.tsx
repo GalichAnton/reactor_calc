@@ -1,12 +1,17 @@
 import { useEffect } from 'react';
 
-import { useAZStore } from '@features/KNR/VVER/setInitialValues';
+import {
+    useAZStore,
+    useReactorStore,
+    useTVSStore,
+} from '@features/KNR/VVER/setInitialValues';
 
 import { useAZPhysParamsStore } from '../../model/store/azPhysParamsStore.ts';
-import { useIsotopeCompositionStore } from '../../model/store/isotopeCompositionSore.ts';
+import { useIsotopeCompositionStore } from '../../model/store/isotopeCompositionStore.ts';
 import {
     calcAverageAbsorptionCrossSection239Pu,
     calcAverageFissionCrossSection239Pu,
+    calcAverageSpecificByVolumePower,
     calcSecondaryNeutronsPerAbsorption239Pu,
     calculateReproductionCoefficient,
     calculateSa8,
@@ -27,9 +32,16 @@ export const useCalcIsotopes = () => {
         fastNeutronReproductionCoefficient,
         resonanceEscapeProbability,
         neutronGasTemperature,
+        fuelVolume,
     } = useAZStore((state) => state.AZCharacteristics);
 
-    const { geometricParameter } = useAZPhysParamsStore(
+    const { thermalPower, coreHeight } = useReactorStore(
+        (state) => state.reactorCharacteristics,
+    );
+
+    const { ntvel } = useTVSStore((state) => state.TVSCharacteristics);
+
+    const { geometricParameter, numFuelAssemblies } = useAZPhysParamsStore(
         (state) => state.azPhysParams,
     );
 
@@ -67,7 +79,7 @@ export const useCalcIsotopes = () => {
                 averageAbsorptionCrossSection239Pu,
             );
 
-        const Sf8 = calculateSf8(
+        const Sf5 = calculateSf8(
             averageFissionCrossSection235U,
             averageAbsorptionCrossSection235U,
         );
@@ -86,15 +98,24 @@ export const useCalcIsotopes = () => {
             thermalNeutronAge,
         });
 
+        const averageSpecificByVolumePower = calcAverageSpecificByVolumePower(
+            thermalPower,
+            fuelVolume,
+            coreHeight,
+            numFuelAssemblies,
+            ntvel,
+        );
+
         setIsotopeProperties({
             initialReproductionCoefficient,
             Sa8,
             Sa9,
             Sf9,
-            Sf8,
+            Sf5,
             secondaryNeutronsPerAbsorption239Pu,
             averageFissionCrossSection239Pu,
             averageAbsorptionCrossSection239Pu,
+            averageSpecificByVolumePower,
         });
     }, [
         geometricParameter,

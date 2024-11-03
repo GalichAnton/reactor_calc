@@ -24,7 +24,8 @@ const initialIsotopeComposition: IsotopeComposition = {
     Sa8: 0,
     Sa9: 0,
     Sf9: 0,
-    Sf8: 0,
+    Sf5: 0,
+    averageSpecificByVolumePower: 0,
 };
 
 export const useIsotopeCompositionStore = create<IsotopeCompositionStore>()(

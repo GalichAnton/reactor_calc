@@ -5,7 +5,7 @@ import { Table } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 
 import { useCalcIsotopes } from '../lib/hooks/useCalcIsotopes.tsx';
-import { useIsotopeCompositionStore } from '../model/store/isotopeCompositionSore.ts';
+import { useIsotopeCompositionStore } from '../model/store/isotopeCompositionStore.ts';
 import { IsotopeComposition } from '../model/types/IsotopeComposition.ts';
 
 export const IsotopeCompositionTable = () => {
@@ -19,7 +19,7 @@ export const IsotopeCompositionTable = () => {
                     <Tooltip
                         title={'Коэффициент воспроизводства в начале кампании'}
                     >
-                        КВ в начале кампании{' '}
+                        КВ в начале кампании
                     </Tooltip>
                 ),
                 key: 'initialReproductionCoefficient',
@@ -43,9 +43,9 @@ export const IsotopeCompositionTable = () => {
                 render: (value: number) => value.toExponential(3),
             },
             {
-                title: <Tooltip title={'Sf8'}>Sf8</Tooltip>,
-                key: 'Sf8',
-                dataIndex: 'Sf8',
+                title: <Tooltip title={'Sf5'}>Sf5</Tooltip>,
+                key: 'Sf5',
+                dataIndex: 'Sf5',
                 align: 'center',
                 render: (value: number) => value.toExponential(3),
             },
@@ -98,6 +98,21 @@ export const IsotopeCompositionTable = () => {
                 ),
                 key: 'secondaryNeutronsPerAbsorption239Pu',
                 dataIndex: 'secondaryNeutronsPerAbsorption239Pu',
+                align: 'center',
+                render: (value: number) => value.toExponential(3),
+            },
+            {
+                title: (
+                    <Tooltip
+                        title={
+                            'Средняя удельная мощность, выделяемая в единице объема топлива'
+                        }
+                    >
+                        Средняя уд. мощ.
+                    </Tooltip>
+                ),
+                key: 'averageSpecificByVolumePower',
+                dataIndex: 'averageSpecificByVolumePower',
                 align: 'center',
                 render: (value: number) => value.toExponential(3),
             },

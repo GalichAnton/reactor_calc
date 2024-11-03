@@ -58,7 +58,6 @@ interface ReproductionParameters {
 
 /**
  * Рассчитывает Коэффициент воспроизводства (КВ) в начале кампании.
- *
  * @param {ReproductionParameters} params - Параметры для расчета.
  * @returns {number} Значение коэффициента воспроизводства (КВ).
  */
@@ -184,80 +183,6 @@ export function calculateSa9(params: CorrectionFactorParams): number {
     );
 }
 
-interface NuclearConcentrationPu9Params {
-    nuclearConcentration238U: number;
-    initialNuclearConcentration235U: number;
-    S8: number;
-    S9: number;
-    z: number;
-    fastNeutronReproductionCoefficient: number;
-    secondaryNeutronsPerAbsorption235U: number;
-    resonanceEscapeProbability: number;
-    geometricParameter: number;
-    thermalNeutronAge: number;
-}
-
-/**
-     Вычисляет ядерную концентрацию 239Pu в ядерном реакторе.
-     @param {Object} params - Объект с параметрами.
-     @param {number} params.nuclearConcentration238U - Ядерная концентрация 238U.
-     @param {number} params.initialNuclearConcentration235U - Начальная ядерная концентрация 235U.
-     @param {number} params.S8 - Коррекционный фактор для 238U (S8).
-     @param {number} params.S9 - Коррекционный фактор для 239Pu (S9).
-     @param {number} params.z - глубина выгорания.
-     @param {number} params.fastNeutronReproductionCoefficient - Коэффициент воспроизведения быстрых нейтронов.
-     @param {number} params.secondaryNeutronsPerAbsorption235U - Количество вторичных нейтронов на одно поглощение 235U.
-     @param {number} params.resonanceEscapeProbability - Вероятность избегания резонансного поглощения.
-     @param {number} params.geometricParameter - Геометрический параметр.
-     @param {number} params.thermalNeutronAge - Возраст тепловых нейтронов.
-     @returns {number} Ядерная концентрация 239Pu.
-     */
-export function calculateNuclearConcentrationPu9(
-    params: NuclearConcentrationPu9Params,
-): number {
-    const {
-        nuclearConcentration238U,
-        initialNuclearConcentration235U,
-        S8,
-        S9,
-        z,
-        fastNeutronReproductionCoefficient,
-        secondaryNeutronsPerAbsorption235U,
-        resonanceEscapeProbability,
-        geometricParameter,
-        thermalNeutronAge,
-    } = params;
-    const term1 =
-        ((nuclearConcentration238U * S8) / S9) * (1 - Math.exp(-S9 * z));
-    const term2 =
-        ((initialNuclearConcentration235U *
-            (fastNeutronReproductionCoefficient *
-                secondaryNeutronsPerAbsorption235U *
-                (1 - resonanceEscapeProbability) *
-                Math.exp(
-                    -geometricParameter *
-                        geometricParameter *
-                        thermalNeutronAge,
-                ))) /
-            (S9 - 1)) *
-        (Math.exp(-z) - Math.exp(-S9 * z));
-    return term1 + term2;
-}
-
-/**
- * Вычисляет оставшуюся ядерную концентрацию 235U на основе начальной концентрации и истощения за время или расстояние.
- *
- * @param {number} initialNuclearConcentration235U - Начальная ядерная концентрация 235U, в см⁻³.
- * @param {number} z - глубина выгорания.
- * @returns Результирующая ядерная концентрация 235U при заданных условиях (N05).
- */
-export function calculateNuclearConcentrationU5(
-    initialNuclearConcentration235U: number,
-    z: number,
-): number {
-    return initialNuclearConcentration235U * Math.exp(-z);
-}
-
 /**
  * Вычисляет усредненное микроскопическое сечение деления плутония-239.
  * @param {number} neutronGasTemperature - Температура в кельвинах.
@@ -304,4 +229,23 @@ export function calcSecondaryNeutronsPerAbsorption239Pu(
         AVERAGE_N_PER_F_PU9 *
         (averageFissionCrossSectionPu9 / averageAbsorptionCrossSectionPu9)
     );
+}
+
+/**
+ * Вычисляет среднюю удельную мощность, выделяемую в единице объема топлива.
+ * @param {number} P - Общая мощность в ваттах.
+ * @param {number} V_U - Объем в кубических сантиметрах.
+ * @param {number} H - Высота в сантиметрах.
+ * @param {number} N_tvs - Число твэлов (тепловыделяющих элементов).
+ * @returns {number} - Средняя удельная мощность в кВт/см³.
+ */
+export function calcAverageSpecificByVolumePower(
+    P: number,
+    V_U: number,
+    H: number,
+    N_tvs: number,
+    N_tvel: number,
+): number {
+    console.log(P, V_U, H, N_tvs);
+    return (P * 1000) / (V_U * H * N_tvs * N_tvel);
 }
