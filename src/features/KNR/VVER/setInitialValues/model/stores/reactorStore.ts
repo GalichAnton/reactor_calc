@@ -1,4 +1,5 @@
 import { ReactorCharacteristics } from '@entities/KNR';
+import { REACTOR_TYPES } from '@entities/reactor';
 import { getActionName } from '@shared/lib/utils';
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
@@ -21,6 +22,8 @@ const initialReactor: ReactorCharacteristics = {
     uraniumEnrichment: 0,
     corePowerDensity: 0,
     coreHeight: 0,
+    reactorType: REACTOR_TYPES.VVER,
+    nominalPower: null,
 };
 
 export const useReactorStore = create<ReactorStore>()(

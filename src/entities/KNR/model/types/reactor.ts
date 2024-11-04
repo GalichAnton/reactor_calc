@@ -1,3 +1,5 @@
+import { REACTOR_TYPES } from '@entities/reactor';
+
 /**
 
  Интерфейс для характеристик прототипа реактора ВВЭР-1000.
@@ -37,10 +39,22 @@ export interface ReactorCharacteristics {
  @type {number}
  */
     corePowerDensity: number;
-    /**
 
+    /**
  Высота активной зоны в сантиметрах.
  @type {number}
  */
     coreHeight: number;
+
+    /**
+     Тип реактора.
+     @type {number}
+     */
+    reactorType: REACTOR_TYPES;
+
+    /**
+     Номинальная электрическая мощность.
+     @type {number}
+     */
+    nominalPower: number | null;
 }

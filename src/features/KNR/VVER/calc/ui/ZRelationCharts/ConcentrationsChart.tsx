@@ -63,7 +63,7 @@ export const ConcentrationsChart = (props: ConcentrationsChartProps) => {
 
     const themeColors = isLight(theme) ? lightThemeColors : darkThemeColors;
 
-    const domain = [0, 10e20];
+    const domain = [0, 1e21];
 
     return (
         <div

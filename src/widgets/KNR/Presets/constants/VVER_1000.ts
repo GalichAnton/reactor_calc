@@ -1,4 +1,5 @@
 import { AZCharacteristics, ReactorCharacteristics, TVS } from '@entities/KNR';
+import { REACTOR_TYPES } from '@entities/reactor';
 
 export interface IVVER_1000 {
     reactorCharacteristics: ReactorCharacteristics;
@@ -15,6 +16,8 @@ export const VVER_1000: IVVER_1000 = {
         coreHeight: 353,
         coolantTemperature: 538,
         uraniumEnrichment: 0.049,
+        nominalPower: 1000, //
+        reactorType: REACTOR_TYPES.VVER,
     },
     tvsCharacteristics: {
         ntvel: 312,
