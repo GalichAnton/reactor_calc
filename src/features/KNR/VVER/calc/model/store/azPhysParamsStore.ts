@@ -6,6 +6,7 @@ import { immer } from 'zustand/middleware/immer';
 import { AZPhysParams } from '../types/azPhysParams.ts';
 
 interface AZStore {
+    filled?: boolean;
     azPhysParams: AZPhysParams;
     setAZPhysParam: <T extends keyof AZPhysParams>(
         key: T,
@@ -41,6 +42,7 @@ export const useAZPhysParamsStore = create<AZStore>()(
                 set(
                     (state) => {
                         state.azPhysParams = params;
+                        state.filled = true;
                     },
                     undefined,
                     getActionName('AZPhysParamsStore', 'setAZPhysParams'),

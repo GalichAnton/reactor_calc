@@ -5,6 +5,7 @@ import { devtools } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
 
 interface ZRelationsStore {
+    filled?: boolean;
     zRelationsParams?: ZRelations[];
     setZRelationProperties: (value: ZRelations) => void;
     resetStore: () => void;
@@ -38,6 +39,7 @@ export const useZRelationsStore = create<ZRelationsStore>()(
                         }
 
                         state.zRelationsParams.push(params);
+                        state.filled = true;
                     },
                     undefined,
                     getActionName('ZRelationsStore', 'setZRelationProperties'),

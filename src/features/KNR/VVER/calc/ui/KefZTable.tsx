@@ -72,7 +72,7 @@ export const KefZTable = (props: ZRelationsTableProps) => {
 
     return (
         <Table
-            rowKey={(record, index) => `${index}_${record.z}`}
+            rowKey={'effectiveNeutronMultiplicationFactor'}
             columns={columns}
             title={() => (
                 <>

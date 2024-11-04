@@ -1,10 +1,11 @@
 import { AZCharacteristics } from '@entities/KNR';
-import { getActionName } from '@shared/lib/utils';
+import { areAllParamsFilled, getActionName } from '@shared/lib/utils';
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
 
 interface AZStore {
+    filled?: boolean;
     AZCharacteristics: AZCharacteristics;
     setAZCharacteristic: <T extends keyof AZCharacteristics>(
         key: T,
@@ -49,6 +50,9 @@ export const useAZStore = create<AZStore>()(
                 set(
                     (state) => {
                         state.AZCharacteristics[key] = value;
+                        state.filled = areAllParamsFilled(
+                            state.AZCharacteristics,
+                        );
                     },
                     undefined,
                     getActionName('AZStore', `setCharacteristic [${key}]`),
@@ -57,6 +61,7 @@ export const useAZStore = create<AZStore>()(
                 set(
                     (state) => {
                         state.AZCharacteristics = value;
+                        state.filled = true;
                     },
                     undefined,
                     getActionName('AZStore', 'setAZCharacteristics'),

@@ -4,6 +4,9 @@ import {
     AZParamsTable,
     IsotopeCompositionTable,
 } from '@features/KNR/VVER/calc';
+import { useAZPhysParamsStore } from '@features/KNR/VVER/calc/model/store/azPhysParamsStore.ts';
+import { useIsotopeCompositionStore } from '@features/KNR/VVER/calc/model/store/isotopeCompositionStore.ts';
+import { useReactorStore } from '@features/KNR/VVER/setInitialValues';
 import { Card, Space, Text } from '@shared/ui';
 import {
     TVSCharacteristicForm,
@@ -17,6 +20,10 @@ import { KefZTab } from './KefZTab.tsx';
 import { NucConcentrationTab } from './NucConcentrationTab.tsx';
 
 export const KNRTabs = () => {
+    const AZFilled = useAZPhysParamsStore((state) => state.filled);
+    const isotopeFilled = useIsotopeCompositionStore((state) => state.filled);
+    const reactorFilled = useReactorStore((state) => state.filled);
+
     const items: TabsProps['items'] = useMemo(() => {
         return [
             {
@@ -46,6 +53,7 @@ export const KNRTabs = () => {
             {
                 key: '1',
                 label: 'Данные после расчета',
+                disabled: !reactorFilled,
                 children: (
                     <Row gutter={[8, 8]}>
                         <Col span={24}>
@@ -60,15 +68,17 @@ export const KNRTabs = () => {
             {
                 key: '2',
                 label: 'Kef и Z',
+                disabled: !AZFilled || !isotopeFilled,
                 children: <KefZTab />,
             },
             {
                 key: '3',
                 label: 'Ядерные концентрации от Z',
+                disabled: !isotopeFilled,
                 children: <NucConcentrationTab />,
             },
         ];
-    }, []);
+    }, [reactorFilled, isotopeFilled, AZFilled]);
 
     return (
         <Card withShadow styles={{ body: { width: '100%' } }}>

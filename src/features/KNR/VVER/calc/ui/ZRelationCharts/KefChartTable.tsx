@@ -89,7 +89,7 @@ export const KefChartTable = (props: KefChartTableProps) => {
 
     return (
         <Table
-            rowKey={(record, index) => `${index}_${record.K_ef_year}`}
+            rowKey={'Z_year'}
             columns={columns}
             title={() => (
                 <>

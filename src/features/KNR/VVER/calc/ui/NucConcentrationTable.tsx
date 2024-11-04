@@ -106,9 +106,7 @@ export const NucConcentrationTable = (props: ZRelationsTableProps) => {
 
     return (
         <Table
-            rowKey={(record, index) =>
-                `${index}_${record.nuclearConcentration235UByBat}`
-            }
+            rowKey={'nuclearConcentration235UByBat'}
             columns={columns}
             title={() => (
                 <>

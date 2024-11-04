@@ -1,10 +1,11 @@
 import { TVS } from '@entities/KNR';
-import { getActionName } from '@shared/lib/utils';
+import { areAllParamsFilled, getActionName } from '@shared/lib/utils';
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
 
 interface TVSStore {
+    filled?: boolean;
     TVSCharacteristics: TVS;
     setTVSCharacteristic: <T extends keyof TVS>(key: T, value: TVS[T]) => void;
     setTVSCharacteristics: (value: TVS) => void;
@@ -29,6 +30,7 @@ export const useTVSStore = create<TVSStore>()(
                 set(
                     (state) => {
                         state.TVSCharacteristics[key] = value;
+                        areAllParamsFilled(state.TVSCharacteristics);
                     },
                     undefined,
                     getActionName('TVSStore', `setTVSCharacteristic [${key}]`),
@@ -37,6 +39,7 @@ export const useTVSStore = create<TVSStore>()(
                 set(
                     (state) => {
                         state.TVSCharacteristics = value;
+                        state.filled = true;
                     },
                     undefined,
                     getActionName('TVSStore', 'setTVSCharacteristics'),

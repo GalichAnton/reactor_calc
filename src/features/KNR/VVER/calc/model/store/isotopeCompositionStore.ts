@@ -7,6 +7,7 @@ import { IsotopeComposition } from '../types/IsotopeComposition.ts';
 
 // Интерфейс для Zustand Store
 interface IsotopeCompositionStore {
+    filled?: boolean;
     isotopesParams: IsotopeComposition;
     setIsotopeProperty: <T extends keyof IsotopeComposition>(
         key: T,
@@ -49,6 +50,7 @@ export const useIsotopeCompositionStore = create<IsotopeCompositionStore>()(
                 set(
                     (state: IsotopeCompositionStore) => {
                         state.isotopesParams = params;
+                        state.filled = true;
                     },
                     undefined,
                     getActionName(

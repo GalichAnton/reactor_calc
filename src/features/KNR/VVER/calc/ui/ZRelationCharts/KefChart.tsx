@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { Fragment, useMemo, useState } from 'react';
 
 import { useTheme } from '@shared/lib/hooks';
 import { findClosestToTarget } from '@shared/lib/utils';
@@ -260,7 +260,7 @@ export const KefChart = (props: KefChart) => {
                             for (let i = 0; i < labels.length; i++) {
                                 if (payload.z === labels[i].value) {
                                     return (
-                                        <>
+                                        <Fragment key={labels[i].label}>
                                             <circle
                                                 cx={cx}
                                                 cy={cy}
@@ -280,7 +280,7 @@ export const KefChart = (props: KefChart) => {
                                             >
                                                 {labels[i].label}
                                             </text>
-                                        </>
+                                        </Fragment>
                                     );
                                 }
                             }

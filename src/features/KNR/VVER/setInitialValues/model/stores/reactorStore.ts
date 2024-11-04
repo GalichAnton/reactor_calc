@@ -1,11 +1,12 @@
 import { ReactorCharacteristics } from '@entities/KNR';
 import { REACTOR_TYPES } from '@entities/reactor';
-import { getActionName } from '@shared/lib/utils';
+import { areAllParamsFilled, getActionName } from '@shared/lib/utils';
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
 
 interface ReactorStore {
+    filled?: boolean;
     reactorCharacteristics: ReactorCharacteristics;
     setReactorCharacteristic: <T extends keyof ReactorCharacteristics>(
         key: T,
@@ -35,6 +36,9 @@ export const useReactorStore = create<ReactorStore>()(
                 set(
                     (state) => {
                         state.reactorCharacteristics[key] = value;
+                        state.filled = areAllParamsFilled(
+                            state.reactorCharacteristics,
+                        );
                     },
                     undefined,
                     getActionName(
@@ -46,6 +50,7 @@ export const useReactorStore = create<ReactorStore>()(
                 set(
                     (state) => {
                         state.reactorCharacteristics = value;
+                        state.filled = true;
                     },
                     undefined,
                     getActionName('ReactorStore', 'setReactorCharacteristics'),
