@@ -1,11 +1,11 @@
 import { useEffect } from 'react';
 
 import { TVS } from '@entities/KNR';
-import { useTVSStore } from '@features/KNR/VVER/setInitialValues/model/stores/TVSStore.ts';
+import { useTVSStore } from '@features/KNR/VVER/setInitialValues';
 import { Select } from '@shared/ui';
 import { Col, Form, Grid, InputNumber, Row } from 'antd';
 
-export const TvsCharacteristicForm = () => {
+export const TVSCharacteristicForm = () => {
     const { TVSCharacteristics, setTVSCharacteristics } = useTVSStore();
     const screens = Grid.useBreakpoint();
 
