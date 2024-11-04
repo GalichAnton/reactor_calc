@@ -29,7 +29,7 @@ export const menuData: MenuDataItem[] = [
     },
     divider,
     {
-        title: 'Нейтронный',
+        title: 'КЯР',
         icon: <DeploymentUnitOutlined />,
         route: getRouteNeutronCalc(),
     },

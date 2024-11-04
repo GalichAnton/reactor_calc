@@ -1,0 +1,11 @@
+.chartContainer {
+    display: flex;
+    justify-content: center;
+    background-color: white; /* Устанавливает белый фон для графика */
+    border-radius: 8px; /* Добавляет скругленные углы, если нужно */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Добавляет тень для эффекта */
+}
+
+.dark {
+    background-color: #303030;
+}
