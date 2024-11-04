@@ -4,13 +4,13 @@ import { Tooltip } from '@shared/ui';
 import { Table } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 
-import { ZRelations } from '../../model/types/zRelations.ts';
+import { ZRelations } from '../model/types/zRelations.ts';
 
 interface ZRelationsTableProps {
     zRelationsParams?: ZRelations[];
 }
 
-export const ZRelationsTable = (props: ZRelationsTableProps) => {
+export const KefZTable = (props: ZRelationsTableProps) => {
     const { zRelationsParams } = props;
 
     const columns: ColumnsType<ZRelations> = useMemo(() => {
@@ -21,31 +21,9 @@ export const ZRelationsTable = (props: ZRelationsTableProps) => {
                 dataIndex: 'z',
                 align: 'center',
 
-                render: (value: number) => value.toFixed(3),
+                render: (value: number) => value,
             },
-            {
-                title: (
-                    <Tooltip title={'Ядерная плотность U-235'}>
-                        Ядерная плотность U-235
-                    </Tooltip>
-                ),
-                key: 'nuclearConcentration235U',
-                dataIndex: 'nuclearConcentration235U',
-                align: 'center',
 
-                render: (value: number) => value.toExponential(3),
-            },
-            {
-                title: (
-                    <Tooltip title={'Ядерная плотность Pu-239'}>
-                        Ядерная плотность Pu-239
-                    </Tooltip>
-                ),
-                key: 'nuclearConcentration239Pu',
-                dataIndex: 'nuclearConcentration239Pu',
-                align: 'center',
-                render: (value: number) => value.toExponential(3),
-            },
             {
                 title: (
                     <Tooltip
@@ -54,17 +32,6 @@ export const ZRelationsTable = (props: ZRelationsTableProps) => {
                         }
                     >
                         Время работы реактора
-                    </Tooltip>
-                ),
-                key: 'reactorOperationalTime',
-                dataIndex: 'reactorOperationalTime',
-                align: 'center',
-                render: (value: number) => value,
-            },
-            {
-                title: (
-                    <Tooltip title={'Сечение поглощения шлаков'}>
-                        сечения поглощения
                     </Tooltip>
                 ),
                 key: 'reactorOperationalTime',
@@ -109,7 +76,7 @@ export const ZRelationsTable = (props: ZRelationsTableProps) => {
             columns={columns}
             title={() => (
                 <>
-                    <strong>Изменения изотопного состава</strong>
+                    <strong>Кef от глубины выгорания Z</strong>
                 </>
             )}
             dataSource={zRelationsParams}

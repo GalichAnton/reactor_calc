@@ -7,6 +7,7 @@ import { immer } from 'zustand/middleware/immer';
 interface ZRelationsStore {
     zRelationsParams?: ZRelations[];
     setZRelationProperties: (value: ZRelations) => void;
+    resetStore: () => void;
 }
 
 // // Define initial values for ZRelations
@@ -40,6 +41,12 @@ export const useZRelationsStore = create<ZRelationsStore>()(
                     },
                     undefined,
                     getActionName('ZRelationsStore', 'setZRelationProperties'),
+                ),
+            resetStore: () =>
+                set(
+                    (state) => (state.zRelationsParams = undefined),
+                    undefined,
+                    getActionName('ZRelationsStore', 'resetStore'),
                 ),
         })),
     ),

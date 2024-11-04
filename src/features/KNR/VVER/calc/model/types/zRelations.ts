@@ -15,9 +15,39 @@ export interface ZRelations {
     averageFissionMacroCrossSection235U: number; // \({\bar{\sigma}}_{f_5}\)
 
     /**
-     * Ядерная концентрация 235U, в см⁻³.
+     * Ядерная концентрация 235U, в см⁻³ методом Румянцева.
      */
-    nuclearConcentration235U: number; // \(N_{0_5}\)
+    nuclearConcentration235UByRum: number; // \(N_{0_5}\)
+
+    /**
+     * Ядерная концентрация 239Pu, в см⁻³ методом Румянцева.
+     */
+    nuclearConcentration239PuByRum: number; // \(N_{0_9}\)
+
+    /**
+     * Ядерная концентрация 235U, в см⁻³ конечно-разностным методом.
+     */
+    nuclearConcentration235UByKR: number; // \(N_{0_5}\)
+
+    /**
+     * Ядерная концентрация 239Pu, в см⁻³ конечно-разностным методом.
+     */
+    nuclearConcentration239PuByKR: number; // \(N_{0_9}\)
+
+    /**
+     * Ядерная концентрация 238U, в см⁻³ конечно-разностным методом.
+     */
+    nuclearConcentration238UByKR: number; // \(N_{0_9}\)
+
+    /**
+     * Ядерная концентрация 235U, в см⁻³ методом Бать.
+     */
+    nuclearConcentration235UByBat: number; // \(N_{0_5}\)
+
+    /**
+     * Ядерная концентрация 239Pu, в см⁻³ методом Бать.
+     */
+    nuclearConcentration239PuByBat: number; // \(N_{0_9}\)
 
     /**
      * Усреднённое сечение поглощения 239Pu, в см-1.
@@ -28,11 +58,6 @@ export interface ZRelations {
      * Усреднённое сечение деления 239Pu, в барнах.
      */
     averageFissionMacroCrossSection239Pu: number; // \({\bar{\sigma}}_{f_9}\)
-
-    /**
-     * Ядерная концентрация 239Pu, в см⁻³.
-     */
-    nuclearConcentration239Pu: number; // \(N_{0_9}\)
 
     /**
      * Время работы реактора, в сутках.

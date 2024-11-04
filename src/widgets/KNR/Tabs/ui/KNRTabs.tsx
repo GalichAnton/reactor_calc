@@ -1,6 +1,9 @@
 import { useMemo } from 'react';
 
-import { ZRelationTab } from '@features/KNR/VVER/calc/ui/ZRelationTab/ZRelationTab.tsx';
+import {
+    AZParamsTable,
+    IsotopeCompositionTable,
+} from '@features/KNR/VVER/calc';
 import { Card, Space, Text } from '@shared/ui';
 import {
     TvsCharacteristicForm,
@@ -10,10 +13,8 @@ import {
 import { Presets } from '@widgets/KNR/Presets';
 import { Col, Divider, Row, Tabs, TabsProps } from 'antd';
 
-import {
-    AZParamsTable,
-    IsotopeCompositionTable,
-} from '../../../../features/KNR/VVER/calc';
+import { KefZTab } from './KefZTab.tsx';
+import { NucConcentrationTab } from './NucConcentrationTab.tsx';
 
 export const KNRTabs = () => {
     const items: TabsProps['items'] = useMemo(() => {
@@ -58,8 +59,13 @@ export const KNRTabs = () => {
             },
             {
                 key: '2',
-                label: 'Зависимости от z',
-                children: <ZRelationTab />,
+                label: 'Kef и Z',
+                children: <KefZTab />,
+            },
+            {
+                key: '3',
+                label: 'Ядерные концентрации от Z',
+                children: <NucConcentrationTab />,
             },
         ];
     }, []);

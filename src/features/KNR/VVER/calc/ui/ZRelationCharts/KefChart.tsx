@@ -1,7 +1,6 @@
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 
 import { ZRelations } from '@features/KNR/VVER/calc/model/types/zRelations.ts';
-import { START_Z } from '@features/KNR/VVER/setInitialValues';
 import { useTheme } from '@shared/lib/hooks';
 import classNames from 'classnames';
 import {
@@ -21,8 +20,8 @@ import styles from './chart.module.css';
 const lightThemeColors = {
     text: '#000',
     grid: '#333',
-    reactivity: 'red',
-    rel: '#8884d8',
+    nU5con: '#1f5316',
+    nPu9con: '#55278d',
     time: 'red',
     k_ef: '#0c233d',
 };
@@ -30,37 +29,30 @@ const lightThemeColors = {
 const darkThemeColors = {
     text: '#fff',
     grid: '#eee',
-    reactivity: '#ff6666',
-    rel: '#7a66ff',
+    nU5con: '#55e13b',
+    nPu9con: '#8c3dee',
     time: '#ff6666',
     k_ef: '#389aff',
 };
 
-interface ZRelationChart {
+interface KefChart {
     zRelationsParams?: ZRelations[];
 }
 
-export const ZRelationChart = (props: ZRelationChart) => {
+export const KefChart = (props: KefChart) => {
     const { zRelationsParams } = props;
     const { isLight, theme } = useTheme();
 
     const data = zRelationsParams?.map((p) => ({
-        reactorOperationalTime: p.reactorOperationalTime,
-        k_ef: p.effectiveNeutronMultiplicationFactor,
+        reactorOperationalTime: p.reactorOperationalTime.toFixed(3),
+        k_ef: p.effectiveNeutronMultiplicationFactor.toExponential(3),
+        z: p.z,
     }));
 
     const [showTime, setShowTime] = useState(true);
     const [showKef, setShowKef] = useState(true);
 
     const themeColors = isLight(theme) ? lightThemeColors : darkThemeColors;
-    console.log(data);
-
-    const dataSource = useMemo(() => {
-        return data?.map((p, i) => ({
-            ...p,
-            z: START_Z[i],
-        }));
-    }, [data]);
 
     return (
         <div
@@ -68,7 +60,7 @@ export const ZRelationChart = (props: ZRelationChart) => {
                 [styles.dark]: !isLight(theme),
             })}
         >
-            <LineChart width={1000} height={500} data={dataSource}>
+            <LineChart width={1000} height={500} data={data}>
                 <XAxis
                     dataKey="z"
                     type="number"
@@ -93,7 +85,6 @@ export const ZRelationChart = (props: ZRelationChart) => {
                         color: themeColors.text,
                     }}
                 />
-
                 <YAxis
                     yAxisId="k_ef"
                     dataKey="k_ef"
@@ -130,7 +121,42 @@ export const ZRelationChart = (props: ZRelationChart) => {
                     }}
                     tickFormatter={(value) => value.toExponential()}
                 />
-
+                <YAxis
+                    yAxisId="nU5con"
+                    dataKey="nU5con"
+                    type="number"
+                    domain={[0, 10e20]}
+                    allowDataOverflow
+                    label={{
+                        value: 'nU5con',
+                        angle: -90,
+                        offset: 50,
+                        position: 'insideTop',
+                        style: { fill: themeColors.nU5con },
+                    }}
+                    tick={{
+                        fill: themeColors.nU5con,
+                    }}
+                    tickFormatter={(value) => value.toExponential()}
+                />
+                <YAxis
+                    yAxisId="nPu9con"
+                    dataKey="nPu9con"
+                    type="number"
+                    domain={[0, 10e20]}
+                    allowDataOverflow
+                    label={{
+                        value: 'nPu9con',
+                        angle: -90,
+                        offset: 50,
+                        position: 'insideTop',
+                        style: { fill: themeColors.nPu9con },
+                    }}
+                    tick={{
+                        fill: themeColors.nPu9con,
+                    }}
+                    tickFormatter={(value) => value.toExponential()}
+                />
                 <Tooltip
                     labelFormatter={(label) => `Глубина выгорания: ${label}`}
                     contentStyle={{
@@ -154,6 +180,26 @@ export const ZRelationChart = (props: ZRelationChart) => {
                     isAnimationActive={false}
                     dot={false}
                     hide={!showKef}
+                />
+                <Line
+                    name="Ядерная концентрация 239Pu, в см⁻³"
+                    type="monotone"
+                    dataKey="nPu9con"
+                    yAxisId="nPu9con"
+                    stroke={themeColors.nPu9con}
+                    isAnimationActive={false}
+                    dot={false}
+                    hide={!showTime}
+                />
+                <Line
+                    name="Ядерная концентрация 235U, в см⁻³"
+                    type="monotone"
+                    dataKey="nU5con"
+                    yAxisId="nU5con"
+                    stroke={themeColors.nU5con}
+                    isAnimationActive={false}
+                    dot={false}
+                    hide={!showTime}
                 />
                 <Line
                     name="Время работы реактора в сутках"
