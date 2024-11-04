@@ -6,7 +6,7 @@ import {
 } from '@features/KNR/VVER/calc';
 import { Card, Space, Text } from '@shared/ui';
 import {
-    TvsCharacteristicForm,
+    TVSCharacteristicForm,
     AZCharacteristicsForm,
     ReactorCharacteristic,
 } from '@widgets/KNR/Forms';
@@ -39,7 +39,7 @@ export const KNRTabs = () => {
                         <Text>
                             <strong>Характеристики ТВС</strong>
                         </Text>
-                        <TvsCharacteristicForm />
+                        <TVSCharacteristicForm />
                     </Space>
                 ),
             },
