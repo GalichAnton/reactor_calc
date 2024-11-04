@@ -178,42 +178,7 @@ export const KefChart = (props: KefChart) => {
                         }}
                         tickFormatter={(value) => value.toExponential()}
                     />
-                    <YAxis
-                        yAxisId="nU5con"
-                        dataKey="nU5con"
-                        type="number"
-                        domain={[0, 10e20]}
-                        allowDataOverflow
-                        label={{
-                            value: 'nU5con',
-                            angle: -90,
-                            offset: 50,
-                            position: 'insideTop',
-                            style: { fill: themeColors.nU5con },
-                        }}
-                        tick={{
-                            fill: themeColors.nU5con,
-                        }}
-                        tickFormatter={(value) => value.toExponential()}
-                    />
-                    <YAxis
-                        yAxisId="nPu9con"
-                        dataKey="nPu9con"
-                        type="number"
-                        domain={[0, 10e20]}
-                        allowDataOverflow
-                        label={{
-                            value: 'nPu9con',
-                            angle: -90,
-                            offset: 50,
-                            position: 'insideTop',
-                            style: { fill: themeColors.nPu9con },
-                        }}
-                        tick={{
-                            fill: themeColors.nPu9con,
-                        }}
-                        tickFormatter={(value) => value.toExponential()}
-                    />
+
                     <Tooltip
                         labelFormatter={(label) =>
                             `Глубина выгорания: ${label}`
