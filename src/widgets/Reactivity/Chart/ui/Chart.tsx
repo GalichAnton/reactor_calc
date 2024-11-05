@@ -37,8 +37,10 @@ const darkThemeColors = {
 
 export const Chart = () => {
     const { isLight, theme } = useTheme();
-    const params = useReactivityStore((state) => state.params);
-    const reactorHeight = useReactivityStore((state) => state.reactorHeight);
+    const params = useReactivityStore((state) => state.data.params);
+    const reactorHeight = useReactivityStore(
+        (state) => state.data.reactorHeight,
+    );
     useCalc();
     const data = params?.calcTime?.map((t, i) => ({
         time: t.toFixed(1),

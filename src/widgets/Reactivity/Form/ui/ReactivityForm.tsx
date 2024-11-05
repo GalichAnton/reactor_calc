@@ -3,29 +3,35 @@ import { OPERATING_MODE, useReactivityStore } from '@features/reactivityCalc';
 import { Button } from '@shared/ui';
 import { Card, Col, Form, InputNumber, Radio, Row } from 'antd';
 import Checkbox from 'antd/es/checkbox/Checkbox';
+import { CheckboxChangeEvent } from 'antd/lib/checkbox';
 
 export const ReactivityForm = () => {
     const {
-        velocity,
-        mode,
-        startReactivity,
-        height,
-        power,
-        interval,
-        nominalPower,
-        start,
-        reactorHeight,
-        isSix,
+        data: {
+            velocity,
+            mode,
+            startReactivity,
+            height,
+            power,
+            interval,
+            nominalPower,
+            start,
+            reactorHeight,
+            isSix,
+        },
 
-        changeMode,
-        changeIsSix,
-        changeVelocity,
-        changeStartReactivity,
-        changeHeight,
-        changeInterval,
-        changeNominalPower,
-        changeStart,
-        changeReactorHeight,
+        actions: {
+            changeMode,
+            changeIsSix,
+            changeVelocity,
+            changeStartReactivity,
+            changeHeight,
+            changeInterval,
+            changeNominalPower,
+            changeStart,
+            changeReactorHeight,
+            reset,
+        },
     } = useReactivityStore();
 
     const onChangeVelocityHandler = (value: number | null) => {
@@ -83,6 +89,11 @@ export const ReactivityForm = () => {
         changeNominalPower(value);
     };
 
+    const changeSixHandler = (e: CheckboxChangeEvent) => {
+        reset();
+        changeIsSix(e.target.checked);
+    };
+
     return (
         <Card
             style={{ width: '100%', boxShadow: '0 4px 30px #0000001a' }}
@@ -90,10 +101,7 @@ export const ReactivityForm = () => {
             size={'small'}
         >
             <Form layout={'vertical'} disabled={start}>
-                <Checkbox
-                    checked={isSix}
-                    onChange={(e) => changeIsSix(e.target.checked)}
-                >
+                <Checkbox checked={isSix} onChange={changeSixHandler}>
                     Шестигрупповое
                 </Checkbox>
                 <Row gutter={[8, 8]}>

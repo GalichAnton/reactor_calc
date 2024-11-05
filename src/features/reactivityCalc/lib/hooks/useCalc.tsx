@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 
 import { ReactorParams } from '@entities/reactor';
-import { calcPowerSix } from '@features/reactivityCalc/lib/utils/calcPowerSix.ts';
 
 import {
     betta,
@@ -10,26 +9,30 @@ import {
     lambda,
     lambdaSix,
 } from '../../constants/general.ts';
+import { calcPowerSix, calcPower } from '../../lib/utils/calcPower';
 import { useReactivityStore } from '../../model/store.ts';
-import { calcPower } from '../utils/calcPower.ts';
 
 export const useCalc = () => {
     const {
-        velocity,
-        mode,
-        startReactivity,
-        height,
-        interval,
-        nominalPower,
-        start,
-        reactorHeight,
-        params,
-        changeHeight,
-        changeCalcHeight,
-        changePower,
-        changeStartReactivity,
-        updateCalcParams,
-        isSix,
+        data: {
+            velocity,
+            mode,
+            startReactivity,
+            height,
+            interval,
+            nominalPower,
+            start,
+            reactorHeight,
+            params,
+            isSix,
+        },
+        actions: {
+            changeHeight,
+            changeCalcHeight,
+            changePower,
+            changeStartReactivity,
+            updateCalcParams,
+        },
     } = useReactivityStore();
 
     useEffect(() => {
@@ -68,12 +71,14 @@ export const useCalc = () => {
         const timeInterval = setInterval(() => {
             const currentState = useReactivityStore.getState();
 
-            if (!currentState.params) {
+            if (!currentState.data.params) {
                 return;
             }
-            const lastIndex = currentState.params.calcReactivity.length - 1;
-            const currentHeight = currentState.params.calcHeight[lastIndex];
-            const currentTime = currentState.params.calcTime[lastIndex];
+            const lastIndex =
+                currentState.data.params.calcReactivity.length - 1;
+            const currentHeight =
+                currentState.data.params.calcHeight[lastIndex];
+            const currentTime = currentState.data.params.calcTime[lastIndex];
             if (currentHeight >= reactorHeight) {
                 changeCalcHeight(reactorHeight);
             }
@@ -86,14 +91,14 @@ export const useCalc = () => {
 
             const newParams = calcFn({
                 prevH: currentHeight,
-                prevRo: currentState.params.calcReactivity[lastIndex],
-                prevPower: currentState.params.calcPower[lastIndex],
+                prevRo: currentState.data.params.calcReactivity[lastIndex],
+                prevPower: currentState.data.params.calcPower[lastIndex],
                 // @ts-ignore
-                prevC: currentState.params.calcC[lastIndex],
+                prevC: currentState.data.params.calcC[lastIndex],
                 velocity: velocity,
                 interval: interval,
-                mode: currentState.mode,
-                reactorHeight: currentState.reactorHeight,
+                mode: currentState.data.mode,
+                reactorHeight: currentState.data.reactorHeight,
                 nominalPower,
             });
 
