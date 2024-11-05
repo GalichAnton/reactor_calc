@@ -54,12 +54,9 @@ export const ConcentrationsChart = (props: ConcentrationsChartProps) => {
         z: p.z,
     }));
 
-    const [showN5ByBat, setShowN5ByBat] = useState(true);
-    const [showN9ByBat, setShowN9ByBat] = useState(true);
-    const [showN5ByRum, setShowN5ByRum] = useState(true);
-    const [showN9ByRum, setShowN9ByRum] = useState(true);
-    const [showN5ByKR, setShowN5ByKR] = useState(true);
-    const [showN9ByKR, setShowN9ByKR] = useState(true);
+    const [showByBat, setShowByBat] = useState(true);
+    const [showByRum, setShowByRum] = useState(true);
+    const [showByKR, setShowByKR] = useState(true);
 
     const themeColors = isLight(theme) ? lightThemeColors : darkThemeColors;
 
@@ -87,17 +84,17 @@ export const ConcentrationsChart = (props: ConcentrationsChartProps) => {
                 <Legend
                     onClick={(data) => {
                         if (data.dataKey === 'N5ByBat') {
-                            setShowN5ByBat(!showN5ByBat);
+                            setShowByBat(!showByBat);
                         } else if (data.dataKey === 'N9ByBat') {
-                            setShowN9ByBat(!showN9ByBat);
+                            setShowByBat(!showByBat);
                         } else if (data.dataKey === 'N5ByRum') {
-                            setShowN5ByRum(!showN5ByRum);
+                            setShowByRum(!showByRum);
                         } else if (data.dataKey === 'N9ByRum') {
-                            setShowN9ByRum(!showN9ByRum);
+                            setShowByRum(!showByRum);
                         } else if (data.dataKey === 'N5ByKR') {
-                            setShowN5ByKR(!showN5ByKR);
+                            setShowByKR(!showByKR);
                         } else if (data.dataKey === 'N9ByKR') {
-                            setShowN9ByKR(!showN9ByKR);
+                            setShowByKR(!showByKR);
                         }
                     }}
                     wrapperStyle={{
@@ -140,10 +137,9 @@ export const ConcentrationsChart = (props: ConcentrationsChartProps) => {
                     dataKey="N5ByBat"
                     yAxisId="nuclearConcentration"
                     stroke={themeColors.nuclearConcentration235UByBat}
-                    isAnimationActive={false}
                     strokeWidth={3}
                     dot={false}
-                    hide={!showN5ByBat}
+                    hide={!showByBat}
                     strokeDasharray="7"
                 />
                 <Line
@@ -152,9 +148,8 @@ export const ConcentrationsChart = (props: ConcentrationsChartProps) => {
                     dataKey="N9ByBat"
                     yAxisId="nuclearConcentration"
                     stroke={themeColors.nuclearConcentration239PuByBat}
-                    isAnimationActive={false}
                     dot={false}
-                    hide={!showN9ByBat}
+                    hide={!showByBat}
                     strokeDasharray="7"
                     strokeWidth={2}
                 />
@@ -164,10 +159,9 @@ export const ConcentrationsChart = (props: ConcentrationsChartProps) => {
                     dataKey="N5ByRum"
                     yAxisId="nuclearConcentration"
                     stroke={themeColors.nuclearConcentration235UByRum}
-                    isAnimationActive={false}
                     strokeWidth={2}
                     dot={false}
-                    hide={!showN5ByRum}
+                    hide={!showByRum}
                     strokeDasharray="4"
                 />
                 <Line
@@ -177,7 +171,7 @@ export const ConcentrationsChart = (props: ConcentrationsChartProps) => {
                     yAxisId="nuclearConcentration"
                     stroke={themeColors.nuclearConcentration239PuByRum}
                     dot={false}
-                    hide={!showN9ByRum}
+                    hide={!showByRum}
                     strokeDasharray="4"
                     strokeWidth={2}
                 />
@@ -188,7 +182,7 @@ export const ConcentrationsChart = (props: ConcentrationsChartProps) => {
                     yAxisId="nuclearConcentration"
                     stroke={themeColors.nuclearConcentration235UByKR}
                     dot={false}
-                    hide={!showN5ByKR}
+                    hide={!showByKR}
                     strokeWidth={2}
                 />
                 <Line
@@ -198,7 +192,7 @@ export const ConcentrationsChart = (props: ConcentrationsChartProps) => {
                     yAxisId="nuclearConcentration"
                     stroke={themeColors.nuclearConcentration239PuByKR}
                     dot={false}
-                    hide={!showN9ByKR}
+                    hide={!showByKR}
                     strokeWidth={2}
                 />
             </LineChart>
