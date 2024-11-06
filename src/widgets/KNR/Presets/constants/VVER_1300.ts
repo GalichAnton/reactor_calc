@@ -7,7 +7,7 @@ export interface IVVER_1000 {
     AZCharacteristics: AZCharacteristics;
 }
 
-export const VVER_1000: IVVER_1000 = {
+export const VVER_1300: IVVER_1000 = {
     reactorCharacteristics: {
         electricalPower: 1300,
         thermalPower: 3900,
