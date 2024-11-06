@@ -6,6 +6,8 @@ import { immer } from 'zustand/middleware/immer';
 
 interface ZRelationsStore {
     filled?: boolean;
+    initialConcentrationN05: number;
+    initialConcentrationN08: number;
     zRelationsParams?: ZRelations[];
     setZRelationProperties: (value: ZRelations) => void;
     resetStore: () => void;
@@ -31,6 +33,8 @@ interface ZRelationsStore {
 export const useZRelationsStore = create<ZRelationsStore>()(
     devtools(
         immer((set) => ({
+            initialConcentrationN05: 0,
+            initialConcentrationN08: 0,
             setZRelationProperties: (params) =>
                 set(
                     (state) => {

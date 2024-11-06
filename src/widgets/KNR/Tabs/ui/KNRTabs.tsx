@@ -3,6 +3,7 @@ import { useMemo } from 'react';
 import {
     AZParamsTable,
     IsotopeCompositionTable,
+    useCompanyParamsStore,
 } from '@features/KNR/VVER/calc';
 import { useAZPhysParamsStore } from '@features/KNR/VVER/calc/model/store/azPhysParamsStore.ts';
 import { useIsotopeCompositionStore } from '@features/KNR/VVER/calc/model/store/isotopeCompositionStore.ts';
@@ -14,6 +15,7 @@ import {
     ReactorCharacteristic,
 } from '@widgets/KNR/Forms';
 import { Presets } from '@widgets/KNR/Presets';
+import { FuelTab } from '@widgets/KNR/Tabs/ui/FuelTab.tsx';
 import { Col, Divider, Row, Tabs, TabsProps } from 'antd';
 
 import { KefZTab } from './KefZTab.tsx';
@@ -23,6 +25,7 @@ export const KNRTabs = () => {
     const AZFilled = useAZPhysParamsStore((state) => state.filled);
     const isotopeFilled = useIsotopeCompositionStore((state) => state.filled);
     const reactorFilled = useReactorStore((state) => state.filled);
+    const companyFilled = useCompanyParamsStore((state) => state.filled);
 
     const items: TabsProps['items'] = useMemo(() => {
         return [
@@ -76,6 +79,12 @@ export const KNRTabs = () => {
                 label: 'Ядерные концентрации от Z',
                 disabled: !isotopeFilled,
                 children: <NucConcentrationTab />,
+            },
+            {
+                key: '4',
+                label: 'Топливо',
+                disabled: !isotopeFilled && !companyFilled,
+                children: <FuelTab />,
             },
         ];
     }, [reactorFilled, isotopeFilled, AZFilled]);
