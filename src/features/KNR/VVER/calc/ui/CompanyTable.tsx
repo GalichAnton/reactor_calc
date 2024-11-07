@@ -7,12 +7,14 @@ import { ColumnsType } from 'antd/es/table';
 interface CompanyTableProps {
     companyTime: number;
     companyZ: number;
-    companyKef: number;
     yearKef: number;
     yearZ: number;
     withoutPuZ: number;
     withoutPuKef: number;
     withoutPuTime: number;
+    middleKef: number;
+    middleZ: number;
+    middleTime: number;
 }
 
 export const CompanyTable = (props: CompanyTableProps) => {
@@ -41,18 +43,6 @@ export const CompanyTable = (props: CompanyTableProps) => {
                 align: 'center',
 
                 render: (value: number) => value,
-            },
-            {
-                title: (
-                    <AppTooltip title={'К эффективное кампании'}>
-                        K_ef_company
-                    </AppTooltip>
-                ),
-                key: 'companyKef',
-                dataIndex: 'companyKef',
-                align: 'center',
-
-                render: (value: number) => value?.toFixed(3),
             },
             {
                 title: (
@@ -111,6 +101,38 @@ export const CompanyTable = (props: CompanyTableProps) => {
                 ),
                 key: 'yearKef',
                 dataIndex: 'yearKef',
+                align: 'center',
+
+                render: (value: number) => value?.toFixed(3),
+            },
+            {
+                title: (
+                    <AppTooltip title={'К эффективное z/2'}>
+                        K_ef_mid
+                    </AppTooltip>
+                ),
+                key: 'middleKef',
+                dataIndex: 'middleKef',
+                align: 'center',
+
+                render: (value: number) => value?.toFixed(3),
+            },
+            {
+                title: <AppTooltip title={'z/2'}>Z_mid</AppTooltip>,
+                key: 'middleZ',
+                dataIndex: 'middleZ',
+                align: 'center',
+
+                render: (value: number) => value?.toFixed(3),
+            },
+            {
+                title: (
+                    <AppTooltip title={'Время за половину'}>
+                        Time_mid
+                    </AppTooltip>
+                ),
+                key: 'middleTime',
+                dataIndex: 'middleTime',
                 align: 'center',
 
                 render: (value: number) => value?.toFixed(3),

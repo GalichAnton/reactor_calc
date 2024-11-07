@@ -1,5 +1,8 @@
 import { useEffect } from 'react';
 
+import { START_Z, useAZStore } from '@features/KNR/VVER/setInitialValues';
+
+import { ZRelations } from '../..//model/types/zRelations.ts';
 import {
     calculateNuclearConcentrationPuByBat,
     calculateNuclearConcentrationByKR,
@@ -7,7 +10,10 @@ import {
     calculateNuclearConcentrationU5ByBat,
     calculateNuclearConcentrationU5ByRum,
     NuclearConcentrationParamsByKR,
-} from '@features/KNR/VVER/calc/lib/utils/calcNuclearConcentrations.ts';
+} from '../../lib/utils/calcNuclearConcentrations.ts';
+import { useAZPhysParamsStore } from '../../model/store/azPhysParamsStore.ts';
+import { useIsotopeCompositionStore } from '../../model/store/isotopeCompositionStore.ts';
+import { useZRelationsStore } from '../../model/store/zRelationStore.ts';
 import {
     calculateAbsorptionSlagCrossSection,
     calculateAverageSecondaryNeutronsPerAbsorption,
@@ -31,12 +37,7 @@ import {
     calculateTransportCrossSectionPu239,
     calculateTransportCrossSectionU235,
     calculateXenonAbsorptionCrossSection,
-} from '@features/KNR/VVER/calc/lib/utils/calcZrelations.ts';
-import { useAZPhysParamsStore } from '@features/KNR/VVER/calc/model/store/azPhysParamsStore.ts';
-import { useIsotopeCompositionStore } from '@features/KNR/VVER/calc/model/store/isotopeCompositionStore.ts';
-import { useZRelationsStore } from '@features/KNR/VVER/calc/model/store/zRelationStore.ts';
-import { ZRelations } from '@features/KNR/VVER/calc/model/types/zRelations.ts';
-import { START_Z, useAZStore } from '@features/KNR/VVER/setInitialValues';
+} from '../utils/calcZrelations.ts';
 
 export const useZrelationsCalc = () => {
     const {
@@ -403,6 +404,10 @@ export const useZrelationsCalc = () => {
                 resonanceEscapeProbability,
             });
 
+            const reactivity =
+                (effectiveNeutronMultiplicationFactor - 1) /
+                infiniteMediumNeutronMultiplicationFactor;
+
             // Собираем объект данных для текущей итерации
             const data: ZRelations = {
                 z,
@@ -441,6 +446,7 @@ export const useZrelationsCalc = () => {
                 nuclearConcentration235UByKR,
                 nuclearConcentration239PuByKR,
                 nuclearConcentration238UByKR,
+                reactivity,
             };
 
             if (z === 0.98) {

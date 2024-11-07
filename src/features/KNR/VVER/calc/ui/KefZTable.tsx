@@ -67,6 +67,13 @@ export const KefZTable = (props: ZRelationsTableProps) => {
                 align: 'center',
                 render: (value: number) => value.toExponential(3),
             },
+            {
+                title: <Tooltip title={'Реактивность'}>ro</Tooltip>,
+                key: 'reactivity',
+                dataIndex: 'reactivity',
+                align: 'center',
+                render: (value: number) => value.toExponential(3),
+            },
         ];
     }, []);
 

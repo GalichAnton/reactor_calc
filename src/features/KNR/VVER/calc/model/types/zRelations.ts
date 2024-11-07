@@ -88,4 +88,9 @@ export interface ZRelations {
      * Эффективный коэффициент размножения нейтронов.
      */
     effectiveNeutronMultiplicationFactor: number; // \(k_{\text{eff}}\)
+
+    /**
+     * Реактивность.
+     */
+    reactivity: number;
 }

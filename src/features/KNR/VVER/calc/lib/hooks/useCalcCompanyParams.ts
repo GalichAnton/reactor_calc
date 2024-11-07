@@ -53,6 +53,12 @@ export const useCalcCompanyParams = () => {
 
         const tWithoutPu =
             (dN5 * Sf5) / (2.85 * 1e18 * averageSpecificByVolumePower);
+        console.log(z_company);
+        const {
+            x: middleKef,
+            y: middleZ,
+            index: middleIndex,
+        } = findClosestToTarget(values?.k_ef, values?.z, z_company / 2);
 
         const { x: z_companyWithoutPu, index: indexWithoutPu } =
             findClosestToTarget(
@@ -61,13 +67,15 @@ export const useCalcCompanyParams = () => {
                 tWithoutPu,
             );
 
+        const companyTime = values?.reactorOperationalTime[companyIndex] || 0;
+        const middleTime = values?.reactorOperationalTime[middleIndex] || 0;
+
         setCompanyParams({
             computedValues: {
                 company: {
                     z: z_company,
                     k_ef: companyKef,
-                    reactorOperationalTime:
-                        values?.reactorOperationalTime[companyIndex] || 0,
+                    reactorOperationalTime: companyTime,
                 },
                 year: {
                     z: z_year,
@@ -78,6 +86,11 @@ export const useCalcCompanyParams = () => {
                     z: z_companyWithoutPu,
                     k_ef: values?.k_ef[indexWithoutPu] || 0,
                     reactorOperationalTime: tWithoutPu,
+                },
+                middle: {
+                    z: middleZ,
+                    k_ef: middleKef,
+                    reactorOperationalTime: middleTime,
                 },
             },
             dN5,

@@ -29,7 +29,6 @@ export const KefZTab = () => {
                         companyParams={companyParams.computedValues}
                     />
                     <CompanyTable
-                        companyKef={companyParams.computedValues.company.k_ef}
                         companyTime={
                             companyParams.computedValues.company
                                 .reactorOperationalTime
@@ -45,6 +44,12 @@ export const KefZTab = () => {
                             companyParams.computedValues.withoutPu
                                 .reactorOperationalTime
                         }
+                        middleKef={companyParams.computedValues.middle.k_ef}
+                        middleTime={
+                            companyParams.computedValues.middle
+                                .reactorOperationalTime
+                        }
+                        middleZ={companyParams.computedValues.middle.z}
                     />
                 </Space>
             </Col>

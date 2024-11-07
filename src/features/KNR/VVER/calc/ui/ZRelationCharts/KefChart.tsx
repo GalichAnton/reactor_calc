@@ -25,6 +25,7 @@ const lightThemeColors = {
     nPu9con: '#55278d',
     time: 'red',
     k_ef: '#0c233d',
+    reactivity: '#210741',
 };
 
 const darkThemeColors = {
@@ -34,6 +35,7 @@ const darkThemeColors = {
     nPu9con: '#8c3dee',
     time: '#ff6666',
     k_ef: '#389aff',
+    reactivity: '#c391ff',
 };
 
 interface KefChart {
@@ -49,13 +51,14 @@ export const KefChart = (props: KefChart) => {
         reactorOperationalTime: p.reactorOperationalTime.toFixed(0),
         k_ef: p.effectiveNeutronMultiplicationFactor.toExponential(3),
         z: p.z,
+        reactivity: p.reactivity,
     }));
 
     const [showTime, setShowTime] = useState(true);
     const [showKef, setShowKef] = useState(true);
 
     const themeColors = isLight(theme) ? lightThemeColors : darkThemeColors;
-
+    console.log(data);
     return (
         <div
             className={classNames(styles.chartContainer, {
@@ -66,7 +69,7 @@ export const KefChart = (props: KefChart) => {
                 <XAxis
                     dataKey="z"
                     type="number"
-                    domain={[0, 'dataMax']}
+                    domain={[0, 2]}
                     allowDataOverflow
                     label={{
                         value: 'Глубина выгорания',
@@ -123,7 +126,24 @@ export const KefChart = (props: KefChart) => {
                     }}
                     tickFormatter={(value) => value.toExponential()}
                 />
-
+                <YAxis
+                    yAxisId="reactivity"
+                    dataKey="reactivity"
+                    type="number"
+                    domain={[0, 0.25]}
+                    allowDataOverflow
+                    label={{
+                        value: 'reactivity',
+                        angle: -90,
+                        offset: 50,
+                        position: 'insideTop',
+                        style: { fill: themeColors.reactivity },
+                    }}
+                    tick={{
+                        fill: themeColors.reactivity,
+                    }}
+                    tickFormatter={(value) => value.toExponential()}
+                />
                 <Tooltip
                     labelFormatter={(label) => `Глубина выгорания: ${label}`}
                     contentStyle={{
@@ -200,6 +220,15 @@ export const KefChart = (props: KefChart) => {
                     yAxisId="reactorOperationalTime"
                     stroke={themeColors.time}
                     isAnimationActive={false}
+                    dot={false}
+                    hide={!showTime}
+                />{' '}
+                <Line
+                    name="Реактивность"
+                    type="linear"
+                    dataKey="reactivity"
+                    yAxisId="reactivity"
+                    stroke={themeColors.reactivity}
                     dot={false}
                     hide={!showTime}
                 />

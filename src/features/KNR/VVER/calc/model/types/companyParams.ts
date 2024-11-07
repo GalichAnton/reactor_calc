@@ -8,6 +8,7 @@ export interface CompanyValues {
     company: ComputedValues;
     year: ComputedValues;
     withoutPu: ComputedValues;
+    middle: ComputedValues;
 }
 
 export interface CompanyParams {

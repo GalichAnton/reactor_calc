@@ -31,6 +31,11 @@ const initialCompanyParams: CompanyParams = {
             k_ef: 0,
             reactorOperationalTime: 0,
         },
+        middle: {
+            z: 0,
+            k_ef: 0,
+            reactorOperationalTime: 0,
+        },
     },
     dN5: 0,
 };
