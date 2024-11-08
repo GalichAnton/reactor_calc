@@ -5,6 +5,8 @@ import {
     useCalcCellParams,
     useCalcMacroscopicCrossSections,
     MacroscopicCrossSectionTable,
+    useCalsModerationCapacity,
+    ModerationCapacityTable,
 } from '@features/KNR/calcFirst';
 import { Col, Row } from 'antd';
 
@@ -12,6 +14,7 @@ export const CalcFirstTab = () => {
     useCalcCellParams();
     useCalcConcentrationParams();
     useCalcMacroscopicCrossSections();
+    useCalsModerationCapacity();
 
     return (
         <Row gutter={[8, 8]}>
@@ -23,6 +26,9 @@ export const CalcFirstTab = () => {
             </Col>
             <Col span={24}>
                 <MacroscopicCrossSectionTable />
+            </Col>
+            <Col span={24}>
+                <ModerationCapacityTable />
             </Col>
         </Row>
     );

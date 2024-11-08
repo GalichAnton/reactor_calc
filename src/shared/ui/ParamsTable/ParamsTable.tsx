@@ -1,7 +1,8 @@
 import { useMemo } from 'react';
 
+import { QuestionCircleOutlined } from '@ant-design/icons';
 import { precision } from '@shared/constants/precision.ts';
-import { Tooltip } from '@shared/ui';
+import { Space, Tooltip } from '@shared/ui';
 import { Table } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 
@@ -16,12 +17,19 @@ interface ParamsTableProps<T> {
 
 export const ParamsTable = <T,>(props: ParamsTableProps<T>) => {
     const { params, title, rowKey, excluded } = props;
-    console.log(params);
+
     const columns: ColumnsType<Record<string, Param>> = useMemo(() => {
         return Object.entries(params)
             .filter(([key]) => !excluded?.includes(key as keyof T))
             .map(([key, param]) => ({
-                title: <Tooltip title={param.description}>{key}</Tooltip>,
+                title: (
+                    <Space>
+                        {key}
+                        <Tooltip title={param.description}>
+                            <QuestionCircleOutlined />
+                        </Tooltip>
+                    </Space>
+                ),
                 key: key,
                 dataIndex: key,
                 align: 'center',
