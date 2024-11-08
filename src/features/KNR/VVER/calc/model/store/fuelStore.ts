@@ -13,6 +13,7 @@ const initialFuelParams: FuelParams = {
     totalInitialUraniumMass: 0,
     uraniumEnrichment: 0,
     fuelBurnupPerYear: 0,
+    fuelBurnupPerCompany: 0,
     numberOfReloads: 0,
 };
 

@@ -47,3 +47,48 @@ export const MICRO_SIGMA_A_XE135 = 2.65e6;
  * Z - для построения зависимостей.
  */
 export const START_Z = Array.from({ length: 251 }, (_, i) => i * 0.01);
+
+/**
+ * Число Авогадро, в яд/моль.
+ */
+export const N_A = 6.02e23;
+
+/**
+ * Плотность кислорода, в г/см^3.
+ */
+export const DENSITY_O2 = 0.001429;
+
+/**
+ * Плотность циркония, в г/см^3.
+ */
+export const DENSITY_ZR = 5.94;
+
+/**
+ * Плотность оксида урана, в г/см^3.
+ */
+export const DENSITY_UO2 = 9.3;
+
+/**
+ * Плотность воды, в г/см^3.
+ */
+export const DENSITY_H2O = 0.78;
+
+/**
+ * Молярная масса диоксида урана, в г/моль.
+ */
+export const MOLAR_MASS_UO2 = 270;
+
+/**
+ * Молярная масса воды, в г/моль.
+ */
+export const MOLAR_MASS_H2O = 18;
+
+/**
+ * Молярная масса циркония, в г/моль.
+ */
+export const MOLAR_MASS_ZR = 91;
+
+/**
+ * Молярная масса кислорода, в г/моль.
+ */
+export const MOLAR_MASS_O2 = 16;

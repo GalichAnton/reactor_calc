@@ -38,7 +38,6 @@ export const useCalcFuelParams = () => {
     } = useCompanyParamsStore();
 
     useEffect(() => {
-        console.log('dN5', dN5);
         const depletedUranium235Mass =
             dN5 *
             ((235 / (0.6023 * 1e24)) *
@@ -75,10 +74,14 @@ export const useCalcFuelParams = () => {
         const uraniumEnrichment =
             initialUranium235Mass / totalInitialUraniumMass;
 
-        const fuelBurnupPerYear =
-            (thermalPower * 365) / totalInitialUraniumMass;
+        const fuelBurnupPerCompany =
+            (thermalPower * company.reactorOperationalTime) /
+            totalInitialUraniumMass;
 
-        const numberOfReloads = totalInitialUraniumMass / fuelBurnupPerYear;
+        const fuelBurnupPerYear =
+            (thermalPower * 330) / totalInitialUraniumMass;
+
+        const numberOfReloads = fuelBurnupPerCompany / fuelBurnupPerYear;
 
         setFuelParams({
             depletedUranium235Mass,
@@ -87,6 +90,7 @@ export const useCalcFuelParams = () => {
             initialUranium238Mass,
             totalInitialUraniumMass,
             uraniumEnrichment,
+            fuelBurnupPerCompany,
             fuelBurnupPerYear,
             numberOfReloads,
         });

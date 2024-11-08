@@ -12,7 +12,6 @@ interface FuelTableProps {
 export const FuelTable = (props: FuelTableProps) => {
     const { params } = props;
 
-    console.log('props', props);
     const columns: ColumnsType<FuelParams> = useMemo(() => {
         return [
             {
@@ -95,6 +94,22 @@ export const FuelTable = (props: FuelTableProps) => {
                 ),
                 key: 'uraniumEnrichment',
                 dataIndex: 'uraniumEnrichment',
+                align: 'center',
+
+                render: (value: number) => value.toExponential(3),
+            },
+            {
+                title: (
+                    <AppTooltip
+                        title={
+                            'Глубина выгорания топлива за кампанию (МВт∙сут/кг)'
+                        }
+                    >
+                        Z_company
+                    </AppTooltip>
+                ),
+                key: 'fuelBurnupPerCompany',
+                dataIndex: 'fuelBurnupPerCompany',
                 align: 'center',
 
                 render: (value: number) => value.toExponential(3),

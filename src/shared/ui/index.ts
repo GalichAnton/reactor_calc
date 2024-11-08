@@ -6,4 +6,5 @@ export { CollapseBtn } from './CollapseBtn/CollapseBtn';
 export { Tooltip } from './Tooltip/Tooltip';
 export { Spinner } from './Spinner/Spinner';
 export { Select } from './Select/Select';
+export { ParamsTable } from './ParamsTable/ParamsTable';
 export * from './Typography/Typography';

@@ -33,6 +33,11 @@ export interface FuelParams {
     uraniumEnrichment: number;
 
     /**
+     * Глубина выгорания топлива за компанию (МВт∙сут/кг).
+     */
+    fuelBurnupPerCompany: number;
+
+    /**
      * Глубина выгорания топлива за год (МВт∙сут/кг).
      */
     fuelBurnupPerYear: number;
