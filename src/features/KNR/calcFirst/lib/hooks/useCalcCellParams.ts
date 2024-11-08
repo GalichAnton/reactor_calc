@@ -52,5 +52,10 @@ export const useCalcCellParams = () => {
             zirconiumFraction: ε_Zr,
             waterFraction: ε_H2O,
         });
-    }, [setCellParams]);
+    }, [
+        fuelRodLatticePitch,
+        fuelPelletRadius,
+        claddingInnerRadius,
+        claddingOuterRadius,
+    ]);
 };

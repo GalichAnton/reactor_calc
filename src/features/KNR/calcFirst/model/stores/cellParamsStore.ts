@@ -1,4 +1,5 @@
 import { areAllParamsFilled, getActionName } from '@shared/lib/utils';
+import { SetParams } from '@shared/types/param.ts';
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
@@ -9,7 +10,7 @@ interface CellParamsStore {
     filled?: boolean;
     cellParams: CellParams;
     setCellParam: <T extends keyof CellParams>(key: T, value: number) => void;
-    setCellParams: (value: Record<keyof CellParams, number>) => void;
+    setCellParams: (value: SetParams<CellParams>) => void;
 }
 
 const cellParamsDefaults: CellParams = {

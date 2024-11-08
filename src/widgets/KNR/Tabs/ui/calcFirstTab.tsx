@@ -3,12 +3,15 @@ import {
     useCalcConcentrationParams,
     NuclearConcentrationsTable,
     useCalcCellParams,
+    useCalcMacroscopicCrossSections,
+    MacroscopicCrossSectionTable,
 } from '@features/KNR/calcFirst';
 import { Col, Row } from 'antd';
 
 export const CalcFirstTab = () => {
     useCalcCellParams();
     useCalcConcentrationParams();
+    useCalcMacroscopicCrossSections();
 
     return (
         <Row gutter={[8, 8]}>
@@ -17,6 +20,9 @@ export const CalcFirstTab = () => {
             </Col>
             <Col span={24}>
                 <NuclearConcentrationsTable />
+            </Col>
+            <Col span={24}>
+                <MacroscopicCrossSectionTable />
             </Col>
         </Row>
     );

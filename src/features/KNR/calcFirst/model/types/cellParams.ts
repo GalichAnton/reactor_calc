@@ -1,9 +1,9 @@
-import { Param } from '@shared/types/param.ts';
+import { Param, Params } from '@shared/types/param.ts';
 
 /**
  * Интерфейс для параметров ячейки реактора
  */
-export interface CellParams extends Record<string, Param> {
+export interface CellParams extends Params {
     /**
      * Объем ячейки в кубических сантиметрах см^3.
      * @type {Param}
