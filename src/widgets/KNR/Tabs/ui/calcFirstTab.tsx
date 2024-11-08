@@ -3,8 +3,10 @@ import {
     AverageMicroCrossSectionTable,
     CellTable,
     NeutronGasTemperatureTable,
+    TransportMacroCrossSectionsTable,
     useCalcAverageCrossSections,
     useCalcNeutronGasParams,
+    useCalcTransportMacroSections,
 } from '@features/KNR/calcFirst';
 import {
     useCalcConcentrationParams,
@@ -15,7 +17,7 @@ import {
     useCalsModerationCapacity,
     ModerationCapacityTable,
 } from '@features/KNR/calcFirst';
-import { Col, Row } from 'antd';
+import { Col, Divider, Row } from 'antd';
 
 export const CalcFirstTab = () => {
     useCalcCellParams();
@@ -24,29 +26,36 @@ export const CalcFirstTab = () => {
     useCalsModerationCapacity();
     useCalcNeutronGasParams();
     useCalcAverageCrossSections();
+    useCalcTransportMacroSections();
 
     return (
         <Row gutter={[8, 8]}>
             <Col span={24}>
                 <CellTable />
             </Col>
+            <Divider />
             <Col span={24}>
                 <NuclearConcentrationsTable />
             </Col>
+            <Divider />
             <Col span={24}>
                 <MacroscopicCrossSectionTable />
             </Col>
+            <Divider />
             <Col span={24}>
                 <ModerationCapacityTable />
-            </Col>{' '}
+            </Col>
             <Col span={24}>
                 <NeutronGasTemperatureTable />
-            </Col>{' '}
+            </Col>
             <Col span={24}>
                 <AverageMicroCrossSectionTable />
             </Col>
             <Col span={24}>
                 <AverageMacroCrossSectionTable />
+            </Col>
+            <Col span={24}>
+                <TransportMacroCrossSectionsTable />
             </Col>
         </Row>
     );

@@ -1,7 +1,7 @@
-import { CellParams } from '@features/KNR/calcFirst/model/types/cellParams.ts';
 import { ParamsTable } from '@shared/ui';
 
 import { useCellParamsStore } from '../../model/stores/cellParamsStore.ts';
+import { CellParams } from '../../model/types/cellParams.ts';
 
 export const CellTable = () => {
     const { cellParams } = useCellParamsStore();

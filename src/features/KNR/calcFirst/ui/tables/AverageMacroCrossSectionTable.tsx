@@ -5,7 +5,6 @@ import { AveragedCrossSections } from '../../model/types/averagedMicroCrossSecti
 
 export const AverageMacroCrossSectionTable = () => {
     const { averagedCrossSections } = useAveragedCrossSectionsStore();
-    console.log(averagedCrossSections);
 
     return (
         <ParamsTable<AveragedCrossSections>
