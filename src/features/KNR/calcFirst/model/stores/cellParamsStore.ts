@@ -15,42 +15,42 @@ interface CellParamsStore {
 
 const cellParamsDefaults: CellParams = {
     cellVolume: {
-        name: 'cellVolume',
+        name: 'V_0',
         description: 'Объем ячейки в кубических сантиметрах см^3',
         value: 0,
     },
     fuelVolume: {
-        name: 'fuelVolume',
+        name: 'V_U',
         description: 'Объем топлива в кубических сантиметрах см^3',
         value: 0,
     },
     fuelArea: {
-        name: 'fuelArea',
+        name: 'S_U',
         description: 'Площадь топлива в квадратных сантиметрах см^2',
         value: 0,
     },
     claddingVolume: {
-        name: 'claddingVolume',
+        name: 'V_Zr',
         description: 'Объем оболочек ТВЭЛ в кубических сантиметрах см^3',
         value: 0,
     },
     waterVolume: {
-        name: 'waterVolume',
+        name: 'V_H2O',
         description: 'Объем воды в кубических сантиметрах см^3',
         value: 0,
     },
     fuelFraction: {
-        name: 'fuelFraction',
+        name: 'ε_U',
         description: 'Объемная доля топлива',
         value: 0,
     },
     zirconiumFraction: {
-        name: 'zirconiumFraction',
+        name: 'ε_Zr',
         description: 'Объемная доля конструкционного материала (циркония Zr)',
         value: 0,
     },
     waterFraction: {
-        name: 'waterFraction',
+        name: 'ε_H2O',
         description: 'Объемная доля воды H2O',
         value: 0,
     },

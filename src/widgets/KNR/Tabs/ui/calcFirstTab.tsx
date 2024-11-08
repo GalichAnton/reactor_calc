@@ -1,4 +1,11 @@
-import { CellTable } from '@features/KNR/calcFirst';
+import {
+    AverageMacroCrossSectionTable,
+    AverageMicroCrossSectionTable,
+    CellTable,
+    NeutronGasTemperatureTable,
+    useCalcAverageCrossSections,
+    useCalcNeutronGasParams,
+} from '@features/KNR/calcFirst';
 import {
     useCalcConcentrationParams,
     NuclearConcentrationsTable,
@@ -15,6 +22,8 @@ export const CalcFirstTab = () => {
     useCalcConcentrationParams();
     useCalcMacroscopicCrossSections();
     useCalsModerationCapacity();
+    useCalcNeutronGasParams();
+    useCalcAverageCrossSections();
 
     return (
         <Row gutter={[8, 8]}>
@@ -29,6 +38,15 @@ export const CalcFirstTab = () => {
             </Col>
             <Col span={24}>
                 <ModerationCapacityTable />
+            </Col>{' '}
+            <Col span={24}>
+                <NeutronGasTemperatureTable />
+            </Col>{' '}
+            <Col span={24}>
+                <AverageMicroCrossSectionTable />
+            </Col>
+            <Col span={24}>
+                <AverageMacroCrossSectionTable />
             </Col>
         </Row>
     );

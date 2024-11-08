@@ -21,34 +21,34 @@ interface MacroscopicCrossSectionsStore {
 
 const macroscopicCrossSectionsDefaults: MacroscopicCrossSections = {
     macroSigmaA5: {
-        name: 'sigmaA5',
+        name: 'Σ_a5',
         description: 'Макроскопическое сечение поглощения U235 в см^(-1)',
         value: 0,
     },
     macroSigmaA8: {
-        name: 'sigmaA8',
+        name: 'Σ_a8',
         description: 'Макроскопическое сечение поглощения U238 в см^(-1)',
         value: 0,
     },
     macroSigmaAZr: {
-        name: 'sigmaAZr',
+        name: 'Σ_aZr',
         description:
             'Макроскопическое сечение поглощения конструкционного материала (Zr) в см^(-1)',
         value: 0,
     },
     macroSigmaAO2: {
-        name: 'sigmaAO2',
+        name: 'Σ_aO2',
         description:
             'Макроскопическое сечение поглощения кислорода O2 в см^(-1)',
         value: 0,
     },
     macroSigmaAH2O: {
-        name: 'sigmaAH2O',
+        name: 'Σ_aH2O',
         description: 'Макроскопическое сечение поглощения воды H2O в см^(-1)',
         value: 0,
     },
     macroSigmaATotal: {
-        name: 'sigmaATotal',
+        name: 'Σ_aΣ',
         description: 'Суммарное макроскопическое сечение поглощения в см^(-1)',
         value: 0,
     },

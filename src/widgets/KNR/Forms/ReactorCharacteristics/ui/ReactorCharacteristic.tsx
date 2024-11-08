@@ -16,7 +16,6 @@ export const ReactorCharacteristic = () => {
     }, [reactorCharacteristics]);
 
     const onValuesChange = (_: any, allValues: ReactorCharacteristics) => {
-        console.log('here');
         setReactorCharacteristics(allValues);
     };
 

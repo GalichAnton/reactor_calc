@@ -18,32 +18,32 @@ interface ModerationCapacityStore {
 
 const moderationCapacityDefaults: ModerationCapacity = {
     moderationCapacityU235: {
-        name: 'moderationCapacityU235',
+        name: 'ξΣ_s5',
         description: 'Замедляющая способность U235 в см^(-1)',
         value: 0,
     },
     moderationCapacityU238: {
-        name: 'moderationCapacityU238',
+        name: 'ξΣ_s8',
         description: 'Замедляющая способность U238 в см^(-1)',
         value: 0,
     },
     moderationCapacityO2: {
-        name: 'moderationCapacityO2',
+        name: 'ξΣ_sO2',
         description: 'Замедляющая способность кислорода O2 в см^(-1)',
         value: 0,
     },
     moderationCapacityH2O: {
-        name: 'moderationCapacityH2O',
+        name: 'ξΣ_sH2O',
         description: 'Замедляющая способность воды H2O в см^(-1)',
         value: 0,
     },
     moderationCapacityZr: {
-        name: 'moderationCapacityZr',
+        name: 'ξΣ_sZr',
         description: 'Замедляющая способность циркония Zr в см^(-1)',
         value: 0,
     },
     totalModerationCapacity: {
-        name: 'totalModerationCapacity',
+        name: 'ξΣ_sΣ    ',
         description: 'Суммарная замедляющая способность в см^(-1)',
         value: 0,
     },

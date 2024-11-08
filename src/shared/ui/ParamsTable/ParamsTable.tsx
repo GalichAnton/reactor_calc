@@ -24,7 +24,7 @@ export const ParamsTable = <T,>(props: ParamsTableProps<T>) => {
             .map(([key, param]) => ({
                 title: (
                     <Space>
-                        {key}
+                        {param.name}
                         <Tooltip title={param.description}>
                             <QuestionCircleOutlined />
                         </Tooltip>
