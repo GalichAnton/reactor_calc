@@ -6,6 +6,7 @@ export { NeutronGasTemperatureTable } from './ui/tables/NeutronGasTemperatureTab
 export { AverageMacroCrossSectionTable } from './ui/tables/AverageMacroCrossSectionTable';
 export { AverageMicroCrossSectionTable } from './ui/tables/AverageMicroCrossSectionTable';
 export { TransportMacroCrossSectionsTable } from './ui/tables/TransportMacroCrossSectionsTable';
+export { LossFactorTable } from './ui/tables/LossFactorTable';
 export { useCalcCellParams } from './lib/hooks/useCalcCellParams';
 export { useCalcConcentrationParams } from './lib/hooks/useCalcConcentrationParams';
 export { useCalcMacroscopicCrossSections } from './lib/hooks/useCalcMacroscopicCrossSections';
@@ -13,3 +14,4 @@ export { useCalsModerationCapacity } from './lib/hooks/useCalsModerationCapacity
 export { useCalcNeutronGasParams } from './lib/hooks/useCalcNeutronGasParams';
 export { useCalcAverageCrossSections } from './lib/hooks/useCalcAverageCrossSections';
 export { useCalcTransportMacroSections } from './lib/hooks/useCalcTransportMacroSections';
+export { useCalcLossFactorParams } from './lib/hooks/useCalcLossFactor.ts';

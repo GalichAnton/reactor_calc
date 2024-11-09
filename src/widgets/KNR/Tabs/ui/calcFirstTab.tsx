@@ -2,9 +2,11 @@ import {
     AverageMacroCrossSectionTable,
     AverageMicroCrossSectionTable,
     CellTable,
+    LossFactorTable,
     NeutronGasTemperatureTable,
     TransportMacroCrossSectionsTable,
     useCalcAverageCrossSections,
+    useCalcLossFactorParams,
     useCalcNeutronGasParams,
     useCalcTransportMacroSections,
 } from '@features/KNR/calcFirst';
@@ -30,6 +32,7 @@ export const CalcFirstTab = () => {
     useCalcAverageCrossSections();
     useCalcTransportMacroSections();
     useCalcTwoZoneParams();
+    useCalcLossFactorParams();
 
     return (
         <Row gutter={[8, 10]}>
@@ -109,6 +112,13 @@ export const CalcFirstTab = () => {
             </Text>
             <Col span={24}>
                 <TwoZoneTable />
+            </Col>
+            <Divider />
+            <Col span={24}>
+                <Text>
+                    <strong>6 ОПРЕДЕЛЕНИЕ КОЭФФИЦИЕНТА ПРОИГРЫША</strong>
+                </Text>
+                <LossFactorTable />
             </Col>
         </Row>
     );
