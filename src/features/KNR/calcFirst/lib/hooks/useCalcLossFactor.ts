@@ -9,7 +9,7 @@ import {
     calculateModeratorFlux,
     calculateP,
 } from '@features/KNR/calcFirst/lib/utils/calcLossFactor.ts';
-import { useTwoZoneModelParamsStore } from '@features/KNR/twoZone/model/store/twoZoneParamsStore.ts';
+import { useTwoZoneModelParamsStore } from '@features/KNR/calcFirst/model/stores/twoZoneParamsStore.ts';
 import { useBessel } from '@shared/lib/hooks';
 
 import { useLossFactorParamsStore } from '../../model/stores/lossFactorParamsStore.ts';

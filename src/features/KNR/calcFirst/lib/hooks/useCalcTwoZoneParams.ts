@@ -6,7 +6,7 @@ import { useCellParamsStore } from '@features/KNR/calcFirst/model/stores/cellPar
 import { useTransportMacroStore } from '@features/KNR/calcFirst/model/stores/transportMacroStore.ts';
 import { useInitialParamsStore } from '@features/KNR/VVER/setInitialValues';
 
-import { useTwoZoneModelParamsStore } from '../../model/store/twoZoneParamsStore.ts';
+import { useTwoZoneModelParamsStore } from '../../model/stores/twoZoneParamsStore.ts';
 
 export const useCalcTwoZoneParams = () => {
     const { setParams } = useTwoZoneModelParamsStore();

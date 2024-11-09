@@ -24,6 +24,11 @@ export const VESKOT_GA_PU9 = 2.3419;
 export const AVERAGE_N_PER_F_PU9 = 2.87;
 
 /**
+ * Среднее количество нейтронов на акт деления для изотопа Pu-239.
+ */
+export const AVERAGE_N_PER_F_PU235 = 2.416;
+
+/**
  * Выход ксенона-135 на акт деления.
  */
 export const YIELD_PER_FISSION_XE = 0.059;

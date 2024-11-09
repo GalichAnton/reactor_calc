@@ -5,10 +5,12 @@ import {
     LossFactorTable,
     NeutronGasTemperatureTable,
     TransportMacroCrossSectionsTable,
+    TwoZoneTable,
     useCalcAverageCrossSections,
     useCalcLossFactorParams,
     useCalcNeutronGasParams,
     useCalcTransportMacroSections,
+    useCalcTwoZoneParams,
 } from '@features/KNR/calcFirst';
 import {
     useCalcConcentrationParams,
@@ -19,7 +21,6 @@ import {
     useCalsModerationCapacity,
     ModerationCapacityTable,
 } from '@features/KNR/calcFirst';
-import { TwoZoneTable, useCalcTwoZoneParams } from '@features/KNR/twoZone';
 import { Text } from '@shared/ui';
 import { Col, Divider, Row } from 'antd';
 

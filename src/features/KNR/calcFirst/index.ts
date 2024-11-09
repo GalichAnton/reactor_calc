@@ -15,3 +15,5 @@ export { useCalcNeutronGasParams } from './lib/hooks/useCalcNeutronGasParams';
 export { useCalcAverageCrossSections } from './lib/hooks/useCalcAverageCrossSections';
 export { useCalcTransportMacroSections } from './lib/hooks/useCalcTransportMacroSections';
 export { useCalcLossFactorParams } from './lib/hooks/useCalcLossFactor.ts';
+export { TwoZoneTable } from './ui/tables/TwoZoneTable.tsx';
+export { useCalcTwoZoneParams } from './lib/hooks/useCalcTwoZoneParams.ts';
