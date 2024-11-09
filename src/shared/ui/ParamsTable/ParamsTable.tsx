@@ -42,9 +42,9 @@ export const ParamsTable = <T,>(props: ParamsTableProps<T>) => {
             rowKey={rowKey || 'test'}
             columns={columns}
             title={() => (
-                <>
+                <div style={{ textAlign: 'center' }}>
                     <strong>{title}</strong>
-                </>
+                </div>
             )}
             dataSource={[params]}
             size={'small'}
