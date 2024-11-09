@@ -41,12 +41,6 @@ export interface KInfParams extends Params {
     fastFissionFactor: Param;
 
     /**
-     * Усреднённая хорда ТВЭЛ, см
-     * @type {Param}
-     */
-    averageChord: Param;
-
-    /**
      * Вероятность избежать резонансного захвата
      * @type {Param}
      */

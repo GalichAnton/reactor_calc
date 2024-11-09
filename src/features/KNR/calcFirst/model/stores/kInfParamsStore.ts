@@ -40,13 +40,8 @@ const kInfParamsDefaults: KInfParams = {
         value: 0,
     },
     fastFissionFactor: {
-        name: 'ε, о.е',
+        name: 'μ, о.е',
         description: 'Коэффициент размножения на быстрых нейтронах',
-        value: 0,
-    },
-    averageChord: {
-        name: 'l̄, см',
-        description: 'Усреднённая хорда ТВЭЛ',
         value: 0,
     },
     resonanceEscapeProbability: {

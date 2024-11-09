@@ -2,12 +2,16 @@ import {
     AverageMacroCrossSectionTable,
     AverageMicroCrossSectionTable,
     CellTable,
+    KInfTable,
     LossFactorTable,
+    NeutronAgeTable,
     NeutronGasTemperatureTable,
     TransportMacroCrossSectionsTable,
     TwoZoneTable,
     useCalcAverageCrossSections,
+    useCalcKInfParams,
     useCalcLossFactorParams,
+    useCalcNeutronAgeParams,
     useCalcNeutronGasParams,
     useCalcTransportMacroSections,
     useCalcTwoZoneParams,
@@ -34,6 +38,8 @@ export const CalcFirstTab = () => {
     useCalcTransportMacroSections();
     useCalcTwoZoneParams();
     useCalcLossFactorParams();
+    useCalcKInfParams();
+    useCalcNeutronAgeParams();
 
     return (
         <Row gutter={[8, 10]}>
@@ -120,6 +126,25 @@ export const CalcFirstTab = () => {
                     <strong>6 ОПРЕДЕЛЕНИЕ КОЭФФИЦИЕНТА ПРОИГРЫША</strong>
                 </Text>
                 <LossFactorTable />
+            </Col>
+            <Divider />
+            <Col span={24}>
+                <Text>
+                    <strong>
+                        7 ОПРЕДЕЛЕНИЕ СОМНОЖИТЕЛЕЙ КОЭФФИЦИЕНТА РАЗМНОЖЕНИЯ В
+                        БЕСКОНЕЧНОЙ СРЕДЕ
+                    </strong>
+                </Text>
+                <KInfTable />
+            </Col>
+            <Divider />
+            <Col span={24}>
+                <Text>
+                    <strong>
+                        8 РАСЧЕТ ДЛИНЫ ДИФФУЗИИ, ВОЗВРАСТА ТЕПЛОВОГО НЕЙТРОНА
+                    </strong>
+                </Text>
+                <NeutronAgeTable />
             </Col>
         </Row>
     );

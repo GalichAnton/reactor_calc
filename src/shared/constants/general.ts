@@ -97,3 +97,13 @@ export const MOLAR_MASS_ZR = 91;
  * Молярная масса кислорода, в г/моль.
  */
 export const MOLAR_MASS_O2 = 16;
+
+/**
+ * Масса одного ядра UO2.
+ */
+export const NUCLEUS_MASS_UO2 = 0.0479e24;
+
+/**
+ * Возраст тепловых нейтронов в воде, см²
+ */
+export const WATER_NEUTRON_AGE = 27.3;

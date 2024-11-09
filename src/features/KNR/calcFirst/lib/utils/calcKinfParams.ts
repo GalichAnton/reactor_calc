@@ -1,4 +1,7 @@
-import { AVERAGE_N_PER_F_PU235 } from '@shared/constants/general.ts';
+import {
+    AVERAGE_N_PER_F_PU235,
+    NUCLEUS_MASS_UO2,
+} from '@shared/constants/general.ts';
 
 /**
  * Параметры для расчета температуры урана
@@ -32,8 +35,8 @@ interface ThermalNeutronParams {
     u235AbsorptionCrossSection: number;
     /** Макроскопическое сечение поглощения блока */
     blockMacroAbsorptionCrossSection: number;
-    /** Коэффициент для замедлителя */
-    moderatorCoef: number;
+    /** Коэффициент проигрыша */
+    lossFactor: number;
     /** Объем замедлителя */
     moderatorVolume: number;
     /** Макроскопическое сечение поглощения замедлителя */
@@ -53,7 +56,7 @@ export function calculateThermalNeutronCoef(
         u235Concentration,
         u235AbsorptionCrossSection,
         blockMacroAbsorptionCrossSection,
-        moderatorCoef,
+        lossFactor,
         moderatorVolume,
         moderatorMacroAbsorptionCrossSection,
     } = params;
@@ -62,7 +65,7 @@ export function calculateThermalNeutronCoef(
         blockVolume * u235Concentration * u235AbsorptionCrossSection;
     const denominator =
         blockVolume * blockMacroAbsorptionCrossSection +
-        moderatorCoef * moderatorVolume * moderatorMacroAbsorptionCrossSection;
+        lossFactor * moderatorVolume * moderatorMacroAbsorptionCrossSection;
 
     return numerator / denominator;
 }
@@ -102,9 +105,7 @@ interface NormalizedVolumeParams {
     /** Исходный объем */
     volume: number;
     /** Плотность */
-    density: number;
-    /** Нормальная плотность (для урана) */
-    normalDensity?: number;
+    density?: number;
     /** Концентрация (для урана) */
     concentration?: number;
 }
@@ -117,11 +118,11 @@ interface NormalizedVolumeParams {
 export function calculateNormalizedVolume(
     params: NormalizedVolumeParams,
 ): number {
-    const { volume, density, normalDensity, concentration } = params;
+    const { volume, density = 1, concentration } = params;
 
-    if (normalDensity && concentration) {
+    if (concentration) {
         // Для урана
-        return (volume * concentration) / (normalDensity * 1e24);
+        return volume * (concentration / NUCLEUS_MASS_UO2);
     }
     // Для воды
     return volume * density;
@@ -152,4 +153,70 @@ export function calculateFastNeutronMultiplication(
         (0.19 * normalizedUraniumVolume) /
             (normalizedUraniumVolume + normalizedWaterVolume)
     );
+}
+
+interface TvelParams {
+    uraniumVolume: number; // V_U
+    uraniumSurface: number; // S_U
+}
+
+/**
+ * Рассчитывает усреднённую хорду ТВЭЛ
+ * @param params Параметры ТВЭЛ
+ * @returns Усреднённая хорда в см
+ */
+export function calculateAverageTvelChord(params: TvelParams): number {
+    const { uraniumVolume, uraniumSurface } = params;
+    return (4 * uraniumVolume) / uraniumSurface;
+}
+
+interface ResonanceEscapeParams {
+    V0: number; // Замедляющая способность
+    xiSigmaS: number; // ξΣ_s
+    uraniumSurface: number; // S_U
+    uraniumTemp: number; // T_U
+    uraniumVolume: number; // V_U
+    N0U: number; // Концентрация ядер урана
+}
+
+/**
+ * Рассчитывает вероятность избежать резонансного захвата
+ * @param params Параметры для расчета вероятности
+ * @returns Вероятность избежать резонансного захвата
+ */
+export function calculateResonanceEscapeProbability(
+    params: ResonanceEscapeParams,
+): number {
+    const { V0, xiSigmaS, uraniumSurface, uraniumTemp, uraniumVolume, N0U } =
+        params;
+
+    const averageChord = calculateAverageTvelChord({
+        uraniumVolume,
+        uraniumSurface,
+    });
+
+    const term1 = 0.4 * uraniumSurface * (1 + 0.0175 * Math.sqrt(uraniumTemp));
+    const term2 = Math.sqrt(averageChord * N0U * 1e-24);
+    const term3 = 4.9 * uraniumVolume * N0U * 1e-24;
+
+    return Math.exp((-1 / (V0 * xiSigmaS)) * (term1 * term2 + term3));
+}
+
+interface InfiniteMultiplicationParams {
+    mu: number; // Коэффициент размножения на быстрых нейтронах
+    phi: number; // Вероятность избежать резонансного захвата
+    theta: number; // Коэффициент использования тепловых нейтронов
+    eta: number; // Выход нейтронов на один поглощенный
+}
+
+/**
+ * Рассчитывает коэффициент размножения в бесконечной среде
+ * @param params Параметры для расчета коэффициента размножения
+ * @returns Коэффициент размножения в бесконечной среде
+ */
+export function calculateInfiniteMultiplication(
+    params: InfiniteMultiplicationParams,
+): number {
+    const { mu, phi, theta, eta } = params;
+    return mu * phi * theta * eta;
 }
