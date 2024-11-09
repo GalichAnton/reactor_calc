@@ -246,6 +246,5 @@ export function calcAverageSpecificByVolumePower(
     N_tvs: number,
     N_tvel: number,
 ): number {
-    console.log(P, V_U, H, N_tvs);
     return (P * 1000) / (V_U * H * N_tvs * N_tvel);
 }

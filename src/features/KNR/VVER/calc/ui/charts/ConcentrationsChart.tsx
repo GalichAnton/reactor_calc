@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 import { ZRelations } from '@features/KNR/VVER/calc/model/types/zRelations.ts';
-import styles from '@features/KNR/VVER/calc/ui/ZRelationCharts/chart.module.css';
+import styles from '@features/KNR/VVER/calc/ui/charts/chart.module.css';
 import { useTheme } from '@shared/lib/hooks';
 import classNames from 'classnames';
 import {

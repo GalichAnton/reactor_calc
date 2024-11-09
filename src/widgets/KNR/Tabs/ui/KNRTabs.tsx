@@ -10,9 +10,9 @@ import { Card, Space } from '@shared/ui';
 import { Presets } from '@widgets/KNR/Presets';
 import { CalcFirstTab } from '@widgets/KNR/Tabs/ui/calcFirstTab.tsx';
 import { FuelTab } from '@widgets/KNR/Tabs/ui/FuelTab.tsx';
+import { SecondTab } from '@widgets/KNR/Tabs/ui/SecondTab.tsx';
 import { Divider, Tabs, TabsProps } from 'antd';
 
-import { KefZTab } from './KefZTab.tsx';
 import { NucConcentrationTab } from './NucConcentrationTab.tsx';
 import { InitialParamForm } from '../../Forms/InitialParamForm/InitialParamForm.tsx';
 
@@ -37,15 +37,15 @@ export const KNRTabs = () => {
             },
             {
                 key: '1',
-                label: 'Данные после расчета №1',
+                label: 'Данные после расчета курсовой №1',
                 disabled: !initialParamsFilled,
                 children: <CalcFirstTab />,
             },
             {
                 key: '2',
-                label: 'Kef и Z',
-                disabled: !isotopeFilled,
-                children: <KefZTab />,
+                label: 'Расчет второй',
+                disabled: !initialParamsFilled,
+                children: <SecondTab />,
             },
             {
                 key: '3',

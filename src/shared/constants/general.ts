@@ -1,12 +1,12 @@
 /**
  * Микроскопическое сечение деления для изотопа Pu-239, в барнах.
  */
-export const MICRO_SIGMA_F_PU9 = 742;
+export const MICRO_SIGMA_F_PU9 = 742e-24;
 
 /**
  * Микроскопическое сечение поглощения для изотопа Pu-239, в барнах.
  */
-export const MICRO_SIGMA_A_PU9 = 1028;
+export const MICRO_SIGMA_A_PU9 = 1028e-24;
 
 /**
  * g-фактор Весткотта для деления Pu-239.

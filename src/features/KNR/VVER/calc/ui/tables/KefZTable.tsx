@@ -4,7 +4,7 @@ import { Tooltip } from '@shared/ui';
 import { Table } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 
-import { ZRelations } from '../model/types/zRelations.ts';
+import { ZRelations } from '../../model/types/zRelations.ts';
 
 interface ZRelationsTableProps {
     zRelationsParams?: ZRelations[];

@@ -1,9 +1,9 @@
 import { useCallback } from 'react';
 
+import chart from '@shared/assets/img.png';
 import { ParamsTable, Space } from '@shared/ui';
 import { Col, Image, InputNumber, Row } from 'antd';
 
-import chart from '../../../../../../public/img.png';
 import { useNeutronDiffusionAgeStore } from '../../model/stores/neutronDiffusionAgeStore.ts';
 import { NeutronDiffusionAgeParams } from '../../model/types/neutronDiffusionAgeParams.ts';
 
