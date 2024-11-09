@@ -1,46 +1,48 @@
+import { Param, Params } from '@shared/types/param.ts';
+
 /**
  * Интерфейс расчитанных параметров активной зоны ядерного реактора.
  */
-export interface AZPhysParams {
+export interface AZPhysParams extends Params {
     /**
      * Объём активной зоны (м³).
      *
      * Общее пространство, занимаемое активной зоной, в кубических метрах.
      */
-    volume: number;
+    volume: Param;
 
     /**
      * Диаметр активной зоны (м).
      *
      * Диаметр цилиндрической активной зоны, выраженный в метрах.
      */
-    diameter: number;
+    diameter: Param;
 
     /**
      * Геометрический параметр.
      *
      * Безразмерный параметр, описывающий геометрическую конфигурацию активной зоны.
      */
-    geometricParameter: number;
+    geometricParameter: Param;
 
     /**
      * Число ТВС (Тепловыделяющих сборок).
      *
      * Количество тепловыделяющих сборок в активной зоне реактора.
      */
-    numFuelAssemblies: number;
+    numFuelAssemblies: Param;
 
     /**
      * Эффективный коэффициент размножения.
      *
      * Коэффициент, определяющий способность активной зоны поддерживать цепную реакцию. Если \( k_{eff} > 1 \), реакция самоподдерживается; если \( k_{eff} < 1 \), затухает.
      */
-    effectiveMultiplicationFactor: number;
+    effectiveMultiplicationFactor: Param;
 
     /**
      * Реактивность реактора.
      *
      * Безразмерная величина, показывающая степень отклонения реакционной способности реактора от критического состояния. Вычисляется как \( \rho = \frac{k_{eff} - 1}{k_{eff}} \).
      */
-    reactorReactivity: number;
+    reactorReactivity: Param;
 }

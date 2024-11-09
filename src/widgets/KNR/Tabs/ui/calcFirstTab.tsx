@@ -6,6 +6,7 @@ import {
     LossFactorTable,
     NeutronAgeTable,
     NeutronGasTemperatureTable,
+    ReactorCriticalityTable,
     TransportMacroCrossSectionsTable,
     TwoZoneTable,
     useCalcAverageCrossSections,
@@ -13,6 +14,7 @@ import {
     useCalcLossFactorParams,
     useCalcNeutronAgeParams,
     useCalcNeutronGasParams,
+    useCalcReactorCriticaly,
     useCalcTransportMacroSections,
     useCalcTwoZoneParams,
 } from '@features/KNR/calcFirst';
@@ -40,6 +42,7 @@ export const CalcFirstTab = () => {
     useCalcLossFactorParams();
     useCalcKInfParams();
     useCalcNeutronAgeParams();
+    useCalcReactorCriticaly();
 
     return (
         <Row gutter={[8, 10]}>
@@ -145,6 +148,16 @@ export const CalcFirstTab = () => {
                     </strong>
                 </Text>
                 <NeutronAgeTable />
+            </Col>
+            <Divider />
+            <Col span={24}>
+                <Text>
+                    <strong>
+                        9 ОПРЕДЕЛЕНИЕ МАТЕРИАЛЬНОГО ПАРАМЕТРА, ОЦЕНКА
+                        КРИТИЧЕСКИХ РАЗМЕРОВ АЗ
+                    </strong>
+                </Text>
+                <ReactorCriticalityTable />
             </Col>
         </Row>
     );
