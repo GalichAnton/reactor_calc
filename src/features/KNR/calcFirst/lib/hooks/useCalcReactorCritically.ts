@@ -2,7 +2,7 @@ import { useKInfParamsStore } from '../../model/stores/kInfParamsStore.ts';
 import { useNeutronDiffusionAgeStore } from '../../model/stores/neutronDiffusionAgeStore.ts';
 import { useReactorCriticalityStore } from '../../model/stores/reactorCriticalityParamsStore.ts';
 
-export const useCalcReactorCriticaly = () => {
+export const useCalcReactorCritically = () => {
     const { setReactorCriticalityParams } = useReactorCriticalityStore();
 
     const computeReactorCriticalityParams = async () => {

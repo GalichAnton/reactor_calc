@@ -1,4 +1,9 @@
-import { KefChart, KefZTable, CompanyTable } from '@features/KNR/calcSecond';
+import {
+    KefChart,
+    KefZTable,
+    CompanyTable,
+    FuelTable,
+} from '@features/KNR/calcSecond';
 import { Space } from '@shared/ui';
 import { Col, Row } from 'antd';
 
@@ -14,6 +19,9 @@ export const KefZTab = () => {
                     <KefChart />
                     <CompanyTable />
                 </Space>
+            </Col>
+            <Col span={24}>
+                <FuelTable />
             </Col>
         </Row>
     );

@@ -1,4 +1,4 @@
-import { elemCharacteristics } from '@shared/constants/elemCharacteristics';
+import { elemCharacteristics } from '@shared/constants/elemCharacteristics.ts';
 
 /**
  * Рассчитывает макроскопическое сечение поглощения U235.

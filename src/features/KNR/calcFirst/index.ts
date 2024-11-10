@@ -24,6 +24,7 @@ export { useCalcLossFactorParams } from './lib/hooks/useCalcLossFactor.ts';
 export { useCalcTwoZoneParams } from './lib/hooks/useCalcTwoZoneParams.ts';
 export { useCalcKInfParams } from './lib/hooks/useCalcKInfParams.ts';
 export { useCalcNeutronAgeParams } from './lib/hooks/useCalcNeutronAgeParams.ts';
-export { useCalcReactorCriticaly } from './lib/hooks/useCalcReactorCriticaly.ts';
+export { useCalcReactorCritically } from './lib/hooks/useCalcReactorCritically.ts';
 // stores
 export * from './model/stores';
+export * from './lib/utils';

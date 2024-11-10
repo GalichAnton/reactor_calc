@@ -222,3 +222,39 @@ export function calculateLossFactorOther(params: {
 
     return term1 * (term2 + term3 + term4 + term5);
 }
+
+/**
+ * Вспомогательная функция для расчета G0 замедлителя
+ */
+export const calculateModeratorG0 = (
+    moderatorInverseDiffLength: number,
+    R1: number,
+    R2: number,
+    besselI: Function,
+    besselK: Function,
+): number => {
+    return (
+        besselI(moderatorInverseDiffLength * R1, 0) +
+        (besselI(moderatorInverseDiffLength * R2, 1) /
+            besselK(moderatorInverseDiffLength * R2, 1)) *
+            besselK(moderatorInverseDiffLength * R1, 0)
+    );
+};
+
+/**
+ * Вспомогательная функция для расчета G1 замедлителя
+ */
+export const calculateModeratorG1 = (
+    moderatorInverseDiffLength: number,
+    R1: number,
+    R2: number,
+    besselI: Function,
+    besselK: Function,
+): number => {
+    return (
+        besselI(moderatorInverseDiffLength * R1, 1) -
+        (besselI(moderatorInverseDiffLength * R2, 1) /
+            besselK(moderatorInverseDiffLength * R2, 1)) *
+            besselK(moderatorInverseDiffLength * R1, 1)
+    );
+};

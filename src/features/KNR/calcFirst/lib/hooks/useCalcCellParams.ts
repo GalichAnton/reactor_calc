@@ -10,7 +10,7 @@ import {
     calculateFuelVolumeFraction,
     calculateWaterVolume,
     calculateWaterVolumeFraction,
-} from '../utils/calcCellParams.ts';
+} from '../utils/calcCellParams/helpers.ts';
 
 export const useCalcCellParams = () => {
     const { initialParams } = useInitialParamsStore();

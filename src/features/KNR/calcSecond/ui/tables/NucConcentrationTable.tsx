@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 
-import { ZRelations } from '@features/KNR/VVER/calc/model/types/zRelations.ts';
+import { ZRelations } from '@features/KNR/calcSecond';
 import { Tooltip } from '@shared/ui';
 import { Table } from 'antd';
 import { ColumnsType } from 'antd/es/table';

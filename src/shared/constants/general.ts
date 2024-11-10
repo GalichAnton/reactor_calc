@@ -51,7 +51,7 @@ export const MICRO_SIGMA_A_XE135 = 2.65e6;
 /**
  * Z - для построения зависимостей.
  */
-export const START_Z = Array.from({ length: 251 }, (_, i) => i * 0.01);
+export const START_Z = Array.from({ length: 301 }, (_, i) => i * 0.01);
 
 /**
  * Число Авогадро, в яд/моль.

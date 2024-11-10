@@ -1,18 +1,12 @@
 import { useEffect, useMemo } from 'react';
 
 import {
-    useCompanyParamsStore,
-    useIsotopeCompositionStore,
-} from '@features/KNR/calcSecond';
-import {
     useMainCalculations,
     useCalculationStore,
 } from '@features/KNR/VVER/mainCalc';
-import { useInitialParamsStore } from '@features/KNR/VVER/setInitialValues';
 import { Card, Space, Spinner } from '@shared/ui';
 import { Presets } from '@widgets/KNR/Presets';
 import { CalcFirstTab } from '@widgets/KNR/Tabs/ui/calcFirstTab.tsx';
-import { FuelTab } from '@widgets/KNR/Tabs/ui/FuelTab.tsx';
 import { NucConcentrationTab } from '@widgets/KNR/Tabs/ui/NucConcentrationTab.tsx';
 import { SecondTab } from '@widgets/KNR/Tabs/ui/SecondTab.tsx';
 import { Divider, Tabs, TabsProps } from 'antd';
@@ -20,9 +14,6 @@ import { Divider, Tabs, TabsProps } from 'antd';
 import { InitialParamForm } from '../../Forms/InitialParamForm/InitialParamForm.tsx';
 
 export const KNRTabs = () => {
-    const initialParamsFilled = useInitialParamsStore((state) => state.filled);
-    const isotopeFilled = useIsotopeCompositionStore((state) => state.filled);
-    const companyFilled = useCompanyParamsStore((state) => state.filled);
     const { activeTab, isCalculated, isCalculating, setActiveTab } =
         useCalculationStore();
 
@@ -56,20 +47,14 @@ export const KNRTabs = () => {
             {
                 key: '2',
                 label: 'Расчет курсовой №2',
-                disabled: !initialParamsFilled,
+                disabled: !isCalculated,
                 children: <SecondTab />,
             },
             {
                 key: '3',
                 label: 'Ядерные концентрации от Z',
-                disabled: !isotopeFilled,
+                disabled: !isCalculated,
                 children: <NucConcentrationTab />,
-            },
-            {
-                key: '4',
-                label: 'Топливо',
-                disabled: !isotopeFilled && !companyFilled,
-                children: <FuelTab />,
             },
         ];
     }, [isCalculated, isCalculating]);

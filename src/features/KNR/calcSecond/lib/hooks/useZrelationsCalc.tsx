@@ -12,6 +12,9 @@ import {
 import { START_Z } from '@features/KNR/VVER/setInitialValues';
 
 import { ZRelations } from '../..//model/types/zRelations.ts';
+import { useAZPhysParamsStore } from '../../model/store/azPhysParamsStore.ts';
+import { useIsotopeCompositionStore } from '../../model/store/isotopeCompositionStore.ts';
+import { useZRelationsStore } from '../../model/store/zRelationStore.ts';
 import {
     calculateNuclearConcentrationPuByBat,
     calculateNuclearConcentrationByKR,
@@ -19,10 +22,7 @@ import {
     calculateNuclearConcentrationU5ByBat,
     calculateNuclearConcentrationU5ByRum,
     NuclearConcentrationParamsByKR,
-} from '../../lib/utils/calcNuclearConcentrations.ts';
-import { useAZPhysParamsStore } from '../../model/store/azPhysParamsStore.ts';
-import { useIsotopeCompositionStore } from '../../model/store/isotopeCompositionStore.ts';
-import { useZRelationsStore } from '../../model/store/zRelationStore.ts';
+} from '../utils/calcNuclearConcentrations/calcNuclearConcentrations.ts';
 import {
     calculateAbsorptionSlagCrossSection,
     calculateAverageSecondaryNeutronsPerAbsorption,
@@ -46,7 +46,7 @@ import {
     calculateTransportCrossSectionPu239,
     calculateTransportCrossSectionU235,
     calculateXenonAbsorptionCrossSection,
-} from '../utils/calcZrelations.ts';
+} from '../utils/calcZrelations/helpers.ts';
 
 export const useZrelationsCalc = () => {
     const { setZRelationProperties, resetStore } = useZRelationsStore();

@@ -4,6 +4,7 @@ export type ComputedValues = {
     z: Param;
     reactorOperationalTime: Param;
     k_ef: Param;
+    reactivity: Param;
 };
 
 export interface CompanyParams {
@@ -11,5 +12,6 @@ export interface CompanyParams {
     year: ComputedValues;
     withoutPu: ComputedValues;
     middle: ComputedValues;
+
     dN5: Param;
 }

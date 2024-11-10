@@ -17,27 +17,32 @@ interface CompanyStore {
 
 const createComputedValuesDefaults = (prefix: string): ComputedValues => ({
     z: {
-        name: `${prefix}_z, o.e`,
-        description: `${prefix} параметр z`,
+        name: `Z_${prefix}, o.e`,
+        description: `Глубина выгорания z ${prefix}`,
         value: 0,
     },
     k_ef: {
-        name: `${prefix}_k_ef, o.e`,
-        description: `${prefix} эффективный коэффициент размножения`,
+        name: `k_ef_${prefix}, o.e`,
+        description: `Эффективный коэффициент размножения ${prefix}`,
         value: 0,
     },
     reactorOperationalTime: {
         name: `${prefix}_t, сут`,
-        description: `${prefix} время работы реактора`,
+        description: `Время работы реактора ${prefix}`,
+        value: 0,
+    },
+    reactivity: {
+        name: `ro, o.e`,
+        description: `Реактивность ${prefix}`,
         value: 0,
     },
 });
 
 const companyParamsDefaults: CompanyParams = {
-    company: createComputedValuesDefaults('Компания'),
-    year: createComputedValuesDefaults('Год'),
-    withoutPu: createComputedValuesDefaults('Без Pu'),
-    middle: createComputedValuesDefaults('Среднее'),
+    company: createComputedValuesDefaults('кампания'),
+    year: createComputedValuesDefaults('год'),
+    withoutPu: createComputedValuesDefaults('без учета Pu'),
+    middle: createComputedValuesDefaults('середина кампании'),
 
     dN5: {
         name: 'dN5, %',

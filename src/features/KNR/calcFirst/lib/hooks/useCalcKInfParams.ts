@@ -2,6 +2,12 @@ import { useInitialParamsStore } from '@features/KNR/VVER/setInitialValues';
 import { getWaterDensity } from '@shared/lib/utils';
 
 import { useNuclearConcentrationsStore } from '../..//model/stores/azCompNucConStore.ts';
+import { useAveragedCrossSectionsStore } from '../../model/stores/averagedCrossSectionsStore.ts';
+import { useCellParamsStore } from '../../model/stores/cellParamsStore.ts';
+import { useKInfParamsStore } from '../../model/stores/kInfParamsStore.ts';
+import { useLossFactorParamsStore } from '../../model/stores/lossFactorParamsStore.ts';
+import { useModerationCapacityStore } from '../../model/stores/moderationCapacityStore.ts';
+import { useTwoZoneModelParamsStore } from '../../model/stores/twoZoneParamsStore.ts';
 import {
     calculateFastNeutronMultiplication,
     calculateInfiniteMultiplication,
@@ -10,13 +16,7 @@ import {
     calculateSecondaryNeutrons,
     calculateThermalNeutronCoef,
     calculateUraniumTemp,
-} from '../../lib/utils/calcKinfParams.ts';
-import { useAveragedCrossSectionsStore } from '../../model/stores/averagedCrossSectionsStore.ts';
-import { useCellParamsStore } from '../../model/stores/cellParamsStore.ts';
-import { useKInfParamsStore } from '../../model/stores/kInfParamsStore.ts';
-import { useLossFactorParamsStore } from '../../model/stores/lossFactorParamsStore.ts';
-import { useModerationCapacityStore } from '../../model/stores/moderationCapacityStore.ts';
-import { useTwoZoneModelParamsStore } from '../../model/stores/twoZoneParamsStore.ts';
+} from '../utils/calcKinfParams/helpers.ts';
 
 export const useCalcKInfParams = () => {
     const { setKInfParams } = useKInfParamsStore();

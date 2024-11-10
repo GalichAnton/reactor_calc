@@ -20,7 +20,7 @@ import {
     calculateSa9,
     calculateSf8,
     calculateSf9,
-} from '../utils/calcIsotopeComposition.ts';
+} from '../utils/calcIsotopeComposition/helpers.ts';
 
 export const useCalcIsotopes = () => {
     const { setIsotopeProperties } = useIsotopeCompositionStore();

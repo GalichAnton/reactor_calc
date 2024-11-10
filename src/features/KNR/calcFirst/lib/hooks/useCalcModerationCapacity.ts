@@ -7,7 +7,7 @@ import {
     calculateModerationCapacityU238,
     calculateModerationCapacityZr,
     calculateTotalModerationCapacity,
-} from '../utils/calcModerationCapacity.ts';
+} from '../utils/calcModerationCapacity/helpers.ts';
 
 export const useCalcModerationCapacity = () => {
     const { setModerationCapacityParams } = useModerationCapacityStore();

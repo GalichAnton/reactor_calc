@@ -8,6 +8,7 @@ type CompanyValues = {
     reactorOperationalTime: number[];
     k_ef: number[];
     z: number[];
+    reactivity: number[];
 };
 
 export const useCalcCompanyParams = () => {
@@ -30,9 +31,10 @@ export const useCalcCompanyParams = () => {
                     acc.reactorOperationalTime.push(p.reactorOperationalTime);
                     acc.k_ef.push(p.effectiveNeutronMultiplicationFactor);
                     acc.z.push(p.z);
+                    acc.reactivity.push(p.reactivity);
                     return acc;
                 },
-                { reactorOperationalTime: [], k_ef: [], z: [] },
+                { reactorOperationalTime: [], k_ef: [], z: [], reactivity: [] },
             );
 
             const yearParams = findClosestToTarget(
@@ -43,11 +45,13 @@ export const useCalcCompanyParams = () => {
             const z_year = yearParams.x;
             const reactorOperationalTimeYear = yearParams.y;
             const yearIndex = yearParams.index;
+            const reactivityYear = values.reactivity[yearIndex];
 
             const companyParams = findClosestToTarget(values.z, values.k_ef);
             const z_company = companyParams.x;
             const companyKef = companyParams.y;
             const companyIndex = companyParams.index;
+            const companyReactivity = values.reactivity[companyIndex];
 
             const dN5 = Math.abs(
                 zRelationsParams[0].nuclearConcentration235UByKR -
@@ -66,6 +70,7 @@ export const useCalcCompanyParams = () => {
             const middleKef = middleParams.x;
             const middleZ = middleParams.y;
             const middleIndex = middleParams.index;
+            const middleReactivity = values.reactivity[middleIndex];
 
             const withoutPuParams = findClosestToTarget(
                 values.z,
@@ -84,11 +89,13 @@ export const useCalcCompanyParams = () => {
                     z: z_company,
                     k_ef: companyKef,
                     reactorOperationalTime: companyTime,
+                    reactivity: companyReactivity,
                 },
                 year: {
                     z: z_year,
                     reactorOperationalTime: reactorOperationalTimeYear,
                     k_ef: values.k_ef[yearIndex] || 0,
+                    reactivity: reactivityYear,
                 },
                 withoutPu: {
                     z: z_companyWithoutPu,
@@ -99,6 +106,7 @@ export const useCalcCompanyParams = () => {
                     z: middleZ,
                     k_ef: middleKef,
                     reactorOperationalTime: middleTime,
+                    reactivity: middleReactivity,
                 },
             };
 

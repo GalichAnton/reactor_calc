@@ -1,10 +1,10 @@
 import { useAveragedCrossSectionsStore } from '@features/KNR/calcFirst/model/stores/averagedCrossSectionsStore.ts';
 import { elemCharacteristics } from '@shared/constants/elemCharacteristics.ts';
 
-import { calculateTransportMacroSection } from '../../lib/utils/calcTransportMacroSections.ts';
 import { useNuclearConcentrationsStore } from '../../model/stores/azCompNucConStore.ts';
 import { useNeutronGasParamsStore } from '../../model/stores/neutronGasStore.ts';
 import { useTransportMacroStore } from '../../model/stores/transportMacroStore.ts';
+import { calculateTransportMacroSection } from '../utils/calcTransportMacroSections/helpers.ts';
 
 export const useCalcTransportMacroSections = () => {
     const { setTransportMacroCrossSections } = useTransportMacroStore();

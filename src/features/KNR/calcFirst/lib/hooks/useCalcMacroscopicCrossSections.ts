@@ -7,7 +7,7 @@ import {
     calculateMacroSigmaAO2,
     calculateMacroSigmaAZr,
     calculateTotalMacroSigmaA,
-} from '../utils/calcMacroscopicCrossSections.ts';
+} from '../utils/calcMacroscopicCrossSections/helpers.ts';
 
 export const useCalcMacroscopicCrossSections = () => {
     const { setMacroscopicCrossSections } = useMacroscopicCrossSectionsStore();

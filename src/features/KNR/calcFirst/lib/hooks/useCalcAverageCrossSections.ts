@@ -3,7 +3,7 @@ import { elemCharacteristics } from '@shared/constants/elemCharacteristics.ts';
 import { useAveragedCrossSectionsStore } from '../../model/stores/averagedCrossSectionsStore.ts';
 import { useNuclearConcentrationsStore } from '../../model/stores/azCompNucConStore.ts';
 import { useNeutronGasParamsStore } from '../../model/stores/neutronGasStore.ts';
-import { calculateCrossSections } from '../utils/calcAverageCrossSections.ts';
+import { calculateCrossSections } from '../utils/calcAverageCrossSections/helpers.ts';
 
 export const useCalcAverageCrossSections = () => {
     const { setAveragedCrossSections } = useAveragedCrossSectionsStore();

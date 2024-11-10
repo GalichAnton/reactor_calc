@@ -1,6 +1,7 @@
 import {
     AZParamsTable,
     CompanyTable,
+    FuelTable,
     IsotopeCompositionTable,
     KefChart,
     KefZTable,
@@ -28,12 +29,31 @@ export const SecondTab = () => {
                 </Text>
                 <IsotopeCompositionTable />
             </Col>
+            <Divider />
             <Col span={24}>
                 <Space fullWidth direction={'vertical'}>
+                    <Text>
+                        <strong>
+                            3. ОПРЕДЕЛЕНИЕ КОЭФФИЦИЕНТА РАЗМНОЖЕНИЯ НЕЙТРОНОВ В
+                            ПРОЦЕССЕ ВЫГОРАНИЯ
+                        </strong>
+                    </Text>
                     <KefZTable />
                     <KefChart />
                     <CompanyTable />
                 </Space>
+            </Col>
+            <Col span={24}>
+                <FuelTable />
+            </Col>
+            <Divider />
+            <Col span={24}>
+                <Text>
+                    <strong>
+                        4. ОПРЕДЕЛЕНИЕ ТЕМПЕРАТУРНОГО ЭФФЕКТА И КОЭФФИЦИЕНТА
+                        РЕАКТИВНОСТИ
+                    </strong>
+                </Text>
             </Col>
             <Divider />
         </Row>

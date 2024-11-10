@@ -13,7 +13,7 @@ import {
     calculateKeffective,
     calculateNumberOfTVS,
     calculateReactivity,
-} from '../utils/calcAZ.ts';
+} from '../utils/calcAz/helpers.ts';
 
 export const useAzCalc = () => {
     const { setAZPhysParams } = useAZPhysParamsStore();

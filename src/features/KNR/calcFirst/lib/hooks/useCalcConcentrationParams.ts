@@ -19,7 +19,7 @@ import {
     calculateAverageNH2O,
     calculateAverageNO2,
     calculateAverageNZr,
-} from '../utils/calcNuclearConcentrations';
+} from '../utils/calcNuclearConcentrations/helpers.ts';
 
 export const useCalcConcentrationParams = () => {
     const { setConcentrations } = useNuclearConcentrationsStore();
