@@ -1,9 +1,5 @@
 import { Fragment, useState } from 'react';
 
-import {
-    useCompanyParamsStore,
-    useZRelationsStore,
-} from '@features/KNR/VVER/calc';
 import { useTheme } from '@shared/lib/hooks';
 import classNames from 'classnames';
 import {
@@ -19,6 +15,7 @@ import {
 } from 'recharts';
 
 import styles from './chart.module.css';
+import { useCompanyParamsStore, useZRelationsStore } from '../../index';
 
 const lightThemeColors = {
     text: '#000',

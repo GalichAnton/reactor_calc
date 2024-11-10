@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
 
+import { useCompanyParamsStore } from '@features/KNR/calcSecond';
+import { useZRelationsStore } from '@features/KNR/calcSecond';
 import { findClosestToTarget } from '@shared/lib/utils';
 
-import { useCompanyParamsStore } from '../../model/store/campanyStore.ts';
 import { useIsotopeCompositionStore } from '../../model/store/isotopeCompositionStore.ts';
-import { useZRelationsStore } from '../../model/store/zRelationStore.ts';
 
 type CompanyValues = {
     reactorOperationalTime: number[];
