@@ -16,7 +16,7 @@ export { ReactorCriticalityTable } from './ui/tables/ReactorCriticalityTable.tsx
 export { useCalcCellParams } from './lib/hooks/useCalcCellParams';
 export { useCalcConcentrationParams } from './lib/hooks/useCalcConcentrationParams';
 export { useCalcMacroscopicCrossSections } from './lib/hooks/useCalcMacroscopicCrossSections';
-export { useCalsModerationCapacity } from './lib/hooks/useCalsModerationCapacity';
+export { useCalcModerationCapacity } from './lib/hooks/useCalcModerationCapacity.ts';
 export { useCalcNeutronGasParams } from './lib/hooks/useCalcNeutronGasParams';
 export { useCalcAverageCrossSections } from './lib/hooks/useCalcAverageCrossSections';
 export { useCalcTransportMacroSections } from './lib/hooks/useCalcTransportMacroSections';

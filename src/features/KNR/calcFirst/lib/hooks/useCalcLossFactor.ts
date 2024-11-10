@@ -1,5 +1,3 @@
-import { useEffect } from 'react';
-
 import {
     calculateBlockFlux,
     calculateDiffusionCoefficient,
@@ -17,172 +15,193 @@ import { useModerationCapacityStore } from '../../model/stores/ModerationCapacit
 
 export const useCalcLossFactorParams = () => {
     const { setLossFactorParams } = useLossFactorParamsStore();
-
-    const {
-        moderationCapacityParams: {
-            moderationCapacityU235,
-            moderationCapacityU238,
-            moderationCapacityO2,
-            moderationCapacityH2O,
-            moderationCapacityZr,
-        },
-    } = useModerationCapacityStore();
-
-    const {
-        params: {
-            twoZoneBlockTransportCrossSection,
-            twoZoneFirstZoneRadius,
-            twoZoneModeratorTransportCrossSection,
-            twoZoneTotalRadius,
-            twoZoneBlockAbsorptionCrossSection,
-            twoZoneModeratorAbsorptionCrossSection,
-        },
-    } = useTwoZoneModelParamsStore();
-
     const { besselI, besselK } = useBessel();
 
-    useEffect(() => {
-        const powerRatio = calculateP(
-            moderationCapacityU235.value,
-            moderationCapacityU238.value,
-            moderationCapacityO2.value,
-            moderationCapacityH2O.value,
-            moderationCapacityZr.value,
-        );
+    const computeLossFactorParams = async () => {
+        try {
+            const {
+                moderationCapacityParams: {
+                    moderationCapacityU235,
+                    moderationCapacityU238,
+                    moderationCapacityO2,
+                    moderationCapacityH2O,
+                    moderationCapacityZr,
+                },
+            } = useModerationCapacityStore.getState();
 
-        const blockDiffusionCoef = calculateDiffusionCoefficient(
-            twoZoneBlockTransportCrossSection.value,
-        );
+            const {
+                params: {
+                    twoZoneBlockTransportCrossSection,
+                    twoZoneFirstZoneRadius,
+                    twoZoneModeratorTransportCrossSection,
+                    twoZoneTotalRadius,
+                    twoZoneBlockAbsorptionCrossSection,
+                    twoZoneModeratorAbsorptionCrossSection,
+                },
+            } = useTwoZoneModelParamsStore.getState();
 
-        const blockInverseDiffLength = calculateInverseDiffusionLength(
-            twoZoneBlockAbsorptionCrossSection.value,
-            blockDiffusionCoef,
-        );
+            // Расчет коэффициента мощности
+            const powerRatio = calculateP(
+                moderationCapacityU235.value,
+                moderationCapacityU238.value,
+                moderationCapacityO2.value,
+                moderationCapacityH2O.value,
+                moderationCapacityZr.value,
+            );
 
-        const moderatorDiffusionCoef = calculateDiffusionCoefficient(
-            twoZoneModeratorTransportCrossSection.value,
-        );
+            // Расчет параметров блока
+            const blockDiffusionCoef = calculateDiffusionCoefficient(
+                twoZoneBlockTransportCrossSection.value,
+            );
+            const blockInverseDiffLength = calculateInverseDiffusionLength(
+                twoZoneBlockAbsorptionCrossSection.value,
+                blockDiffusionCoef,
+            );
 
-        const moderatorInverseDiffLength = calculateInverseDiffusionLength(
-            twoZoneModeratorAbsorptionCrossSection.value,
-            moderatorDiffusionCoef,
-        );
+            // Расчет параметров замедлителя
+            const moderatorDiffusionCoef = calculateDiffusionCoefficient(
+                twoZoneModeratorTransportCrossSection.value,
+            );
+            const moderatorInverseDiffLength = calculateInverseDiffusionLength(
+                twoZoneModeratorAbsorptionCrossSection.value,
+                moderatorDiffusionCoef,
+            );
 
-        const besselI1 = besselI(
-            blockInverseDiffLength * twoZoneFirstZoneRadius.value,
-            1,
-        );
-        const besselI0 = besselI(
-            blockInverseDiffLength * twoZoneFirstZoneRadius.value,
-            0,
-        );
-        const moderatorG0 =
-            besselI(
-                moderatorInverseDiffLength * twoZoneFirstZoneRadius.value,
-                0,
-            ) +
-            (besselI(moderatorInverseDiffLength * twoZoneTotalRadius.value, 1) /
-                besselK(
-                    moderatorInverseDiffLength * twoZoneTotalRadius.value,
-                    1,
-                )) *
-                besselK(
-                    moderatorInverseDiffLength * twoZoneFirstZoneRadius.value,
-                    0,
-                );
-
-        const moderatorG1 =
-            besselI(
-                moderatorInverseDiffLength * twoZoneFirstZoneRadius.value,
+            // Расчет функций Бесселя
+            const besselI1 = besselI(
+                blockInverseDiffLength * twoZoneFirstZoneRadius.value,
                 1,
-            ) -
-            (besselI(moderatorInverseDiffLength * twoZoneTotalRadius.value, 1) /
-                besselK(
-                    moderatorInverseDiffLength * twoZoneTotalRadius.value,
-                    1,
-                )) *
-                besselK(
-                    moderatorInverseDiffLength * twoZoneFirstZoneRadius.value,
-                    1,
-                );
+            );
+            const besselI0 = besselI(
+                blockInverseDiffLength * twoZoneFirstZoneRadius.value,
+                0,
+            );
 
-        const blockFluxDensity = calculateBlockFlux({
-            blockDiffusionCoef,
-            blockInverseDiffLength,
-            moderatorDiffusionCoef,
-            moderatorInverseDiffLength,
-            G0: moderatorG0,
-            G1: moderatorG1,
-            powerRatio,
-            I0: besselI0,
-            I1: besselI1,
-            R1: twoZoneFirstZoneRadius.value,
-            twoZoneBlockAbsorptionCrossSection:
-                twoZoneBlockAbsorptionCrossSection.value,
-            twoZoneModeratorAbsorptionCrossSection:
-                twoZoneModeratorAbsorptionCrossSection.value,
-        });
+            // Расчет G-функций для замедлителя
+            const moderatorG0 = calculateModeratorG0(
+                moderatorInverseDiffLength,
+                twoZoneFirstZoneRadius.value,
+                twoZoneTotalRadius.value,
+                besselI,
+                besselK,
+            );
+            const moderatorG1 = calculateModeratorG1(
+                moderatorInverseDiffLength,
+                twoZoneFirstZoneRadius.value,
+                twoZoneTotalRadius.value,
+                besselI,
+                besselK,
+            );
 
-        const moderatorFluxDensity = calculateModeratorFlux({
-            blockDiffusionCoef,
-            blockInverseDiffLength,
-            moderatorDiffusionCoef,
-            moderatorInverseDiffLength,
-            G0: moderatorG0,
-            G1: moderatorG1,
-            powerRatio,
-            I0: besselI0,
-            I1: besselI1,
-            R1: twoZoneFirstZoneRadius.value,
-            R2: twoZoneTotalRadius.value,
-            twoZoneBlockAbsorptionCrossSection:
-                twoZoneBlockAbsorptionCrossSection.value,
-            twoZoneModeratorAbsorptionCrossSection:
-                twoZoneModeratorAbsorptionCrossSection.value,
-        });
+            // Расчет плотностей потока
+            const blockFluxDensity = calculateBlockFlux({
+                blockDiffusionCoef,
+                blockInverseDiffLength,
+                moderatorDiffusionCoef,
+                moderatorInverseDiffLength,
+                G0: moderatorG0,
+                G1: moderatorG1,
+                powerRatio,
+                I0: besselI0,
+                I1: besselI1,
+                R1: twoZoneFirstZoneRadius.value,
+                twoZoneBlockAbsorptionCrossSection:
+                    twoZoneBlockAbsorptionCrossSection.value,
+                twoZoneModeratorAbsorptionCrossSection:
+                    twoZoneModeratorAbsorptionCrossSection.value,
+            });
 
-        const lossFactor = calculateLossFactorSimple(
-            blockFluxDensity,
-            moderatorFluxDensity,
-        );
+            const moderatorFluxDensity = calculateModeratorFlux({
+                blockDiffusionCoef,
+                blockInverseDiffLength,
+                moderatorDiffusionCoef,
+                moderatorInverseDiffLength,
+                G0: moderatorG0,
+                G1: moderatorG1,
+                powerRatio,
+                I0: besselI0,
+                I1: besselI1,
+                R1: twoZoneFirstZoneRadius.value,
+                R2: twoZoneTotalRadius.value,
+                twoZoneBlockAbsorptionCrossSection:
+                    twoZoneBlockAbsorptionCrossSection.value,
+                twoZoneModeratorAbsorptionCrossSection:
+                    twoZoneModeratorAbsorptionCrossSection.value,
+            });
 
-        const lossFactorOther = calculateLossFactorOther({
-            powerRatio,
-            I0: besselI0,
-            I1: besselI1,
-            R1: twoZoneFirstZoneRadius.value,
-            R2: twoZoneTotalRadius.value,
-            blockInverseDiffLength,
-            blockDiffusionCoef,
-            twoZoneBlockAbsorptionCrossSection:
-                twoZoneBlockAbsorptionCrossSection.value,
-            moderatorDiffusionCoef,
-        });
+            // Расчет факторов потерь
+            const lossFactor = calculateLossFactorSimple(
+                blockFluxDensity,
+                moderatorFluxDensity,
+            );
 
-        setLossFactorParams({
-            blockDiffusionCoef,
-            blockFluxDensity,
-            blockInverseDiffLength,
-            besselI0,
-            besselI1,
-            moderatorG0,
-            moderatorG1,
-            moderatorDiffusionCoef,
-            moderatorFluxDensity,
-            moderatorInverseDiffLength,
-            lossFactor,
-            powerRatio,
-            lossFactorOther,
-        });
-    }, [
-        moderationCapacityU235,
-        moderationCapacityU238,
-        moderationCapacityO2,
-        moderationCapacityH2O,
-        moderationCapacityZr,
-        twoZoneBlockTransportCrossSection,
-        twoZoneFirstZoneRadius,
-        twoZoneModeratorTransportCrossSection,
-        twoZoneTotalRadius,
-    ]);
+            const lossFactorOther = calculateLossFactorOther({
+                powerRatio,
+                I0: besselI0,
+                I1: besselI1,
+                R1: twoZoneFirstZoneRadius.value,
+                R2: twoZoneTotalRadius.value,
+                blockInverseDiffLength,
+                blockDiffusionCoef,
+                twoZoneBlockAbsorptionCrossSection:
+                    twoZoneBlockAbsorptionCrossSection.value,
+                moderatorDiffusionCoef,
+            });
+
+            // Установка параметров в store
+            setLossFactorParams({
+                blockDiffusionCoef,
+                blockFluxDensity,
+                blockInverseDiffLength,
+                besselI0,
+                besselI1,
+                moderatorG0,
+                moderatorG1,
+                moderatorDiffusionCoef,
+                moderatorFluxDensity,
+                moderatorInverseDiffLength,
+                lossFactor,
+                powerRatio,
+                lossFactorOther,
+            });
+        } catch (error) {
+            console.error(
+                'Ошибка при расчете параметров фактора потерь',
+                error,
+            );
+        }
+    };
+
+    return { computeLossFactorParams };
+};
+
+// Вспомогательные функции для расчета G-функций
+const calculateModeratorG0 = (
+    moderatorInverseDiffLength: number,
+    R1: number,
+    R2: number,
+    besselI: Function,
+    besselK: Function,
+) => {
+    return (
+        besselI(moderatorInverseDiffLength * R1, 0) +
+        (besselI(moderatorInverseDiffLength * R2, 1) /
+            besselK(moderatorInverseDiffLength * R2, 1)) *
+            besselK(moderatorInverseDiffLength * R1, 0)
+    );
+};
+
+const calculateModeratorG1 = (
+    moderatorInverseDiffLength: number,
+    R1: number,
+    R2: number,
+    besselI: Function,
+    besselK: Function,
+) => {
+    return (
+        besselI(moderatorInverseDiffLength * R1, 1) -
+        (besselI(moderatorInverseDiffLength * R2, 1) /
+            besselK(moderatorInverseDiffLength * R2, 1)) *
+            besselK(moderatorInverseDiffLength * R1, 1)
+    );
 };

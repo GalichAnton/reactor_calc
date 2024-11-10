@@ -26,30 +26,23 @@ export const KefZTab = () => {
                 <Space fullWidth direction={'vertical'}>
                     <KefChart
                         zRelationsParams={zRelationsParams}
-                        companyParams={companyParams.computedValues}
+                        companyParams={companyParams}
                     />
                     <CompanyTable
                         companyTime={
-                            companyParams.computedValues.company
-                                .reactorOperationalTime
+                            companyParams.company.reactorOperationalTime
                         }
-                        companyZ={companyParams.computedValues.company.z}
-                        yearKef={companyParams.computedValues.year.k_ef}
-                        yearZ={companyParams.computedValues.year.z}
-                        withoutPuZ={companyParams.computedValues.withoutPu.z}
-                        withoutPuKef={
-                            companyParams.computedValues.withoutPu.k_ef
-                        }
+                        companyZ={companyParams.company.z}
+                        yearKef={companyParams.year.k_ef}
+                        yearZ={companyParams.year.z}
+                        withoutPuZ={companyParams.withoutPu.z}
+                        withoutPuKef={companyParams.withoutPu.k_ef}
                         withoutPuTime={
-                            companyParams.computedValues.withoutPu
-                                .reactorOperationalTime
+                            companyParams.withoutPu.reactorOperationalTime
                         }
-                        middleKef={companyParams.computedValues.middle.k_ef}
-                        middleTime={
-                            companyParams.computedValues.middle
-                                .reactorOperationalTime
-                        }
-                        middleZ={companyParams.computedValues.middle.z}
+                        middleKef={companyParams.middle.k_ef}
+                        middleTime={companyParams.middle.reactorOperationalTime}
+                        middleZ={companyParams.middle.z}
                     />
                 </Space>
             </Col>

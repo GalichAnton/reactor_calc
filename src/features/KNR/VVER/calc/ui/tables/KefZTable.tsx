@@ -1,17 +1,14 @@
 import { useMemo } from 'react';
 
+import { useZRelationsStore } from '@features/KNR/VVER/calc';
 import { Tooltip } from '@shared/ui';
 import { Table } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 
 import { ZRelations } from '../../model/types/zRelations.ts';
 
-interface ZRelationsTableProps {
-    zRelationsParams?: ZRelations[];
-}
-
-export const KefZTable = (props: ZRelationsTableProps) => {
-    const { zRelationsParams } = props;
+export const KefZTable = () => {
+    const { zRelationsParams } = useZRelationsStore();
 
     const columns: ColumnsType<ZRelations> = useMemo(() => {
         return [
@@ -37,7 +34,7 @@ export const KefZTable = (props: ZRelationsTableProps) => {
                 key: 'reactorOperationalTime',
                 dataIndex: 'reactorOperationalTime',
                 align: 'center',
-                render: (value: number) => value,
+                render: (value: number) => value.toFixed(0),
             },
             {
                 title: (

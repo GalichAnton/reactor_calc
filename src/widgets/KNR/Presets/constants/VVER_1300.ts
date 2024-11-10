@@ -17,7 +17,7 @@ export const VVER_1300: VVER_1300 = {
         latticePitch: 23.6,
         fuelRodLatticePitch: 1.275,
         assemblySizeAcrossFlats: 0.38,
-        fuelPelletRadius: 0.3865,
+        fuelPelletRadius: 0.38,
         claddingInnerRadius: 0.3865,
         claddingOuterRadius: 0.455,
         claddingMaterial: 'Zr+1%Nb',

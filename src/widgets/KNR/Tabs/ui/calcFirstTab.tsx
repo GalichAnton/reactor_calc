@@ -4,45 +4,19 @@ import {
     CellTable,
     KInfTable,
     LossFactorTable,
+    MacroscopicCrossSectionTable,
+    ModerationCapacityTable,
     NeutronAgeTable,
     NeutronGasTemperatureTable,
-    ReactorCriticalityTable,
+    NuclearConcentrationsTable,
     TransportMacroCrossSectionsTable,
     TwoZoneTable,
-    useCalcAverageCrossSections,
-    useCalcKInfParams,
-    useCalcLossFactorParams,
-    useCalcNeutronAgeParams,
-    useCalcNeutronGasParams,
-    useCalcReactorCriticaly,
-    useCalcTransportMacroSections,
-    useCalcTwoZoneParams,
-} from '@features/KNR/calcFirst';
-import {
-    useCalcConcentrationParams,
-    NuclearConcentrationsTable,
-    useCalcCellParams,
-    useCalcMacroscopicCrossSections,
-    MacroscopicCrossSectionTable,
-    useCalsModerationCapacity,
-    ModerationCapacityTable,
 } from '@features/KNR/calcFirst';
 import { Text } from '@shared/ui';
 import { Col, Divider, Row } from 'antd';
 
 export const CalcFirstTab = () => {
-    useCalcCellParams();
-    useCalcConcentrationParams();
-    useCalcMacroscopicCrossSections();
-    useCalsModerationCapacity();
-    useCalcNeutronGasParams();
-    useCalcAverageCrossSections();
-    useCalcTransportMacroSections();
-    useCalcTwoZoneParams();
-    useCalcLossFactorParams();
-    useCalcKInfParams();
-    useCalcNeutronAgeParams();
-    useCalcReactorCriticaly();
+    // useCalcReactorCriticaly();
 
     return (
         <Row gutter={[8, 10]}>
@@ -150,15 +124,15 @@ export const CalcFirstTab = () => {
                 <NeutronAgeTable />
             </Col>
             <Divider />
-            <Col span={24}>
-                <Text>
-                    <strong>
-                        9 ОПРЕДЕЛЕНИЕ МАТЕРИАЛЬНОГО ПАРАМЕТРА, ОЦЕНКА
-                        КРИТИЧЕСКИХ РАЗМЕРОВ АЗ
-                    </strong>
-                </Text>
-                <ReactorCriticalityTable />
-            </Col>
+            {/*<Col span={24}>*/}
+            {/*    <Text>*/}
+            {/*        <strong>*/}
+            {/*            9 ОПРЕДЕЛЕНИЕ МАТЕРИАЛЬНОГО ПАРАМЕТРА, ОЦЕНКА*/}
+            {/*            КРИТИЧЕСКИХ РАЗМЕРОВ АЗ*/}
+            {/*        </strong>*/}
+            {/*    </Text>*/}
+            {/*    <ReactorCriticalityTable />*/}
+            {/*</Col>*/}
         </Row>
     );
 };

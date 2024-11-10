@@ -1,6 +1,15 @@
 import { useEffect } from 'react';
 
-import { START_Z, useAZStore } from '@features/KNR/VVER/setInitialValues';
+import { useAveragedCrossSectionsStore } from '@features/KNR/calcFirst/model/stores/averagedCrossSectionsStore.ts';
+import { useNuclearConcentrationsStore } from '@features/KNR/calcFirst/model/stores/azCompNucConStore.ts';
+import { useCellParamsStore } from '@features/KNR/calcFirst/model/stores/cellParamsStore.ts';
+import { useKInfParamsStore } from '@features/KNR/calcFirst/model/stores/kInfParamsStore.ts';
+import { useLossFactorParamsStore } from '@features/KNR/calcFirst/model/stores/lossFactorParamsStore.ts';
+import { useNeutronDiffusionAgeStore } from '@features/KNR/calcFirst/model/stores/neutronDiffusionAgeStore.ts';
+import { useNeutronGasParamsStore } from '@features/KNR/calcFirst/model/stores/neutronGasStore.ts';
+import { useTransportMacroStore } from '@features/KNR/calcFirst/model/stores/transportMacroStore.ts';
+import { useTwoZoneModelParamsStore } from '@features/KNR/calcFirst/model/stores/twoZoneParamsStore.ts';
+import { START_Z } from '@features/KNR/VVER/setInitialValues';
 
 import { ZRelations } from '../..//model/types/zRelations.ts';
 import {
@@ -50,31 +59,6 @@ export const useZrelationsCalc = () => {
         secondaryNeutronsPerAbsorption239Pu,
         averageSpecificByVolumePower,
     } = useIsotopeCompositionStore((state) => state.isotopesParams);
-    const {
-        nuclearConcentration235U,
-        nuclearConcentration238U,
-        thermalNeutronAge,
-        resonanceEscapeProbability,
-        fastNeutronReproductionCoefficient,
-        secondaryNeutronsPerAbsorption235U,
-        fuelVolume,
-        cellVolume,
-        neutronGasTemperature,
-        averageFissionCrossSection235U,
-        averageAbsorptionCrossSection235U,
-        averageAbsorptionCrossSection238U,
-
-        blockVolume,
-        macroscopicAbsorptionCrossSectionBlock,
-        transportMacroscopicCrossSectionOxygen,
-        transportMacroscopicCrossSectionH2O,
-        transportMacroscopicCrossSectionZirconium,
-        transportMacroscopicCrossSection238U,
-        moderatorVolume,
-        macroscopicAbsorptionCrossSectionModerator,
-        reproductionLossCoefficient,
-        infiniteNeutronMultiplicationCoefficient,
-    } = useAZStore((state) => state.AZCharacteristics);
 
     const { geometricParameter } = useAZPhysParamsStore(
         (state) => state.azPhysParams,
@@ -82,66 +66,110 @@ export const useZrelationsCalc = () => {
 
     const { setZRelationProperties, resetStore } = useZRelationsStore();
 
-    useEffect(() => {
-        const zeroZvalues = {
-            averageNuclearConcentration235UByZero: 0,
-            averageAbsorptionMacroCrossSection235UByZero: 0,
-            averageSecondaryNeutronsPerAbsorptionByZero: 0,
-            thermalNeutronUtilizationByZero: 0,
-        };
+    const {
+        cellParams: { fuelVolume, cellVolume },
+    } = useCellParamsStore();
 
-        const epsilon = fuelVolume / cellVolume;
+    const {
+        concentrations: { N_05, N_08 },
+    } = useNuclearConcentrationsStore();
+
+    const {
+        kInfParams: {
+            reproductionFactor,
+            fastFissionFactor,
+            resonanceEscapeProbability,
+            infiniteMultiplicationFactor,
+            thermalUtilization,
+        },
+    } = useKInfParamsStore();
+
+    const {
+        neutronDiffusionAgeParams: { neutronAge },
+    } = useNeutronDiffusionAgeStore();
+
+    const {
+        neutronGasParams: { neutronGasTemperature },
+    } = useNeutronGasParamsStore();
+
+    const {
+        averagedCrossSections: {
+            averagedMicroFU5,
+            averagedMicroAU5,
+            averagedMicroAU8,
+            averagedMacroAU5,
+        },
+    } = useAveragedCrossSectionsStore();
+
+    const {
+        params: {
+            twoZoneFirstZoneVolume,
+            twoZoneBlockAbsorptionCrossSection,
+            twoZoneModeratorAbsorptionCrossSection,
+            twoZoneModeratorVolume,
+        },
+    } = useTwoZoneModelParamsStore();
+
+    const {
+        transportMacroCrossSections: {
+            transportMacroH2O,
+            transportMacroU238,
+            transportMacroO2,
+            transportMacroZr,
+        },
+    } = useTransportMacroStore();
+
+    const {
+        lossFactorParams: { lossFactor },
+    } = useLossFactorParamsStore();
+
+    useEffect(() => {
+        const epsilon = fuelVolume.value / cellVolume.value;
 
         START_Z.forEach((z, i) => {
             const averageNuclearConcentration235UByRum =
-                calculateNuclearConcentrationU5ByRum(
-                    nuclearConcentration235U,
-                    z,
-                );
-
-            if (z === 0) {
-                zeroZvalues.averageNuclearConcentration235UByZero =
-                    averageNuclearConcentration235UByRum;
-            }
+                calculateNuclearConcentrationU5ByRum(N_05.value, z);
 
             const averageNuclearConcentration239PuByRum =
                 calculateNuclearConcentrationPuByRum({
-                    nuclearConcentration238U,
-                    initialNuclearConcentration235U:
-                        zeroZvalues.averageNuclearConcentration235UByZero,
-                    thermalNeutronAge,
-                    fastNeutronReproductionCoefficient,
-                    secondaryNeutronsPerAbsorption235U,
-                    resonanceEscapeProbability,
-                    geometricParameter,
-                    Sa8,
-                    Sa9,
+                    nuclearConcentration238U: N_08.value,
+                    initialNuclearConcentration235U: N_05.value,
+                    thermalNeutronAge: neutronAge.value,
+                    fastNeutronReproductionCoefficient: fastFissionFactor.value,
+                    secondaryNeutronsPerAbsorption235U:
+                        reproductionFactor.value,
+                    resonanceEscapeProbability:
+                        resonanceEscapeProbability.value,
+                    geometricParameter: geometricParameter.value,
+                    Sa8: Sa8.value,
+                    Sa9: Sa9.value,
                     z,
                 });
 
             const reactorOperationalDays = calculateReactorOperationalDays({
                 z,
-                thermalNeutronAge,
-                resonanceEscapeProbability,
+                thermalNeutronAge: neutronAge.value,
+                resonanceEscapeProbability: resonanceEscapeProbability.value,
                 nuclearConcentration239PUbyZ:
                     averageNuclearConcentration239PuByRum,
-                nuclearConcentration235Uby0:
-                    zeroZvalues.averageNuclearConcentration235UByZero,
-                averageSpecificByVolumePower,
-                Sf9,
-                Sf5,
-                Sa9,
-                Sa8,
-                secondaryNeutronsPerAbsorption235U,
-                fastNeutronReproductionCoefficient,
-                geometricParameter,
-                nuclearConcentration238U,
+                nuclearConcentration235Uby0: N_05.value,
+                averageSpecificByVolumePower:
+                    averageSpecificByVolumePower.value,
+                Sf9: Sf9.value,
+                Sf5: Sf5.value,
+                Sa9: Sa9.value,
+                Sa8: Sa8.value,
+                secondaryNeutronsPerAbsorption235U: reproductionFactor.value,
+                fastNeutronReproductionCoefficient: fastFissionFactor.value,
+                geometricParameter: geometricParameter.value,
+                nuclearConcentration238U: N_05.value,
             });
 
             const absorptionSlagCrossSection =
                 calculateAbsorptionSlagCrossSection({
                     t: reactorOperationalDays,
-                    averageSpecificByVolumePower,
+                    averageSpecificByVolumePower:
+                        averageSpecificByVolumePower.value,
                 });
 
             const meanNuclearConcentrationU235 =
@@ -157,39 +185,39 @@ export const useZrelationsCalc = () => {
                 });
 
             const meanXenonAbsorptionCrossSection =
-                calculateMeanXenonAbsorptionCrossSection(neutronGasTemperature);
+                calculateMeanXenonAbsorptionCrossSection(
+                    neutronGasTemperature.value,
+                );
 
             const meanMacroscopicFissionCrossSection235U =
                 calculateMeanMacroscopicFissionCrossSection({
                     meanNuclearConcentrationU235: meanNuclearConcentrationU235,
-                    averageFissionCrossSection235U,
+                    averageFissionCrossSection235U: averagedMicroFU5.value,
                 });
 
             const averageAbsorptionMacroCrossSection235U =
                 calculateMeanMacroscopicAbsorptionCrossSectionU235({
                     meanNuclearConcentrationU235: meanNuclearConcentrationU235,
-                    averageAbsorptionCrossSection235U,
+                    averageAbsorptionCrossSection235U: averagedMicroAU5.value,
                 });
-
-            if (z === 0) {
-                zeroZvalues.averageAbsorptionMacroCrossSection235UByZero =
-                    averageAbsorptionMacroCrossSection235U;
-            }
 
             const averageAbsorptionMacroCrossSection239Pu =
                 calculateMeanMacroscopicAbsorptionCrossSectionPu239({
                     meanPlutoniumConcentration: meanPlutoniumConcentration,
-                    averageAbsorptionCrossSection239Pu,
+                    averageAbsorptionCrossSection239Pu:
+                        averageAbsorptionCrossSection239Pu.value,
                 });
 
             const meanMacroscopicFissionCrossSection239Pu =
                 calculateMeanMacroscopicFissionCrossSectionPu239({
                     meanPlutoniumConcentration: meanPlutoniumConcentration,
-                    averageFissionCrossSection239Pu,
+                    averageFissionCrossSection239Pu:
+                        averageFissionCrossSection239Pu.value,
                 });
 
             const neutronFluxDensity = calculateNeutronFlux({
-                averageSpecificByVolumePower,
+                averageSpecificByVolumePower:
+                    averageSpecificByVolumePower.value,
                 meanMacroscopicFissionCrossSection5:
                     meanMacroscopicFissionCrossSection235U,
                 meanMacroscopicFissionCrossSection9:
@@ -221,32 +249,29 @@ export const useZrelationsCalc = () => {
                         averageAbsorptionMacroCrossSection235U,
                     meanAbsorptionCrossSection9:
                         averageAbsorptionMacroCrossSection239Pu,
-                    secondaryNeutronsPerAbsorption235U,
-                    secondaryNeutronsPerAbsorption239Pu,
+                    secondaryNeutronsPerAbsorption235U:
+                        reproductionFactor.value,
+                    secondaryNeutronsPerAbsorption239Pu:
+                        secondaryNeutronsPerAbsorption239Pu.value,
                 });
-
-            if (z === 0) {
-                zeroZvalues.averageSecondaryNeutronsPerAbsorptionByZero =
-                    averageSecondaryNeutronsPerAbsorption;
-            }
 
             const blockAbsorptionCrossSection =
                 calculateBlockAbsorptionCrossSection({
-                    blockVolume,
+                    blockVolume: twoZoneFirstZoneVolume.value,
                     meanAbsorptionCrossSection5:
                         averageAbsorptionMacroCrossSection235U,
                     meanAbsorptionCrossSection9:
                         averageAbsorptionMacroCrossSection239Pu,
-                    uraniumVolume: fuelVolume,
+                    uraniumVolume: fuelVolume.value,
                     initialAbsorptionCrossSection:
-                        macroscopicAbsorptionCrossSectionBlock,
+                        twoZoneBlockAbsorptionCrossSection.value,
                     meanSlagAbsorptionCrossSection: absorptionSlagCrossSection,
                     meanXenonAbsorptionCrossSection:
                         xenonAbsorptionCrossSection,
                     meanSamariumAbsorptionCrossSection:
                         samariumAbsorptionCrossSection,
                     meanMacroscopicAbsorptionCrossSectionU235By0:
-                        zeroZvalues.averageAbsorptionMacroCrossSection235UByZero,
+                        averagedMacroAU5.value,
                 });
 
             const cosTeta5 = 2 / (3 * 235);
@@ -271,16 +296,12 @@ export const useZrelationsCalc = () => {
 
             const totalTransportCrossSection =
                 calculateTotalTransportCrossSection({
-                    meanTransportCrossSection8:
-                        transportMacroscopicCrossSection238U,
-                    meanTransportCrossSectionH2O:
-                        transportMacroscopicCrossSectionH2O,
-                    meanTransportCrossSectionZr:
-                        transportMacroscopicCrossSectionZirconium,
+                    meanTransportCrossSection8: transportMacroU238.value,
+                    meanTransportCrossSectionH2O: transportMacroH2O.value,
+                    meanTransportCrossSectionZr: transportMacroZr.value,
                     meanTransportCrossSectionU5: transportCrossSectionU235,
                     meanTransportCrossSectionPu9: transportCrossSectionPu239,
-                    meanTransportCrossSectionO2:
-                        transportMacroscopicCrossSectionOxygen,
+                    meanTransportCrossSectionO2: transportMacroO2.value,
                 });
 
             const totalAbsorptionCrossSection =
@@ -302,59 +323,53 @@ export const useZrelationsCalc = () => {
 
             const thermalNeutronUtilization =
                 calculateThermalNeutronUtilization({
-                    V_U: fuelVolume,
-                    V_moderator: moderatorVolume,
+                    V_U: fuelVolume.value,
+                    V_moderator: twoZoneModeratorVolume.value,
                     averageAbsorptionCrossSection5:
                         averageAbsorptionMacroCrossSection235U,
                     averageAbsorptionCrossSection9:
                         averageAbsorptionMacroCrossSection239Pu,
                     averageAbsorptionCrossSection: blockAbsorptionCrossSection,
-                    d: reproductionLossCoefficient,
+                    d: lossFactor.value,
                     moderatorAbsorptionCrossSection:
-                        macroscopicAbsorptionCrossSectionModerator,
+                        twoZoneModeratorAbsorptionCrossSection.value,
                 });
-
-            if (z === 0) {
-                zeroZvalues.thermalNeutronUtilizationByZero =
-                    thermalNeutronUtilization;
-            }
 
             const infiniteMediumNeutronMultiplicationFactor =
                 calculateNeutronMultiplication({
-                    k_infinite: infiniteNeutronMultiplicationCoefficient,
+                    k_infinite: infiniteMultiplicationFactor.value,
                     theta: thermalNeutronUtilization,
-                    theta0: zeroZvalues.thermalNeutronUtilizationByZero,
+                    theta0: thermalUtilization.value,
                     secondaryNeutronsPerAbsorption235UorPu9:
                         averageSecondaryNeutronsPerAbsorption,
                     secondaryNeutrons0PerAbsorption235UorPu9:
-                        zeroZvalues.averageSecondaryNeutronsPerAbsorptionByZero,
+                        reproductionFactor.value,
                 });
 
             const effectiveNeutronMultiplicationFactor =
                 calculateEffectiveNeutronMultiplication({
                     diffusionLength,
-                    geometricParameter,
-                    thermalNeutronAge,
+                    geometricParameter: geometricParameter.value,
+                    thermalNeutronAge: neutronAge.value,
                     k_infinite: infiniteMediumNeutronMultiplicationFactor,
                 });
 
             const averageNuclearConcentration235UByBat =
-                calculateNuclearConcentrationU5ByBat(
-                    nuclearConcentration235U,
-                    z,
-                );
+                calculateNuclearConcentrationU5ByBat(N_05.value, z);
 
             const averageNuclearConcentration239PuByBat =
                 calculateNuclearConcentrationPuByBat({
                     z,
-                    initialNuclearConcentration238U: nuclearConcentration238U,
-                    initialNuclearConcentration235U: nuclearConcentration235U,
+                    initialNuclearConcentration238U: N_08.value,
+                    initialNuclearConcentration235U: N_05.value,
                     initialNuclearConcentration239Pu: 0,
-                    averageAbsorptionCrossSection238U,
-                    averageAbsorptionCrossSection235U,
-                    averageAbsorptionCrossSection239Pu,
-                    fastNeutronReproductionCoefficient,
-                    resonanceEscapeProbability,
+                    averageAbsorptionCrossSection238U: averagedMicroAU8.value,
+                    averageAbsorptionCrossSection235U: averagedMicroAU5.value,
+                    averageAbsorptionCrossSection239Pu:
+                        averageFissionCrossSection239Pu.value,
+                    fastNeutronReproductionCoefficient: fastFissionFactor.value,
+                    resonanceEscapeProbability:
+                        resonanceEscapeProbability.value,
                 });
 
             const currentState = useZRelationsStore.getState();
@@ -362,10 +377,8 @@ export const useZrelationsCalc = () => {
             const KRParams: Partial<NuclearConcentrationParamsByKR> = {};
 
             if (z === 0) {
-                KRParams.initialNuclearConcentration235U =
-                    nuclearConcentration235U;
-                KRParams.initialNuclearConcentration238U =
-                    nuclearConcentration238U;
+                KRParams.initialNuclearConcentration235U = N_05.value;
+                KRParams.initialNuclearConcentration238U = N_08.value;
                 KRParams.initialNuclearConcentration239Pu = 0;
             } else {
                 if (!currentState.zRelationsParams) {
@@ -397,11 +410,12 @@ export const useZrelationsCalc = () => {
                     KRParams.initialNuclearConcentration239Pu,
                 initialNuclearConcentration238U:
                     KRParams.initialNuclearConcentration238U,
-                averageAbsorptionCrossSection238U,
-                averageAbsorptionCrossSection235U,
-                averageAbsorptionCrossSection239Pu,
-                fastNeutronReproductionCoefficient,
-                resonanceEscapeProbability,
+                averageAbsorptionCrossSection238U: averagedMicroAU8.value,
+                averageAbsorptionCrossSection235U: averagedMicroAU5.value,
+                averageAbsorptionCrossSection239Pu:
+                    averageAbsorptionCrossSection239Pu.value,
+                fastNeutronReproductionCoefficient: reproductionFactor.value,
+                resonanceEscapeProbability: resonanceEscapeProbability.value,
             });
 
             const reactivity =
@@ -564,34 +578,38 @@ export const useZrelationsCalc = () => {
 
         return () => resetStore();
     }, [
-        nuclearConcentration235U,
-        nuclearConcentration238U,
-        thermalNeutronAge,
-        resonanceEscapeProbability,
-        fastNeutronReproductionCoefficient,
-        secondaryNeutronsPerAbsorption235U,
-        fuelVolume,
-        cellVolume,
-        neutronGasTemperature,
-        averageFissionCrossSection235U,
-        averageAbsorptionCrossSection235U,
-        blockVolume,
-        macroscopicAbsorptionCrossSectionBlock,
-        transportMacroscopicCrossSectionOxygen,
-        transportMacroscopicCrossSectionH2O,
-        transportMacroscopicCrossSectionZirconium,
-        transportMacroscopicCrossSection238U,
-        moderatorVolume,
-        macroscopicAbsorptionCrossSectionModerator,
-        reproductionLossCoefficient,
-        infiniteNeutronMultiplicationCoefficient,
-        Sa8,
-        Sa9,
-        Sf9,
-        Sf5,
-        averageAbsorptionCrossSection239Pu,
-        averageFissionCrossSection239Pu,
-        secondaryNeutronsPerAbsorption239Pu,
-        averageSpecificByVolumePower,
+        Sa8.value,
+        Sa9.value,
+        Sf9.value,
+        Sf5.value,
+        averageAbsorptionCrossSection239Pu.value,
+        averageFissionCrossSection239Pu.value,
+        secondaryNeutronsPerAbsorption239Pu.value,
+        averageSpecificByVolumePower.value,
+        geometricParameter.value,
+        fuelVolume.value,
+        cellVolume.value,
+        N_05.value,
+        N_08.value,
+        reproductionFactor.value,
+        fastFissionFactor.value,
+        resonanceEscapeProbability.value,
+        infiniteMultiplicationFactor.value,
+        thermalUtilization.value,
+        neutronAge.value,
+        neutronGasTemperature.value,
+        averagedMicroFU5.value,
+        averagedMicroAU5.value,
+        averagedMicroAU8.value,
+        averagedMacroAU5.value,
+        twoZoneFirstZoneVolume.value,
+        twoZoneBlockAbsorptionCrossSection.value,
+        twoZoneModeratorAbsorptionCrossSection.value,
+        twoZoneModeratorVolume.value,
+        transportMacroH2O.value,
+        transportMacroU238.value,
+        transportMacroO2.value,
+        transportMacroZr.value,
+        lossFactor.value,
     ]);
 };

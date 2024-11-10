@@ -52,8 +52,9 @@ export const useCalcCompanyParams = () => {
         );
 
         const tWithoutPu =
-            (dN5 * Sf5) / (2.85 * 1e18 * averageSpecificByVolumePower);
-        console.log(z_company);
+            (dN5 * Sf5.value) /
+            (2.85 * 1e18 * averageSpecificByVolumePower.value);
+
         const {
             x: middleKef,
             y: middleZ,
@@ -71,29 +72,26 @@ export const useCalcCompanyParams = () => {
         const middleTime = values?.reactorOperationalTime[middleIndex] || 0;
 
         setCompanyParams({
-            computedValues: {
-                company: {
-                    z: z_company,
-                    k_ef: companyKef,
-                    reactorOperationalTime: companyTime,
-                },
-                year: {
-                    z: z_year,
-                    reactorOperationalTime: reactorOperationalTimeYear,
-                    k_ef: values?.k_ef[yearIndex] || 0,
-                },
-                withoutPu: {
-                    z: z_companyWithoutPu,
-                    k_ef: values?.k_ef[indexWithoutPu] || 0,
-                    reactorOperationalTime: tWithoutPu,
-                },
-                middle: {
-                    z: middleZ,
-                    k_ef: middleKef,
-                    reactorOperationalTime: middleTime,
-                },
+            company: {
+                z: z_company,
+                k_ef: companyKef,
+                reactorOperationalTime: companyTime,
             },
-            dN5,
+            year: {
+                z: z_year,
+                reactorOperationalTime: reactorOperationalTimeYear,
+                k_ef: values?.k_ef[yearIndex] || 0,
+            },
+            withoutPu: {
+                z: z_companyWithoutPu,
+                k_ef: values?.k_ef[indexWithoutPu] || 0,
+                reactorOperationalTime: tWithoutPu,
+            },
+            middle: {
+                z: middleZ,
+                k_ef: middleKef,
+                reactorOperationalTime: middleTime,
+            },
         });
     }, [zRelationsParams]);
 };

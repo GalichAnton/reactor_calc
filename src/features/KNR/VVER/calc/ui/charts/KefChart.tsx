@@ -1,5 +1,9 @@
 import { Fragment, useState } from 'react';
 
+import {
+    useCompanyParamsStore,
+    useZRelationsStore,
+} from '@features/KNR/VVER/calc';
 import { useTheme } from '@shared/lib/hooks';
 import classNames from 'classnames';
 import {
@@ -15,8 +19,6 @@ import {
 } from 'recharts';
 
 import styles from './chart.module.css';
-import { CompanyValues } from '../../model/types/companyParams.ts';
-import { ZRelations } from '../../model/types/zRelations.ts';
 
 const lightThemeColors = {
     text: '#000',
@@ -38,13 +40,13 @@ const darkThemeColors = {
     reactivity: '#c391ff',
 };
 
-interface KefChart {
-    zRelationsParams?: ZRelations[];
-    companyParams: CompanyValues;
-}
-
-export const KefChart = (props: KefChart) => {
-    const { zRelationsParams, companyParams } = props;
+export const KefChart = () => {
+    const { zRelationsParams } = useZRelationsStore();
+    const {
+        companyParams: {
+            company: { z },
+        },
+    } = useCompanyParamsStore();
     const { isLight, theme } = useTheme();
 
     const data = zRelationsParams?.map((p) => ({
@@ -58,7 +60,6 @@ export const KefChart = (props: KefChart) => {
     const [showKef, setShowKef] = useState(true);
 
     const themeColors = isLight(theme) ? lightThemeColors : darkThemeColors;
-    console.log(data);
     return (
         <div
             className={classNames(styles.chartContainer, {
@@ -169,17 +170,17 @@ export const KefChart = (props: KefChart) => {
                         const { cx, cy, payload } = props;
                         const labels = [
                             {
-                                value: companyParams.company.z,
+                                value: z.value,
                                 label: 'K_ef кампании',
                                 color: 'red',
                             },
                             {
-                                value: companyParams.withoutPu.z,
+                                value: z.value,
                                 label: 'K_ef кампании без учета Pu',
                                 color: 'red',
                             },
                             {
-                                value: companyParams.year.z,
+                                value: z.value,
                                 label: 'K_ef через год',
                                 color: 'red',
                             },

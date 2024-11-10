@@ -9,7 +9,7 @@ export const LossFactorTable = () => {
     return (
         <ParamsTable<LossFactorParams>
             params={lossFactorParams}
-            title={'Параметры ячейки'}
+            title={'Коэффициент проигрыша'}
             rowKey={'powerRatio'}
         />
     );

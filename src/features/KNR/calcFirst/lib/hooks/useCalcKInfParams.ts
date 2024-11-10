@@ -1,5 +1,9 @@
-import { useEffect } from 'react';
+import {
+    DENSITY_H2O,
+    useInitialParamsStore,
+} from '@features/KNR/VVER/setInitialValues';
 
+import { useNuclearConcentrationsStore } from '../..//model/stores/azCompNucConStore.ts';
 import {
     calculateFastNeutronMultiplication,
     calculateInfiniteMultiplication,
@@ -8,134 +12,125 @@ import {
     calculateSecondaryNeutrons,
     calculateThermalNeutronCoef,
     calculateUraniumTemp,
-} from '@features/KNR/calcFirst/lib/utils/calcKinfParams.ts';
-import { useAveragedCrossSectionsStore } from '@features/KNR/calcFirst/model/stores/averagedCrossSectionsStore.ts';
-import { useNuclearConcentrationsStore } from '@features/KNR/calcFirst/model/stores/azCompNucConStore.ts';
-import { useCellParamsStore } from '@features/KNR/calcFirst/model/stores/cellParamsStore.ts';
-import { useKInfParamsStore } from '@features/KNR/calcFirst/model/stores/kInfParamsStore.ts';
-import { useLossFactorParamsStore } from '@features/KNR/calcFirst/model/stores/lossFactorParamsStore.ts';
-import { useModerationCapacityStore } from '@features/KNR/calcFirst/model/stores/ModerationCapacityStore.ts';
-import { useTwoZoneModelParamsStore } from '@features/KNR/calcFirst/model/stores/twoZoneParamsStore.ts';
-import {
-    DENSITY_H2O,
-    useInitialParamsStore,
-} from '@features/KNR/VVER/setInitialValues';
+} from '../../lib/utils/calcKinfParams.ts';
+import { useAveragedCrossSectionsStore } from '../../model/stores/averagedCrossSectionsStore.ts';
+import { useCellParamsStore } from '../../model/stores/cellParamsStore.ts';
+import { useKInfParamsStore } from '../../model/stores/kInfParamsStore.ts';
+import { useLossFactorParamsStore } from '../../model/stores/lossFactorParamsStore.ts';
+import { useModerationCapacityStore } from '../../model/stores/ModerationCapacityStore.ts';
+import { useTwoZoneModelParamsStore } from '../../model/stores/twoZoneParamsStore.ts';
 
 export const useCalcKInfParams = () => {
     const { setKInfParams } = useKInfParamsStore();
 
-    const {
-        averagedCrossSections: { averagedMicroAU5, averagedMicroFU5 },
-    } = useAveragedCrossSectionsStore();
+    const computeKInfParams = async () => {
+        try {
+            const {
+                averagedCrossSections: { averagedMicroAU5, averagedMicroFU5 },
+            } = useAveragedCrossSectionsStore.getState();
 
-    const {
-        initialParams: { coolantTemperature },
-    } = useInitialParamsStore();
+            const {
+                initialParams: { coolantTemperature },
+            } = useInitialParamsStore.getState();
 
-    const {
-        params: {
-            twoZoneCellVolume,
-            twoZoneBlockAbsorptionCrossSection,
-            twoZoneModeratorAbsorptionCrossSection,
-            twoZoneModeratorVolume,
-        },
-    } = useTwoZoneModelParamsStore();
+            const {
+                params: {
+                    twoZoneCellVolume,
+                    twoZoneBlockAbsorptionCrossSection,
+                    twoZoneModeratorAbsorptionCrossSection,
+                    twoZoneModeratorVolume,
+                },
+            } = useTwoZoneModelParamsStore.getState();
 
-    const {
-        lossFactorParams: { lossFactor },
-    } = useLossFactorParamsStore();
+            const {
+                lossFactorParams: { lossFactor },
+            } = useLossFactorParamsStore.getState();
 
-    const {
-        concentrations: { averageN_5, N_05, N_0U },
-    } = useNuclearConcentrationsStore();
+            const {
+                concentrations: { averageN_5, N_0U },
+            } = useNuclearConcentrationsStore.getState();
 
-    const {
-        cellParams: { waterVolume, fuelVolume, fuelArea, cellVolume },
-    } = useCellParamsStore();
+            const {
+                cellParams: { waterVolume, fuelVolume, fuelArea, cellVolume },
+            } = useCellParamsStore.getState();
 
-    const {
-        moderationCapacityParams: { totalModerationCapacity },
-    } = useModerationCapacityStore();
+            const {
+                moderationCapacityParams: { totalModerationCapacity },
+            } = useModerationCapacityStore.getState();
 
-    useEffect(() => {
-        const uraniumTemperature = calculateUraniumTemp({
-            waterTemp: coolantTemperature,
-        });
+            const uraniumTemperature = calculateUraniumTemp({
+                waterTemp: coolantTemperature,
+            });
 
-        const thermalUtilization = calculateThermalNeutronCoef({
-            blockVolume: twoZoneCellVolume.value,
-            blockMacroAbsorptionCrossSection:
-                twoZoneBlockAbsorptionCrossSection.value,
-            moderatorMacroAbsorptionCrossSection:
-                twoZoneModeratorAbsorptionCrossSection.value,
-            moderatorVolume: twoZoneModeratorVolume.value,
-            lossFactor: lossFactor.value,
-            u235AbsorptionCrossSection: averagedMicroAU5.value,
-            u235Concentration: averageN_5.value,
-        });
+            const thermalUtilization = calculateThermalNeutronCoef({
+                blockVolume: twoZoneCellVolume.value,
+                blockMacroAbsorptionCrossSection:
+                    twoZoneBlockAbsorptionCrossSection.value,
+                moderatorMacroAbsorptionCrossSection:
+                    twoZoneModeratorAbsorptionCrossSection.value,
+                moderatorVolume: twoZoneModeratorVolume.value,
+                lossFactor: lossFactor.value,
+                u235AbsorptionCrossSection: averagedMicroAU5.value,
+                u235Concentration: averageN_5.value,
+            });
 
-        const reproductionFactor = calculateSecondaryNeutrons({
-            u235AbsorptionCrossSection: averagedMicroAU5.value,
-            u235FissionCrossSection: averagedMicroFU5.value,
-        });
+            const reproductionFactor = calculateSecondaryNeutrons({
+                u235AbsorptionCrossSection: averagedMicroAU5.value,
+                u235FissionCrossSection: averagedMicroFU5.value,
+            });
 
-        const normalizedWaterVolume = calculateNormalizedVolume({
-            volume: waterVolume.value,
-            density: DENSITY_H2O,
-        });
+            const normalizedWaterVolume = calculateNormalizedVolume({
+                volume: waterVolume.value,
+                density: DENSITY_H2O,
+            });
 
-        const normalizedUraniumVolume = calculateNormalizedVolume({
-            volume: fuelVolume.value,
-            concentration: N_0U.value,
-        });
+            const normalizedUraniumVolume = calculateNormalizedVolume({
+                volume: fuelVolume.value,
+                concentration: N_0U.value,
+            });
 
-        const fastFissionFactor = calculateFastNeutronMultiplication({
-            normalizedUraniumVolume,
-            normalizedWaterVolume,
-        });
+            const fastFissionFactor = calculateFastNeutronMultiplication({
+                normalizedUraniumVolume,
+                normalizedWaterVolume,
+            });
 
-        const resonanceEscapeProbability = calculateResonanceEscapeProbability({
-            uraniumSurface: fuelArea.value,
-            uraniumVolume: fuelVolume.value,
-            uraniumTemp: uraniumTemperature,
-            V0: cellVolume.value,
-            xiSigmaS: totalModerationCapacity.value,
-            N0U: N_0U.value,
-        });
+            const resonanceEscapeProbability =
+                calculateResonanceEscapeProbability({
+                    uraniumSurface: fuelArea.value,
+                    uraniumVolume: fuelVolume.value,
+                    uraniumTemp: uraniumTemperature,
+                    V0: cellVolume.value,
+                    xiSigmaS: totalModerationCapacity.value,
+                    N0U: N_0U.value,
+                });
 
-        const infiniteMultiplicationFactor = calculateInfiniteMultiplication({
-            mu: fastFissionFactor,
-            theta: thermalUtilization,
-            eta: reproductionFactor,
-            phi: resonanceEscapeProbability,
-        });
+            const infiniteMultiplicationFactor =
+                calculateInfiniteMultiplication({
+                    mu: fastFissionFactor,
+                    theta: thermalUtilization,
+                    eta: reproductionFactor,
+                    phi: resonanceEscapeProbability,
+                });
 
-        setKInfParams({
-            fastFissionFactor,
-            reproductionFactor,
-            resonanceEscapeProbability,
-            uraniumTemperature,
-            normalizedUraniumVolume,
-            normalizedWaterVolume,
-            infiniteMultiplicationFactor,
-            thermalUtilization,
-        });
-    }, [
-        averagedMicroAU5,
-        averagedMicroFU5,
-        coolantTemperature,
-        twoZoneCellVolume,
-        twoZoneBlockAbsorptionCrossSection,
-        twoZoneModeratorAbsorptionCrossSection,
-        twoZoneModeratorVolume,
-        lossFactor,
-        averageN_5,
-        N_05,
-        N_0U,
-        waterVolume,
-        fuelVolume,
-        fuelArea,
-        cellVolume,
-        totalModerationCapacity,
-    ]);
+            const kInfParams = {
+                fastFissionFactor,
+                reproductionFactor,
+                resonanceEscapeProbability,
+                uraniumTemperature,
+                normalizedUraniumVolume,
+                normalizedWaterVolume,
+                infiniteMultiplicationFactor,
+                thermalUtilization,
+            };
+
+            setKInfParams(kInfParams);
+        } catch (error) {
+            console.error(
+                'Ошибка при расчете параметров размножения нейтронов',
+                error,
+            );
+        }
+    };
+
+    return { computeKInfParams };
 };

@@ -1,12 +1,14 @@
 import { useEffect } from 'react';
 
 import { InitialParams } from '@entities/KNR';
+import { useCalculationStore } from '@features/KNR/VVER/calc/model/store/CalculationStore.ts';
 import { useInitialParamsStore } from '@features/KNR/VVER/setInitialValues';
-import { Select } from '@shared/ui';
+import { Button, Select } from '@shared/ui';
 import { Col, Form, Grid, InputNumber, Row } from 'antd';
 
 export const InitialParamForm = () => {
     const { initialParams, setInitialParams } = useInitialParamsStore();
+    const { startCalculation } = useCalculationStore();
     const screens = Grid.useBreakpoint();
 
     const [form] = Form.useForm();
@@ -15,8 +17,9 @@ export const InitialParamForm = () => {
         form.setFieldsValue(initialParams);
     }, [initialParams]);
 
-    const onValuesChange = (_: any, allValues: InitialParams) => {
+    const onFinish = (allValues: InitialParams) => {
         setInitialParams(allValues);
+        startCalculation(true);
     };
 
     const span = screens.xl ? 4 : 6;
@@ -26,7 +29,7 @@ export const InitialParamForm = () => {
             form={form}
             layout="vertical"
             initialValues={initialParams}
-            onValuesChange={onValuesChange}
+            onFinish={onFinish}
         >
             <Row gutter={[8, 8]}>
                 <Col span={span}>
@@ -282,6 +285,11 @@ export const InitialParamForm = () => {
                     </Form.Item>
                 </Col>
             </Row>
+            <Form.Item>
+                <Button htmlType={'submit'} type={'primary'}>
+                    Рассчитать
+                </Button>
+            </Form.Item>
         </Form>
     );
 };

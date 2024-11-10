@@ -1,15 +1,22 @@
 import {
     AZParamsTable,
+    CompanyTable,
     IsotopeCompositionTable,
+    KefChart,
+    KefZTable,
     useAzCalc,
+    useCalcCompanyParams,
     useCalcIsotopes,
+    useZrelationsCalc,
 } from '@features/KNR/VVER/calc';
-import { Text } from '@shared/ui';
+import { Space, Text } from '@shared/ui';
 import { Col, Divider, Row } from 'antd';
 
 export const SecondTab = () => {
     useAzCalc();
     useCalcIsotopes();
+    useZrelationsCalc();
+    useCalcCompanyParams();
 
     return (
         <Row gutter={[8, 10]}>
@@ -29,6 +36,13 @@ export const SecondTab = () => {
                     </strong>
                 </Text>
                 <IsotopeCompositionTable />
+            </Col>
+            <Col span={24}>
+                <Space fullWidth direction={'vertical'}>
+                    <KefZTable />
+                    <KefChart />
+                    <CompanyTable />
+                </Space>
             </Col>
             <Divider />
         </Row>

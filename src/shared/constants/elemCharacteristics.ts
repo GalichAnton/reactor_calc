@@ -67,7 +67,7 @@ export const elemCharacteristics: Record<string, ElementCharacteristic> = {
         density: 6.44,
         atomicMass: 91,
         crossSectionF: 0,
-        crossSectionA: 0.185e-24,
+        crossSectionA: 0.191e-24,
         crossSectionS: 6.2e-24,
         xiCrossSectionS: 0.14e-24,
         crossSectionTr: 6.1e-24,

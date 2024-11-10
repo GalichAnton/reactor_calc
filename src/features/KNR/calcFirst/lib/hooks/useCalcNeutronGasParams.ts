@@ -1,53 +1,63 @@
-import { useEffect } from 'react';
-
-import { useMacroscopicCrossSectionsStore } from '@features/KNR/calcFirst/model/stores/macroscopicCrossSectionsStore.ts';
-import { useModerationCapacityStore } from '@features/KNR/calcFirst/model/stores/ModerationCapacityStore.ts';
 import { useInitialParamsStore } from '@features/KNR/VVER/setInitialValues';
 import {
     calculateU235AbsorptionGFactor,
     calculateU235FissionGFactor,
 } from '@shared/lib/utils';
 
+import { useMacroscopicCrossSectionsStore } from '../../model/stores/macroscopicCrossSectionsStore.ts';
+import { useModerationCapacityStore } from '../../model/stores/ModerationCapacityStore.ts';
 import { useNeutronGasParamsStore } from '../../model/stores/neutronGasStore.ts';
 
 export const useCalcNeutronGasParams = () => {
     const { setNeutronGasParams } = useNeutronGasParamsStore();
 
-    const {
-        macroscopicCrossSections: { macroSigmaATotal },
-    } = useMacroscopicCrossSectionsStore();
+    const computeNeutronGasParams = async () => {
+        try {
+            const {
+                macroscopicCrossSections: { macroSigmaATotal },
+            } = useMacroscopicCrossSectionsStore.getState();
 
-    const {
-        initialParams: { coolantTemperature },
-    } = useInitialParamsStore();
+            const {
+                initialParams: { coolantTemperature },
+            } = useInitialParamsStore.getState();
 
-    const {
-        moderationCapacityParams: { totalModerationCapacity },
-    } = useModerationCapacityStore();
+            const {
+                moderationCapacityParams: { totalModerationCapacity },
+            } = useModerationCapacityStore.getState();
 
-    useEffect(() => {
-        const totalMacroSigmaA =
-            macroSigmaATotal.value * Math.sqrt(293 / coolantTemperature);
+            const totalMacroSigmaA =
+                macroSigmaATotal.value * Math.sqrt(293 / coolantTemperature);
 
-        const neutronGasTemperature =
-            coolantTemperature *
-            (1 + (1.4 * totalMacroSigmaA) / totalModerationCapacity.value);
+            const neutronGasTemperature =
+                coolantTemperature *
+                (1 + (1.4 * totalMacroSigmaA) / totalModerationCapacity.value);
 
-        const roundedTemperature = Math.ceil(neutronGasTemperature / 100) * 100;
+            const roundedTemperature =
+                Math.ceil(neutronGasTemperature / 100) * 100;
 
-        const gVeskottFactorA5 = calculateU235AbsorptionGFactor(
-            neutronGasTemperature,
-        );
-        const gVeskottFactorF5 = calculateU235FissionGFactor(
-            neutronGasTemperature,
-        );
+            const gVeskottFactorA5 = calculateU235AbsorptionGFactor(
+                neutronGasTemperature,
+            );
+            const gVeskottFactorF5 = calculateU235FissionGFactor(
+                neutronGasTemperature,
+            );
 
-        setNeutronGasParams({
-            totalMacroSigmaA,
-            neutronGasTemperature,
-            gVeskottFactorA5,
-            gVeskottFactorF5,
-            roundedTemperature,
-        });
-    }, [macroSigmaATotal, coolantTemperature]);
+            const neutronGasParams = {
+                totalMacroSigmaA,
+                neutronGasTemperature,
+                gVeskottFactorA5,
+                gVeskottFactorF5,
+                roundedTemperature,
+            };
+
+            setNeutronGasParams(neutronGasParams);
+        } catch (error) {
+            console.error(
+                'Ошибка при расчете параметров нейтронного газа',
+                error,
+            );
+        }
+    };
+
+    return { computeNeutronGasParams };
 };

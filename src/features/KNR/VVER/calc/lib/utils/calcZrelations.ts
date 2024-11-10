@@ -161,7 +161,7 @@ export function calculateMeanXenonAbsorptionCrossSection(
 ): number {
     const sqrtFactor =
         (Math.sqrt(Math.PI) / 2) * Math.sqrt(293 / neutronGasTemperature);
-    return MICRO_SIGMA_A_XE135 * sqrtFactor * 1e-24;
+    return MICRO_SIGMA_A_XE135 * sqrtFactor;
 }
 
 // Усредненное макроскопическое сечение деления урана-235
@@ -181,9 +181,7 @@ export function calculateMeanMacroscopicFissionCrossSection(
 ): number {
     const { meanNuclearConcentrationU235, averageFissionCrossSection235U } =
         params;
-    return (
-        meanNuclearConcentrationU235 * averageFissionCrossSection235U * 1e-24
-    );
+    return meanNuclearConcentrationU235 * averageFissionCrossSection235U;
 }
 
 // Усредненное макроскопическое сечение поглощения урана-235
@@ -203,9 +201,7 @@ export function calculateMeanMacroscopicAbsorptionCrossSectionU235(
 ): number {
     const { meanNuclearConcentrationU235, averageAbsorptionCrossSection235U } =
         params;
-    return (
-        meanNuclearConcentrationU235 * averageAbsorptionCrossSection235U * 1e-24
-    );
+    return meanNuclearConcentrationU235 * averageAbsorptionCrossSection235U;
 }
 
 // Усредненное макроскопическое сечение поглощения плутония-239
@@ -225,9 +221,7 @@ export function calculateMeanMacroscopicAbsorptionCrossSectionPu239(
 ): number {
     const { meanPlutoniumConcentration, averageAbsorptionCrossSection239Pu } =
         params;
-    return (
-        meanPlutoniumConcentration * averageAbsorptionCrossSection239Pu * 1e-24
-    );
+    return meanPlutoniumConcentration * averageAbsorptionCrossSection239Pu;
 }
 
 interface PlutoniumFissionCrossSectionParameters {
@@ -245,7 +239,7 @@ export function calculateMeanMacroscopicFissionCrossSectionPu239(
 ): number {
     const { averageFissionCrossSection239Pu, meanPlutoniumConcentration } =
         params;
-    return meanPlutoniumConcentration * averageFissionCrossSection239Pu * 1e-24;
+    return meanPlutoniumConcentration * averageFissionCrossSection239Pu;
 }
 
 interface NeutronFluxParameters {
@@ -418,7 +412,7 @@ export function calculateTransportCrossSectionU235(
 
     return (
         meanMacroscopicAbsorptionCrossSectionU235 +
-        10 * 1e-24 * nuclearConcentrationU235 * (1 - cosineTheta5)
+        10 * nuclearConcentrationU235 * (1 - cosineTheta5)
     );
 }
 
@@ -443,7 +437,7 @@ export function calculateTransportCrossSectionPu239(
 
     return (
         meanMacroscopicAbsorptionCrossSectionPu239 +
-        10 * 1e-24 * nuclearConcentrationPu239 * (1 - cosineTheta9)
+        10 * nuclearConcentrationPu239 * (1 - cosineTheta9)
     );
 }
 
@@ -591,7 +585,7 @@ export function calculateThermalNeutronUtilization(
         V_moderator,
         moderatorAbsorptionCrossSection,
     } = params;
-
+    console.log(params);
     const numerator =
         V_U * (averageAbsorptionCrossSection5 + averageAbsorptionCrossSection9);
     const denominator =

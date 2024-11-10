@@ -1,128 +1,114 @@
-import { useEffect } from 'react';
-
-import { useAveragedCrossSectionsStore } from '@features/KNR/calcFirst/model/stores/averagedCrossSectionsStore.ts';
-import { useNuclearConcentrationsStore } from '@features/KNR/calcFirst/model/stores/azCompNucConStore.ts';
-import { useCellParamsStore } from '@features/KNR/calcFirst/model/stores/cellParamsStore.ts';
-import { useTransportMacroStore } from '@features/KNR/calcFirst/model/stores/transportMacroStore.ts';
 import { useInitialParamsStore } from '@features/KNR/VVER/setInitialValues';
 
+import { useAveragedCrossSectionsStore } from '../../model/stores/averagedCrossSectionsStore.ts';
+import { useNuclearConcentrationsStore } from '../../model/stores/azCompNucConStore.ts';
+import { useCellParamsStore } from '../../model/stores/cellParamsStore.ts';
+import { useTransportMacroStore } from '../../model/stores/transportMacroStore.ts';
 import { useTwoZoneModelParamsStore } from '../../model/stores/twoZoneParamsStore.ts';
 
 export const useCalcTwoZoneParams = () => {
     const { setParams } = useTwoZoneModelParamsStore();
-    const {
-        concentrations: {
-            averageN_5,
-            averageN_8,
-            averageN_O2,
-            averageN_H2O,
-            averageN_Zr,
-        },
-    } = useNuclearConcentrationsStore();
 
-    const {
-        initialParams: { uraniumEnrichment, fuelPelletRadius },
-    } = useInitialParamsStore();
+    const computeTwoZoneParams = async () => {
+        try {
+            const {
+                concentrations: {
+                    averageN_5,
+                    averageN_8,
+                    averageN_O2,
+                    averageN_H2O,
+                    averageN_Zr,
+                },
+            } = useNuclearConcentrationsStore.getState();
 
-    const {
-        cellParams: {
-            fuelFraction,
-            waterFraction,
-            zirconiumFraction,
-            cellVolume,
-            fuelVolume,
-            waterVolume,
-            claddingVolume,
-        },
-    } = useCellParamsStore();
+            const {
+                initialParams: { claddingInnerRadius },
+            } = useInitialParamsStore.getState();
 
-    const {
-        averagedCrossSections: {
-            averagedMicroAU5,
-            averagedMicroAU8,
-            averagedMicroAO2,
-            averagedMicroAZr,
-            averagedMicroAH2O,
-        },
-    } = useAveragedCrossSectionsStore();
-    const {
-        transportMacroCrossSections: {
-            transportMacroU235,
-            transportMacroU238,
-            transportMacroO2,
-            transportMacroH2O,
-            transportMacroZr,
-        },
-    } = useTransportMacroStore();
+            const {
+                cellParams: {
+                    cellVolume,
+                    fuelVolume,
+                    waterVolume,
+                    claddingVolume,
+                },
+            } = useCellParamsStore.getState();
 
-    useEffect(() => {
-        const twoZoneFirstZoneRadius = fuelPelletRadius;
+            const {
+                averagedCrossSections: {
+                    averagedMicroAU5,
+                    averagedMicroAU8,
+                    averagedMicroAO2,
+                    averagedMicroAZr,
+                    averagedMicroAH2O,
+                },
+            } = useAveragedCrossSectionsStore.getState();
 
-        const twoZoneCellVolume = cellVolume.value;
+            const {
+                transportMacroCrossSections: {
+                    transportMacroU235,
+                    transportMacroU238,
+                    transportMacroO2,
+                    transportMacroH2O,
+                    transportMacroZr,
+                },
+            } = useTransportMacroStore.getState();
 
-        const twoZoneTotalRadius = Math.sqrt(twoZoneCellVolume / Math.PI);
+            const twoZoneFirstZoneRadius = claddingInnerRadius;
+            const twoZoneCellVolume = cellVolume.value;
+            const twoZoneTotalRadius = Math.sqrt(twoZoneCellVolume / Math.PI);
+            const twoZoneFirstZoneVolume =
+                Math.PI * Math.pow(twoZoneFirstZoneRadius, 2);
+            const twoZoneModeratorVolume =
+                twoZoneCellVolume - twoZoneFirstZoneVolume;
 
-        const twoZoneFirstZoneVolume =
-            Math.PI * Math.pow(twoZoneFirstZoneRadius, 2);
+            const twoZoneBlockAbsorptionCrossSection =
+                (1 / twoZoneFirstZoneVolume) *
+                (fuelVolume.value * averageN_5.value * averagedMicroAU5.value +
+                    fuelVolume.value *
+                        averageN_8.value *
+                        averagedMicroAU8.value +
+                    fuelVolume.value *
+                        averageN_O2.value *
+                        averagedMicroAO2.value);
 
-        const twoZoneModeratorVolume =
-            twoZoneCellVolume - twoZoneFirstZoneVolume;
+            const twoZoneBlockTransportCrossSection =
+                transportMacroU235.value +
+                transportMacroU238.value +
+                transportMacroO2.value;
 
-        const twoZoneBlockAbsorptionCrossSection =
-            (1 / twoZoneFirstZoneVolume) *
-            (fuelVolume.value * averageN_5.value * averagedMicroAU5.value +
-                fuelVolume.value * averageN_8.value * averagedMicroAU8.value +
-                fuelVolume.value * averageN_O2.value * averagedMicroAO2.value);
+            const twoZoneModeratorAbsorptionCrossSection =
+                (1 / twoZoneModeratorVolume) *
+                (waterVolume.value *
+                    averageN_H2O.value *
+                    averagedMicroAH2O.value +
+                    averagedMicroAZr.value *
+                        averageN_Zr.value *
+                        claddingVolume.value);
 
-        const twoZoneBlockTransportCrossSection =
-            transportMacroU235.value +
-            transportMacroU238.value +
-            transportMacroO2.value;
+            const twoZoneModeratorTransportCrossSection =
+                transportMacroH2O.value + transportMacroZr.value;
 
-        const twoZoneModeratorAbsorptionCrossSection =
-            (1 / twoZoneModeratorVolume) *
-            (waterVolume.value * averageN_H2O.value * averagedMicroAH2O.value +
-                averagedMicroAZr.value *
-                    averageN_Zr.value *
-                    claddingVolume.value);
+            const twoZoneParams = {
+                twoZoneBlockAbsorptionCrossSection,
+                twoZoneBlockTransportCrossSection,
+                twoZoneCellVolume,
+                twoZoneFirstZoneRadius,
+                twoZoneFirstZoneVolume,
+                twoZoneModeratorAbsorptionCrossSection,
+                twoZoneModeratorTransportCrossSection,
+                twoZoneModeratorVolume,
+                twoZoneTotalRadius,
+            };
 
-        const twoZoneModeratorTransportCrossSection =
-            transportMacroH2O.value + transportMacroZr.value;
+            setParams(twoZoneParams);
+        } catch (error) {
+            console.error(
+                'Ошибка при расчете параметров двухзонной модели',
+                error,
+            );
+        }
+    };
 
-        setParams({
-            twoZoneBlockAbsorptionCrossSection,
-            twoZoneBlockTransportCrossSection,
-            twoZoneCellVolume,
-            twoZoneFirstZoneRadius,
-            twoZoneFirstZoneVolume,
-            twoZoneModeratorAbsorptionCrossSection,
-            twoZoneModeratorTransportCrossSection,
-            twoZoneModeratorVolume,
-            twoZoneTotalRadius,
-        });
-    }, [
-        transportMacroU235,
-        transportMacroU238,
-        transportMacroO2,
-        transportMacroH2O,
-        transportMacroZr,
-        uraniumEnrichment,
-        fuelFraction,
-        waterFraction,
-        zirconiumFraction,
-        averagedMicroAU5,
-        averagedMicroAU8,
-        averagedMicroAO2,
-        averagedMicroAZr,
-        averagedMicroAH2O,
-        cellVolume,
-        fuelVolume,
-        waterVolume,
-        claddingVolume,
-        averageN_5,
-        averageN_8,
-        averageN_O2,
-        averageN_H2O,
-        averageN_Zr,
-    ]);
+    return { computeTwoZoneParams };
 };

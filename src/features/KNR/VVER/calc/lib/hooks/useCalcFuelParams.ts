@@ -1,13 +1,13 @@
 import { useEffect } from 'react';
 
-import { useCompanyParamsStore } from '@features/KNR/VVER/calc';
-import { useAZPhysParamsStore } from '@features/KNR/VVER/calc/model/store/azPhysParamsStore.ts';
 import {
     useAZStore,
     useReactorStore,
     useTVSStore,
 } from '@features/KNR/VVER/setInitialValues';
 
+import { useAZPhysParamsStore } from '../../model/store/azPhysParamsStore.ts';
+import { useCompanyParamsStore } from '../../model/store/campanyStore.ts';
 import { useFuelParamsStore } from '../../model/store/fuelStore.ts';
 
 export const useCalcFuelParams = () => {
@@ -44,7 +44,7 @@ export const useCalcFuelParams = () => {
                 fuelVolume *
                 coreHeight *
                 ntvel *
-                numFuelAssemblies);
+                numFuelAssemblies.value);
 
         const specificFuelConsumption =
             depletedUranium235Mass /
@@ -55,7 +55,7 @@ export const useCalcFuelParams = () => {
             fuelVolume *
             coreHeight *
             ntvel *
-            numFuelAssemblies *
+            numFuelAssemblies.value *
             nuclearConcentration235U *
             235;
 
@@ -64,7 +64,7 @@ export const useCalcFuelParams = () => {
             fuelVolume *
             coreHeight *
             ntvel *
-            numFuelAssemblies *
+            numFuelAssemblies.value *
             nuclearConcentration238U *
             238;
 

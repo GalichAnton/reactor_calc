@@ -1,17 +1,15 @@
-type ComputedValues = {
-    z: number;
-    reactorOperationalTime: number;
-    k_ef: number;
+import { Param } from '@shared/types/param.ts';
+
+export type ComputedValues = {
+    z: Param;
+    reactorOperationalTime: Param;
+    k_ef: Param;
 };
 
-export interface CompanyValues {
+export interface CompanyParams {
     company: ComputedValues;
     year: ComputedValues;
     withoutPu: ComputedValues;
     middle: ComputedValues;
-}
-
-export interface CompanyParams {
-    computedValues: CompanyValues;
-    dN5: number;
+    dN5: Param;
 }
