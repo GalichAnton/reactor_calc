@@ -14,7 +14,7 @@ interface NeutronDiffusionAgeStore {
         value: number,
     ) => void;
     setNeutronDiffusionAgeParams: (
-        value: SetParams<Omit<NeutronDiffusionAgeParams, 'z'>>,
+        value: SetParams<NeutronDiffusionAgeParams>,
     ) => void;
 }
 

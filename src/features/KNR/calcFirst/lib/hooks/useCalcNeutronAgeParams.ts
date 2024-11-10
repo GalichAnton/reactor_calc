@@ -33,10 +33,6 @@ export const useCalcNeutronAgeParams = () => {
                 },
             } = useCellParamsStore.getState();
 
-            const {
-                neutronDiffusionAgeParams: { z },
-            } = useNeutronDiffusionAgeStore.getState();
-
             const diffusionLengthSquared =
                 1 / (3 * averagedMacroATotal.value * transportMacroTotal.value);
 
@@ -55,9 +51,14 @@ export const useCalcNeutronAgeParams = () => {
                     fuelVolume.value +
                     waterVolume.value);
 
+            const z =
+                1 +
+                0.23 * Vrel +
+                0.95 * Math.pow(Vrel, 2) +
+                0.48 * Math.pow(Vrel, 3);
+
             const neutronAge =
-                (WATER_NEUTRON_AGE *
-                    (z.value * Math.pow(cellVolume.value, 2))) /
+                (WATER_NEUTRON_AGE * (z * Math.pow(cellVolume.value, 2))) /
                 Math.pow(
                     uraniumEquivalentVolume +
                         fuelVolume.value +
@@ -70,6 +71,7 @@ export const useCalcNeutronAgeParams = () => {
                 uraniumEquivalentVolume,
                 diffusionLengthSquared,
                 Vrel,
+                z,
             };
 
             setNeutronDiffusionAgeParams(neutronAgeParams);

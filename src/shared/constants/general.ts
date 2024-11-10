@@ -74,11 +74,6 @@ export const DENSITY_ZR = 5.94;
 export const DENSITY_UO2 = 9.3;
 
 /**
- * Плотность воды, в г/см^3.
- */
-export const DENSITY_H2O = 0.78;
-
-/**
  * Молярная масса диоксида урана, в г/моль.
  */
 export const MOLAR_MASS_UO2 = 270;

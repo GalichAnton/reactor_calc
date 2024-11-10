@@ -7,6 +7,7 @@ import {
     useCalcModerationCapacity,
     useCalcNeutronAgeParams,
     useCalcNeutronGasParams,
+    useCalcReactorCriticaly,
     useCalcTransportMacroSections,
     useCalcTwoZoneParams,
 } from '@features/KNR/calcFirst';
@@ -31,6 +32,7 @@ export const useMainCalculations = () => {
     const { computeLossFactorParams } = useCalcLossFactorParams();
     const { computeKInfParams } = useCalcKInfParams();
     const { computeNeutronAgeParams } = useCalcNeutronAgeParams();
+    const { computeReactorCriticalityParams } = useCalcReactorCriticaly();
 
     const delay = (ms: number) =>
         new Promise((resolve) => setTimeout(resolve, ms));
@@ -52,6 +54,7 @@ export const useMainCalculations = () => {
             await computeLossFactorParams();
             await computeKInfParams();
             await computeNeutronAgeParams();
+            await computeReactorCriticalityParams();
         } catch (error) {
             console.error('Ошибка во время вычислений:', error);
         } finally {

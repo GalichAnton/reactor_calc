@@ -1,9 +1,9 @@
 import {
-    DENSITY_H2O,
     DENSITY_UO2,
     DENSITY_ZR,
     useInitialParamsStore,
 } from '@features/KNR/VVER/setInitialValues';
+import { getWaterDensity } from '@shared/lib/utils';
 
 import { useNuclearConcentrationsStore } from '../../model/stores/azCompNucConStore.ts';
 import { useCellParamsStore } from '../../model/stores/cellParamsStore.ts';
@@ -27,7 +27,7 @@ export const useCalcConcentrationParams = () => {
     const computeConcentrationParams = async () => {
         try {
             const {
-                initialParams: { uraniumEnrichment },
+                initialParams: { uraniumEnrichment, coolantTemperature },
             } = useInitialParamsStore.getState();
             const {
                 cellParams: { fuelFraction, waterFraction, zirconiumFraction },
@@ -37,7 +37,7 @@ export const useCalcConcentrationParams = () => {
             const N_05 = calculateN05(N_0U, uraniumEnrichment);
             const N_08 = calculateN08(N_0U, uraniumEnrichment);
             const N_0O2 = calculateN0O2(N_0U);
-            const N_0H2O = calculateN0H2O(DENSITY_H2O);
+            const N_0H2O = calculateN0H2O(getWaterDensity(coolantTemperature));
             const N_0Zr = calculateN0Zr(DENSITY_ZR);
 
             const averageN_5 = calculateAverageN5(N_05, fuelFraction.value);

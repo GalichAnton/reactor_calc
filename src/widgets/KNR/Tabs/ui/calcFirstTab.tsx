@@ -9,6 +9,7 @@ import {
     NeutronAgeTable,
     NeutronGasTemperatureTable,
     NuclearConcentrationsTable,
+    ReactorCriticalityTable,
     TransportMacroCrossSectionsTable,
     TwoZoneTable,
 } from '@features/KNR/calcFirst';
@@ -16,8 +17,6 @@ import { Text } from '@shared/ui';
 import { Col, Divider, Row } from 'antd';
 
 export const CalcFirstTab = () => {
-    // useCalcReactorCriticaly();
-
     return (
         <Row gutter={[8, 10]}>
             <Col span={24}>
@@ -124,15 +123,15 @@ export const CalcFirstTab = () => {
                 <NeutronAgeTable />
             </Col>
             <Divider />
-            {/*<Col span={24}>*/}
-            {/*    <Text>*/}
-            {/*        <strong>*/}
-            {/*            9 ОПРЕДЕЛЕНИЕ МАТЕРИАЛЬНОГО ПАРАМЕТРА, ОЦЕНКА*/}
-            {/*            КРИТИЧЕСКИХ РАЗМЕРОВ АЗ*/}
-            {/*        </strong>*/}
-            {/*    </Text>*/}
-            {/*    <ReactorCriticalityTable />*/}
-            {/*</Col>*/}
+            <Col span={24}>
+                <Text>
+                    <strong>
+                        9 ОПРЕДЕЛЕНИЕ МАТЕРИАЛЬНОГО ПАРАМЕТРА, ОЦЕНКА
+                        КРИТИЧЕСКИХ РАЗМЕРОВ АЗ
+                    </strong>
+                </Text>
+                <ReactorCriticalityTable />
+            </Col>
         </Row>
     );
 };

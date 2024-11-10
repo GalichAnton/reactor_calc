@@ -46,7 +46,7 @@ export const elemCharacteristics: Record<string, ElementCharacteristic> = {
         crossSectionTr: 3.6e-24,
     },
     H2O: {
-        density: 0.997,
+        density: 0.78,
         atomicMass: 18,
         crossSectionF: 0,
         crossSectionA: 0.661e-24,

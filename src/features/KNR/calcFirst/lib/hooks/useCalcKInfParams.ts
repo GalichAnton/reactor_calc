@@ -1,7 +1,5 @@
-import {
-    DENSITY_H2O,
-    useInitialParamsStore,
-} from '@features/KNR/VVER/setInitialValues';
+import { useInitialParamsStore } from '@features/KNR/VVER/setInitialValues';
+import { getWaterDensity } from '@shared/lib/utils';
 
 import { useNuclearConcentrationsStore } from '../..//model/stores/azCompNucConStore.ts';
 import {
@@ -81,7 +79,7 @@ export const useCalcKInfParams = () => {
 
             const normalizedWaterVolume = calculateNormalizedVolume({
                 volume: waterVolume.value,
-                density: DENSITY_H2O,
+                density: getWaterDensity(coolantTemperature),
             });
 
             const normalizedUraniumVolume = calculateNormalizedVolume({
