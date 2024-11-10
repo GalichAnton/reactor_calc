@@ -1,5 +1,5 @@
 import { useNuclearConcentrationsStore } from '../../model/stores/azCompNucConStore.ts';
-import { useModerationCapacityStore } from '../../model/stores/ModerationCapacityStore.ts';
+import { useModerationCapacityStore } from '../../model/stores/moderationCapacityStore.ts';
 import {
     calculateModerationCapacityH2O,
     calculateModerationCapacityO2,

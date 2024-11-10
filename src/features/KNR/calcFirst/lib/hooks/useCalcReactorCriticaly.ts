@@ -41,8 +41,9 @@ export const useCalcReactorCriticaly = () => {
             const coreDiameter = coreHeight / heightToDiameterRatio;
 
             const kEff =
-                infiniteMultiplicationFactor.value *
-                (1 / (1 + materialParameter * migrationArea));
+                (infiniteMultiplicationFactor.value *
+                    Math.exp(-materialParameter * neutronAge.value)) /
+                (1 + materialParameter * migrationArea);
 
             const reactivity = (kEff - 1) / kEff;
 

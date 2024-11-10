@@ -11,7 +11,7 @@ import { useTwoZoneModelParamsStore } from '@features/KNR/calcFirst/model/stores
 import { useBessel } from '@shared/lib/hooks';
 
 import { useLossFactorParamsStore } from '../../model/stores/lossFactorParamsStore.ts';
-import { useModerationCapacityStore } from '../../model/stores/ModerationCapacityStore.ts';
+import { useModerationCapacityStore } from '../../model/stores/moderationCapacityStore.ts';
 
 export const useCalcLossFactorParams = () => {
     const { setLossFactorParams } = useLossFactorParamsStore();

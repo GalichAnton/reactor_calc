@@ -15,7 +15,7 @@ import { useAveragedCrossSectionsStore } from '../../model/stores/averagedCrossS
 import { useCellParamsStore } from '../../model/stores/cellParamsStore.ts';
 import { useKInfParamsStore } from '../../model/stores/kInfParamsStore.ts';
 import { useLossFactorParamsStore } from '../../model/stores/lossFactorParamsStore.ts';
-import { useModerationCapacityStore } from '../../model/stores/ModerationCapacityStore.ts';
+import { useModerationCapacityStore } from '../../model/stores/moderationCapacityStore.ts';
 import { useTwoZoneModelParamsStore } from '../../model/stores/twoZoneParamsStore.ts';
 
 export const useCalcKInfParams = () => {

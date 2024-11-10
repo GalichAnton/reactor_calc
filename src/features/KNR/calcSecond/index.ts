@@ -9,6 +9,7 @@ export { FuelTable } from './ui/tables/FuelTable.tsx';
 export { useZRelationsStore } from './model/store/zRelationStore';
 export { useCompanyParamsStore } from './model/store/campanyStore.ts';
 export { useFuelParamsStore } from './model/store/fuelStore.ts';
+export { useIsotopeCompositionStore } from './model/store/isotopeCompositionStore.ts';
 export { useZrelationsCalc } from './lib/hooks/useZrelationsCalc';
 export { useCalcFuelParams } from './lib/hooks/useCalcFuelParams';
 export { useCalcCompanyParams } from './lib/hooks/useCalcCompanyParams';

@@ -1,7 +1,5 @@
 import { useState } from 'react';
 
-import { ZRelations } from '@features/KNR/VVER/calc/model/types/zRelations.ts';
-import styles from '@features/KNR/VVER/calc/ui/charts/chart.module.css';
 import { useTheme } from '@shared/lib/hooks';
 import classNames from 'classnames';
 import {
@@ -13,6 +11,9 @@ import {
     XAxis,
     YAxis,
 } from 'recharts';
+
+import styles from './chart.module.css';
+import { ZRelations } from '../../model/types/zRelations.ts';
 
 const lightThemeColors = {
     text: '#000',

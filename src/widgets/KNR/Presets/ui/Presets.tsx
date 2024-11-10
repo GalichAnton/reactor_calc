@@ -38,12 +38,10 @@ export const Presets = () => {
             case 'ВВЭР-1300':
                 setInitialParams(VVER_1300.initialParams);
                 break;
-
             default:
                 return;
         }
     }, [reactorType, nominalPower]);
-
     return (
         <Space direction={'vertical'}>
             <Text>Выбор прототипа реактора</Text>

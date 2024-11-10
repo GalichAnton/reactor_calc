@@ -1,4 +1,4 @@
-import { Fragment, useState } from 'react';
+import { useState } from 'react';
 
 import { useTheme } from '@shared/lib/hooks';
 import classNames from 'classnames';
@@ -42,6 +42,8 @@ export const KefChart = () => {
     const {
         companyParams: {
             company: { z },
+            year: { z: zYear },
+            withoutPu: { z: zWithoutPu },
         },
     } = useCompanyParamsStore();
     const { isLight, theme } = useTheme();
@@ -49,8 +51,8 @@ export const KefChart = () => {
     const data = zRelationsParams?.map((p) => ({
         reactorOperationalTime: p.reactorOperationalTime.toFixed(0),
         k_ef: p.effectiveNeutronMultiplicationFactor.toExponential(3),
-        z: p.z,
-        reactivity: p.reactivity,
+        z: p.z.toFixed(2),
+        reactivity: p.reactivity.toExponential(3),
     }));
 
     const [showTime, setShowTime] = useState(true);
@@ -172,21 +174,21 @@ export const KefChart = () => {
                                 color: 'red',
                             },
                             {
-                                value: z.value,
+                                value: zWithoutPu.value,
                                 label: 'K_ef кампании без учета Pu',
                                 color: 'red',
                             },
                             {
-                                value: z.value,
+                                value: zYear.value,
                                 label: 'K_ef через год',
                                 color: 'red',
                             },
                         ];
 
                         for (let i = 0; i < labels.length; i++) {
-                            if (payload.z === labels[i].value) {
+                            if (payload.z === labels[i].value.toFixed(2)) {
                                 return (
-                                    <Fragment key={labels[i].label}>
+                                    <>
                                         <circle
                                             cx={cx}
                                             cy={cy}
@@ -202,7 +204,7 @@ export const KefChart = () => {
                                         >
                                             {labels[i].label}
                                         </text>
-                                    </Fragment>
+                                    </>
                                 );
                             }
                         }

@@ -4,20 +4,11 @@ import {
     IsotopeCompositionTable,
     KefChart,
     KefZTable,
-    useAzCalc,
-    useCalcCompanyParams,
-    useCalcIsotopes,
-    useZrelationsCalc,
-} from '@features/KNR/VVER/calc';
+} from '@features/KNR/calcSecond';
 import { Space, Text } from '@shared/ui';
 import { Col, Divider, Row } from 'antd';
 
 export const SecondTab = () => {
-    useAzCalc();
-    useCalcIsotopes();
-    useZrelationsCalc();
-    useCalcCompanyParams();
-
     return (
         <Row gutter={[8, 10]}>
             <Col span={24}>

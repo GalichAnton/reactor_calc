@@ -1,7 +1,7 @@
 import {
     useCalcCompanyParams,
     useCompanyParamsStore,
-} from '@features/KNR/VVER/calc';
+} from '@features/KNR/calcSecond';
 import { Params } from '@shared/types/param.ts';
 import { ParamsTable } from '@shared/ui';
 

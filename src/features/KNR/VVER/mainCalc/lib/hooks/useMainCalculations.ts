@@ -11,9 +11,17 @@ import {
     useCalcTransportMacroSections,
     useCalcTwoZoneParams,
 } from '@features/KNR/calcFirst';
-import { useCalculationStore } from '@features/KNR/VVER/calc/model/store/CalculationStore.ts';
+import { useCalcCellParams } from '@features/KNR/calcFirst';
+import {
+    useAzCalc,
+    useCalcCompanyParams,
+    useCalcFuelParams,
+    useCalcIsotopes,
+    useZrelationsCalc,
+} from '@features/KNR/calcSecond';
 
-import { useCalcCellParams } from './useCalcCellParams';
+import { useCalculationStore } from '../../model/store/calculationStore.ts';
+
 // Импортируйте остальные хуки
 
 export const useMainCalculations = () => {
@@ -33,6 +41,11 @@ export const useMainCalculations = () => {
     const { computeKInfParams } = useCalcKInfParams();
     const { computeNeutronAgeParams } = useCalcNeutronAgeParams();
     const { computeReactorCriticalityParams } = useCalcReactorCriticaly();
+    const { computeAZParams } = useAzCalc();
+    const { computeIsotopeProperties } = useCalcIsotopes();
+    const { computeZrelationsParams } = useZrelationsCalc();
+    const { computeCompanyParams } = useCalcCompanyParams();
+    const { computeFuelParams } = useCalcFuelParams();
 
     const delay = (ms: number) =>
         new Promise((resolve) => setTimeout(resolve, ms));
@@ -41,7 +54,7 @@ export const useMainCalculations = () => {
         startCalculation(true);
         setActiveTab('1');
         try {
-            await delay(1000);
+            await delay(500);
 
             await computeCellParams();
             await computeConcentrationParams();
@@ -55,6 +68,11 @@ export const useMainCalculations = () => {
             await computeKInfParams();
             await computeNeutronAgeParams();
             await computeReactorCriticalityParams();
+            await computeAZParams();
+            await computeIsotopeProperties();
+            await computeZrelationsParams();
+            await computeCompanyParams();
+            await computeFuelParams();
         } catch (error) {
             console.error('Ошибка во время вычислений:', error);
         } finally {

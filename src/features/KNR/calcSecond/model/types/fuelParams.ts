@@ -1,49 +1,51 @@
+import { Param, Params } from '@shared/types/param.ts';
+
 /**
  * Интерфейс рассчитанных параметров для ядерного реактора.
  */
-export interface FuelParams {
+export interface FuelParams extends Params {
     /**
      * Масса выгоревшего урана-235 (г).
      */
-    depletedUranium235Mass: number;
+    depletedUranium235Mass: Param;
 
     /**
      * Удельный расход горючего (г/МВт∙сут).
      */
-    specificFuelConsumption: number;
+    specificFuelConsumption: Param;
 
     /**
      * Масса загруженного урана-235 в начале кампании (кг).
      */
-    initialUranium235Mass: number;
+    initialUranium235Mass: Param;
 
     /**
      * Масса загруженного урана-238 в начале кампании (кг).
      */
-    initialUranium238Mass: number;
+    initialUranium238Mass: Param;
 
     /**
      * Масса загруженного урана в начале кампании (кг).
      */
-    totalInitialUraniumMass: number;
+    totalInitialUraniumMass: Param;
 
     /**
      * Обогащение урана (%).
      */
-    uraniumEnrichment: number;
+    uraniumEnrichment: Param;
 
     /**
      * Глубина выгорания топлива за компанию (МВт∙сут/кг).
      */
-    fuelBurnupPerCompany: number;
+    fuelBurnupPerCompany: Param;
 
     /**
      * Глубина выгорания топлива за год (МВт∙сут/кг).
      */
-    fuelBurnupPerYear: number;
+    fuelBurnupPerYear: Param;
 
     /**
      * Количество перегрузок.
      */
-    numberOfReloads: number;
+    numberOfReloads: Param;
 }

@@ -123,7 +123,7 @@ export const calcPowerSix = (props: CalcPowerPropsSix) => {
         nominalPower,
         reactorHeight,
     } = props;
-    console.log('prevPower', prevPower);
+
     const newH = calculateNewHeight(
         prevH,
         velocity,
@@ -137,8 +137,7 @@ export const calcPowerSix = (props: CalcPowerPropsSix) => {
     const newPower =
         (prevPower + interval * sigma) /
         (1 - interval * ((newRo - betta) / Lambda));
-    console.log('newPower', newPower);
-    console.log('sigma', sigma);
+
     const newC = prevC.map((c, i) => {
         return (
             c +

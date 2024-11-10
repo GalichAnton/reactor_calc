@@ -2,7 +2,7 @@ import {
     FuelTable,
     useCalcFuelParams,
     useFuelParamsStore,
-} from '@features/KNR/VVER/calc';
+} from '@features/KNR/calcSecond';
 import { Col, Row } from 'antd';
 
 export const FuelTab = () => {

@@ -1,10 +1,8 @@
-import { useEffect } from 'react';
-
 import {
-    useAZStore,
-    useReactorStore,
-    useTVSStore,
-} from '@features/KNR/VVER/setInitialValues';
+    useCellParamsStore,
+    useNuclearConcentrationsStore,
+} from '@features/KNR/calcFirst';
+import { useInitialParamsStore } from '@features/KNR/VVER/setInitialValues';
 
 import { useAZPhysParamsStore } from '../../model/store/azPhysParamsStore.ts';
 import { useCompanyParamsStore } from '../../model/store/campanyStore.ts';
@@ -12,96 +10,91 @@ import { useFuelParamsStore } from '../../model/store/fuelStore.ts';
 
 export const useCalcFuelParams = () => {
     const { setFuelParams } = useFuelParamsStore();
-    const {
-        companyParams: { dN5 },
-    } = useCompanyParamsStore();
-    const {
-        AZCharacteristics: {
-            fuelVolume,
-            nuclearConcentration235U,
-            nuclearConcentration238U,
-        },
-    } = useAZStore();
-    const {
-        reactorCharacteristics: { coreHeight, thermalPower },
-    } = useReactorStore();
-    const {
-        TVSCharacteristics: { ntvel },
-    } = useTVSStore();
-    const {
-        azPhysParams: { numFuelAssemblies },
-    } = useAZPhysParamsStore();
-    const {
-        companyParams: {
-            computedValues: { company },
-        },
-    } = useCompanyParamsStore();
 
-    useEffect(() => {
-        const depletedUranium235Mass =
-            dN5 *
-            ((235 / (0.6023 * 1e24)) *
-                fuelVolume *
+    const computeFuelParams = async () => {
+        try {
+            const {
+                cellParams: { fuelVolume },
+            } = useCellParamsStore.getState();
+
+            const {
+                concentrations: { N_05, N_08 },
+            } = useNuclearConcentrationsStore.getState();
+
+            const {
+                initialParams: { nTvel, coreHeight, thermalPower },
+            } = useInitialParamsStore.getState();
+
+            const {
+                azPhysParams: { numFuelAssemblies },
+            } = useAZPhysParamsStore.getState();
+
+            const {
+                companyParams: { company, dN5 },
+            } = useCompanyParamsStore.getState();
+            console.log(dN5);
+            const depletedUranium235Mass =
+                dN5.value *
+                ((235 / (0.6023 * 1e24)) *
+                    fuelVolume.value *
+                    coreHeight *
+                    nTvel *
+                    numFuelAssemblies.value);
+
+            const specificFuelConsumption =
+                depletedUranium235Mass /
+                (thermalPower * company.reactorOperationalTime.value);
+
+            const initialUranium235Mass =
+                (1e-3 / (0.6023 * 1e24)) *
+                fuelVolume.value *
                 coreHeight *
-                ntvel *
-                numFuelAssemblies.value);
+                nTvel *
+                numFuelAssemblies.value *
+                N_05.value *
+                235;
 
-        const specificFuelConsumption =
-            depletedUranium235Mass /
-            (thermalPower * company.reactorOperationalTime);
+            const initialUranium238Mass =
+                (1e-3 / (0.6023 * 1e24)) *
+                fuelVolume.value *
+                coreHeight *
+                nTvel *
+                numFuelAssemblies.value *
+                N_08.value *
+                238;
 
-        const initialUranium235Mass =
-            (1e-3 / (0.6023 * 1e24)) *
-            fuelVolume *
-            coreHeight *
-            ntvel *
-            numFuelAssemblies.value *
-            nuclearConcentration235U *
-            235;
+            const totalInitialUraniumMass =
+                initialUranium235Mass + initialUranium238Mass;
 
-        const initialUranium238Mass =
-            (1e-3 / (0.6023 * 1e24)) *
-            fuelVolume *
-            coreHeight *
-            ntvel *
-            numFuelAssemblies.value *
-            nuclearConcentration238U *
-            238;
+            const uraniumEnrichment =
+                initialUranium235Mass / totalInitialUraniumMass;
 
-        const totalInitialUraniumMass =
-            initialUranium235Mass + initialUranium238Mass;
+            const fuelBurnupPerCompany =
+                (thermalPower * company.reactorOperationalTime.value) /
+                totalInitialUraniumMass;
 
-        const uraniumEnrichment =
-            initialUranium235Mass / totalInitialUraniumMass;
+            const fuelBurnupPerYear =
+                (thermalPower * 330) / totalInitialUraniumMass;
 
-        const fuelBurnupPerCompany =
-            (thermalPower * company.reactorOperationalTime) /
-            totalInitialUraniumMass;
+            const numberOfReloads = fuelBurnupPerCompany / fuelBurnupPerYear;
 
-        const fuelBurnupPerYear =
-            (thermalPower * 330) / totalInitialUraniumMass;
+            const fuelParams = {
+                depletedUranium235Mass,
+                specificFuelConsumption,
+                initialUranium235Mass,
+                initialUranium238Mass,
+                totalInitialUraniumMass,
+                uraniumEnrichment,
+                fuelBurnupPerCompany,
+                fuelBurnupPerYear,
+                numberOfReloads,
+            };
 
-        const numberOfReloads = fuelBurnupPerCompany / fuelBurnupPerYear;
+            setFuelParams(fuelParams);
+        } catch (error) {
+            console.error('Ошибка при расчете параметров топлива', error);
+        }
+    };
 
-        setFuelParams({
-            depletedUranium235Mass,
-            specificFuelConsumption,
-            initialUranium235Mass,
-            initialUranium238Mass,
-            totalInitialUraniumMass,
-            uraniumEnrichment,
-            fuelBurnupPerCompany,
-            fuelBurnupPerYear,
-            numberOfReloads,
-        });
-    }, [
-        dN5,
-        fuelVolume,
-        coreHeight,
-        ntvel,
-        numFuelAssemblies,
-        nuclearConcentration238U,
-        nuclearConcentration235U,
-        thermalPower,
-    ]);
+    return { computeFuelParams };
 };

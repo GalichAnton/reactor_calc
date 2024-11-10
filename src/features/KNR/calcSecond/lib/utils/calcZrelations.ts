@@ -585,7 +585,7 @@ export function calculateThermalNeutronUtilization(
         V_moderator,
         moderatorAbsorptionCrossSection,
     } = params;
-    console.log(params);
+
     const numerator =
         V_U * (averageAbsorptionCrossSection5 + averageAbsorptionCrossSection9);
     const denominator =

@@ -1,9 +1,13 @@
 import { useEffect, useMemo } from 'react';
 
-import { useMainCalculations } from '@features/KNR/calcFirst/lib/hooks/useMainCalculations.ts';
-import { useCompanyParamsStore } from '@features/KNR/VVER/calc';
-import { useCalculationStore } from '@features/KNR/VVER/calc/model/store/CalculationStore.ts';
-import { useIsotopeCompositionStore } from '@features/KNR/VVER/calc/model/store/isotopeCompositionStore.ts';
+import {
+    useCompanyParamsStore,
+    useIsotopeCompositionStore,
+} from '@features/KNR/calcSecond';
+import {
+    useMainCalculations,
+    useCalculationStore,
+} from '@features/KNR/VVER/mainCalc';
 import { useInitialParamsStore } from '@features/KNR/VVER/setInitialValues';
 import { Card, Space, Spinner } from '@shared/ui';
 import { Presets } from '@widgets/KNR/Presets';
@@ -45,13 +49,13 @@ export const KNRTabs = () => {
             },
             {
                 key: '1',
-                label: 'Данные после расчета курсовой №1',
+                label: 'Расчет курсовой №1',
                 disabled: !isCalculated,
                 children: isCalculating ? <Spinner /> : <CalcFirstTab />,
             },
             {
                 key: '2',
-                label: 'Расчет второй',
+                label: 'Расчет курсовой №2',
                 disabled: !initialParamsFilled,
                 children: <SecondTab />,
             },

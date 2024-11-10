@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 
-import { useZRelationsStore } from '@features/KNR/VVER/calc';
+import { useZRelationsStore } from '@features/KNR/calcSecond';
 import { Tooltip } from '@shared/ui';
 import { Table } from 'antd';
 import { ColumnsType } from 'antd/es/table';

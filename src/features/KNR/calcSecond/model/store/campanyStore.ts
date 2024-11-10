@@ -12,7 +12,7 @@ interface CompanyStore {
         key: T,
         value: CompanyParams[T],
     ) => void;
-    setCompanyParams: (params: any) => void;
+    setCompanyParams: (params: any, dN5: number) => void;
 }
 
 const createComputedValuesDefaults = (prefix: string): ComputedValues => ({
@@ -60,9 +60,11 @@ export const useCompanyParamsStore = create<CompanyStore>()(
                     getActionName('CompanyParamsStore', 'setCompanyParam'),
                 ),
 
-            setCompanyParams: (params) =>
+            setCompanyParams: (params, dN5) =>
                 set(
                     (state) => {
+                        state.companyParams.dN5.value = dN5;
+
                         Object.keys(params).forEach((groupKey) => {
                             const group =
                                 params[groupKey as keyof typeof params];
@@ -86,15 +88,6 @@ export const useCompanyParamsStore = create<CompanyStore>()(
                                         )[paramKey].value = value;
                                     }
                                 });
-                            } else {
-                                // Обрабатываем простые параметры (например, dN5)
-                                if (groupKey in state.companyParams) {
-                                    (
-                                        state.companyParams[
-                                            groupKey as keyof CompanyParams
-                                        ] as any
-                                    ).value = group;
-                                }
                             }
                         });
                     },

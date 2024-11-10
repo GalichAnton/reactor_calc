@@ -1,6 +1,6 @@
 import { ParamsTable } from '@shared/ui';
 
-import { useModerationCapacityStore } from '../../model/stores/ModerationCapacityStore.ts';
+import { useModerationCapacityStore } from '../../model/stores/moderationCapacityStore.ts';
 import { ModerationCapacity } from '../../model/types/moderationCapacity.ts';
 
 export const ModerationCapacityTable = () => {

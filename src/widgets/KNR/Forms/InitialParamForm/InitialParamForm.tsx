@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 
 import { InitialParams } from '@entities/KNR';
-import { useCalculationStore } from '@features/KNR/VVER/calc/model/store/CalculationStore.ts';
+import { useCalculationStore } from '@features/KNR/VVER/mainCalc';
 import { useInitialParamsStore } from '@features/KNR/VVER/setInitialValues';
 import { Button, Select } from '@shared/ui';
 import { Col, Form, Grid, InputNumber, Row } from 'antd';
@@ -17,9 +17,12 @@ export const InitialParamForm = () => {
         form.setFieldsValue(initialParams);
     }, [initialParams]);
 
-    const onFinish = (allValues: InitialParams) => {
-        setInitialParams(allValues);
+    const onFinish = () => {
         startCalculation(true);
+    };
+
+    const onValuesChange = (_: any, allValues: InitialParams) => {
+        setInitialParams(allValues);
     };
 
     const span = screens.xl ? 4 : 6;
@@ -30,6 +33,7 @@ export const InitialParamForm = () => {
             layout="vertical"
             initialValues={initialParams}
             onFinish={onFinish}
+            onValuesChange={onValuesChange}
         >
             <Row gutter={[8, 8]}>
                 <Col span={span}>

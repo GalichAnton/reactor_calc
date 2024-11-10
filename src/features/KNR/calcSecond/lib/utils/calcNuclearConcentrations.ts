@@ -213,6 +213,8 @@ export interface NuclearConcentrationParamsByKR {
     initialNuclearConcentration239Pu: number;
     fastNeutronReproductionCoefficient: number;
     resonanceEscapeProbability: number;
+    averageFissionCrossSection239Pu: number;
+    averageFissionCrossSection235U: number;
     dz: number;
 }
 
@@ -242,8 +244,10 @@ export function calculateNuclearConcentrationByKR(
     const {
         averageAbsorptionCrossSection235U,
         averageAbsorptionCrossSection238U,
-        initialNuclearConcentration235U,
         averageAbsorptionCrossSection239Pu,
+        averageFissionCrossSection239Pu,
+        averageFissionCrossSection235U,
+        initialNuclearConcentration235U,
         initialNuclearConcentration238U,
         initialNuclearConcentration239Pu,
         fastNeutronReproductionCoefficient,
@@ -257,10 +261,10 @@ export function calculateNuclearConcentrationByKR(
     const sigma =
         averageAbsorptionCrossSection238U +
         ((v5 *
-            averageAbsorptionCrossSection235U *
+            averageFissionCrossSection235U *
             initialNuclearConcentration235U +
             v9 *
-                averageAbsorptionCrossSection239Pu *
+                averageFissionCrossSection239Pu *
                 initialNuclearConcentration239Pu) /
             initialNuclearConcentration238U) *
             fastNeutronReproductionCoefficient *

@@ -1,15 +1,15 @@
-import { useEffect } from 'react';
-
-import { useAveragedCrossSectionsStore } from '@features/KNR/calcFirst/model/stores/averagedCrossSectionsStore.ts';
-import { useNuclearConcentrationsStore } from '@features/KNR/calcFirst/model/stores/azCompNucConStore.ts';
-import { useCellParamsStore } from '@features/KNR/calcFirst/model/stores/cellParamsStore.ts';
-import { useKInfParamsStore } from '@features/KNR/calcFirst/model/stores/kInfParamsStore.ts';
-import { useNeutronDiffusionAgeStore } from '@features/KNR/calcFirst/model/stores/neutronDiffusionAgeStore.ts';
-import { useNeutronGasParamsStore } from '@features/KNR/calcFirst/model/stores/neutronGasStore.ts';
+import {
+    useAveragedCrossSectionsStore,
+    useNeutronGasParamsStore,
+    useNuclearConcentrationsStore,
+    useCellParamsStore,
+    useKInfParamsStore,
+    useNeutronDiffusionAgeStore,
+} from '@features/KNR/calcFirst';
+import { useIsotopeCompositionStore } from '@features/KNR/calcSecond';
 import { useInitialParamsStore } from '@features/KNR/VVER/setInitialValues';
 
 import { useAZPhysParamsStore } from '../../model/store/azPhysParamsStore.ts';
-import { useIsotopeCompositionStore } from '../../model/store/isotopeCompositionStore.ts';
 import {
     calcAverageAbsorptionCrossSection239Pu,
     calcAverageFissionCrossSection239Pu,
@@ -23,133 +23,131 @@ import {
 } from '../utils/calcIsotopeComposition.ts';
 
 export const useCalcIsotopes = () => {
-    const {
-        initialParams: { thermalPower, coreHeight, nTvel },
-    } = useInitialParamsStore();
-
-    const {
-        cellParams: { fuelVolume },
-    } = useCellParamsStore();
-
-    const {
-        azPhysParams: { geometricParameter, numFuelAssemblies },
-    } = useAZPhysParamsStore();
-
     const { setIsotopeProperties } = useIsotopeCompositionStore();
 
-    const {
-        neutronDiffusionAgeParams: { neutronAge },
-    } = useNeutronDiffusionAgeStore();
+    const computeIsotopeProperties = async () => {
+        try {
+            const {
+                initialParams: { thermalPower, coreHeight, nTvel },
+            } = useInitialParamsStore.getState();
 
-    const {
-        kInfParams: {
-            resonanceEscapeProbability,
-            reproductionFactor,
-            fastFissionFactor,
-        },
-    } = useKInfParamsStore();
+            const {
+                cellParams: { fuelVolume },
+            } = useCellParamsStore.getState();
 
-    const {
-        averagedCrossSections: {
-            averagedMicroAU5,
-            averagedMicroAU8,
-            averagedMicroFU5,
-        },
-    } = useAveragedCrossSectionsStore();
+            const {
+                azPhysParams: { geometricParameter, numFuelAssemblies },
+            } = useAZPhysParamsStore.getState();
 
-    const {
-        concentrations: { N_08, N_05 },
-    } = useNuclearConcentrationsStore();
+            const {
+                neutronDiffusionAgeParams: { neutronAge },
+            } = useNeutronDiffusionAgeStore.getState();
 
-    const {
-        neutronGasParams: { neutronGasTemperature },
-    } = useNeutronGasParamsStore();
+            const {
+                kInfParams: {
+                    resonanceEscapeProbability,
+                    reproductionFactor,
+                    fastFissionFactor,
+                },
+            } = useKInfParamsStore.getState();
 
-    useEffect(() => {
-        const initialReproductionCoefficient = calculateReproductionCoefficient(
-            {
-                geometricParameter: geometricParameter.value,
-                thermalNeutronAge: neutronAge.value,
-                nuclearConcentration235U: N_05.value,
-                nuclearConcentration238U: N_08.value,
-                secondaryNeutronsPerAbsorption235U: reproductionFactor.value,
-                averageAbsorptionCrossSection238U: averagedMicroAU8.value,
-                averageAbsorptionCrossSection235U: averagedMicroAU5.value,
-                fastNeutronReproductionCoefficient: fastFissionFactor.value,
-                resonanceEscapeProbability: resonanceEscapeProbability.value,
-            },
-        );
+            const {
+                averagedCrossSections: {
+                    averagedMicroAU5,
+                    averagedMicroAU8,
+                    averagedMicroFU5,
+                },
+            } = useAveragedCrossSectionsStore.getState();
 
-        const Sa8 = calculateSa8(
-            averagedMicroAU8.value,
-            averagedMicroAU5.value,
-        );
+            const {
+                concentrations: { N_08, N_05 },
+            } = useNuclearConcentrationsStore.getState();
 
-        const averageFissionCrossSection239Pu =
-            calcAverageFissionCrossSection239Pu(neutronGasTemperature.value);
+            const {
+                neutronGasParams: { neutronGasTemperature },
+            } = useNeutronGasParamsStore.getState();
 
-        const averageAbsorptionCrossSection239Pu =
-            calcAverageAbsorptionCrossSection239Pu(neutronGasTemperature.value);
+            const initialReproductionCoefficient =
+                calculateReproductionCoefficient({
+                    geometricParameter: geometricParameter.value,
+                    thermalNeutronAge: neutronAge.value,
+                    nuclearConcentration235U: N_05.value,
+                    nuclearConcentration238U: N_08.value,
+                    secondaryNeutronsPerAbsorption235U:
+                        reproductionFactor.value,
+                    averageAbsorptionCrossSection238U: averagedMicroAU8.value,
+                    averageAbsorptionCrossSection235U: averagedMicroAU5.value,
+                    fastNeutronReproductionCoefficient: fastFissionFactor.value,
+                    resonanceEscapeProbability:
+                        resonanceEscapeProbability.value,
+                });
 
-        const secondaryNeutronsPerAbsorption239Pu =
-            calcSecondaryNeutronsPerAbsorption239Pu(
-                averageFissionCrossSection239Pu,
-                averageAbsorptionCrossSection239Pu,
+            const Sa8 = calculateSa8(
+                averagedMicroAU8.value,
+                averagedMicroAU5.value,
             );
 
-        const Sf5 = calculateSf8(
-            averagedMicroFU5.value,
-            averagedMicroAU5.value,
-        );
+            const averageFissionCrossSection239Pu =
+                calcAverageFissionCrossSection239Pu(
+                    neutronGasTemperature.value,
+                );
 
-        const Sf9 = calculateSf9(
-            averageFissionCrossSection239Pu,
-            averagedMicroAU5.value,
-        );
+            const averageAbsorptionCrossSection239Pu =
+                calcAverageAbsorptionCrossSection239Pu(
+                    neutronGasTemperature.value,
+                );
 
-        const Sa9 = calculateSa9({
-            averageAbsorptionCrossSection239Pu,
-            averageAbsorptionCrossSection235U: averagedMicroAU5.value,
-            secondaryNeutronsPerAbsorption239Pu,
-            geometricParameter: geometricParameter.value,
-            resonanceEscapeProbability: resonanceEscapeProbability.value,
-            fastNeutronReproductionCoefficient: fastFissionFactor.value,
-            thermalNeutronAge: neutronAge.value,
-        });
+            const secondaryNeutronsPerAbsorption239Pu =
+                calcSecondaryNeutronsPerAbsorption239Pu(
+                    averageFissionCrossSection239Pu,
+                    averageAbsorptionCrossSection239Pu,
+                );
 
-        const averageSpecificByVolumePower = calcAverageSpecificByVolumePower(
-            thermalPower,
-            fuelVolume.value,
-            coreHeight,
-            numFuelAssemblies.value,
-            nTvel,
-        );
+            const Sf5 = calculateSf8(
+                averagedMicroFU5.value,
+                averagedMicroAU5.value,
+            );
+            const Sf9 = calculateSf9(
+                averageFissionCrossSection239Pu,
+                averagedMicroAU5.value,
+            );
 
-        setIsotopeProperties({
-            initialReproductionCoefficient,
-            Sa8,
-            Sa9,
-            Sf9,
-            Sf5,
-            secondaryNeutronsPerAbsorption239Pu,
-            averageFissionCrossSection239Pu,
-            averageAbsorptionCrossSection239Pu,
-            averageSpecificByVolumePower,
-        });
-    }, [
-        geometricParameter,
-        averagedMicroAU5,
-        averagedMicroAU8,
-        averagedMicroFU5,
-        resonanceEscapeProbability,
-        reproductionFactor,
-        fastFissionFactor,
-        geometricParameter,
-        numFuelAssemblies,
-        resonanceEscapeProbability,
-        thermalPower,
-        coreHeight,
-        nTvel,
-        fuelVolume,
-    ]);
+            const Sa9 = calculateSa9({
+                averageAbsorptionCrossSection239Pu,
+                averageAbsorptionCrossSection235U: averagedMicroAU5.value,
+                secondaryNeutronsPerAbsorption239Pu,
+                geometricParameter: geometricParameter.value,
+                resonanceEscapeProbability: resonanceEscapeProbability.value,
+                fastNeutronReproductionCoefficient: fastFissionFactor.value,
+                thermalNeutronAge: neutronAge.value,
+            });
+
+            const averageSpecificByVolumePower =
+                calcAverageSpecificByVolumePower(
+                    thermalPower,
+                    fuelVolume.value,
+                    coreHeight,
+                    numFuelAssemblies.value,
+                    nTvel,
+                );
+
+            const isotopeProperties = {
+                initialReproductionCoefficient,
+                Sa8,
+                Sa9,
+                Sf9,
+                Sf5,
+                secondaryNeutronsPerAbsorption239Pu,
+                averageFissionCrossSection239Pu,
+                averageAbsorptionCrossSection239Pu,
+                averageSpecificByVolumePower,
+            };
+
+            setIsotopeProperties(isotopeProperties);
+        } catch (error) {
+            console.error('Ошибка при расчете изотопных свойств', error);
+        }
+    };
+
+    return { computeIsotopeProperties };
 };

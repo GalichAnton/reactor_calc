@@ -5,7 +5,7 @@ import {
 } from '@shared/lib/utils';
 
 import { useMacroscopicCrossSectionsStore } from '../../model/stores/macroscopicCrossSectionsStore.ts';
-import { useModerationCapacityStore } from '../../model/stores/ModerationCapacityStore.ts';
+import { useModerationCapacityStore } from '../../model/stores/moderationCapacityStore.ts';
 import { useNeutronGasParamsStore } from '../../model/stores/neutronGasStore.ts';
 
 export const useCalcNeutronGasParams = () => {

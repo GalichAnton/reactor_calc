@@ -2,7 +2,7 @@ import {
     ConcentrationsChart,
     useZRelationsStore,
     NucConcentrationTable,
-} from '@features/KNR/VVER/calc';
+} from '@features/KNR/calcSecond';
 import { Col, Row } from 'antd';
 
 export const NucConcentrationTab = () => {
