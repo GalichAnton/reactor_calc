@@ -1,8 +1,9 @@
-import { ZRelations } from '@features/KNR/VVER/calc/model/types/zRelations.ts';
 import { getActionName } from '@shared/lib/utils';
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
+
+import { ZRelations } from '../types/zRelations';
 
 interface ZRelationsStore {
     filled?: boolean;
