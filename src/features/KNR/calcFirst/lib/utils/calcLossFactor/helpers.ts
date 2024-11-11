@@ -1,3 +1,5 @@
+import BESSEL from 'bessel';
+
 /**
  * Рассчитывает параметр p (отношение макросечений).
  *
@@ -230,14 +232,12 @@ export const calculateModeratorG0 = (
     moderatorInverseDiffLength: number,
     R1: number,
     R2: number,
-    besselI: Function,
-    besselK: Function,
 ): number => {
     return (
-        besselI(moderatorInverseDiffLength * R1, 0) +
-        (besselI(moderatorInverseDiffLength * R2, 1) /
-            besselK(moderatorInverseDiffLength * R2, 1)) *
-            besselK(moderatorInverseDiffLength * R1, 0)
+        BESSEL.besseli(moderatorInverseDiffLength * R1, 0) +
+        (BESSEL.besseli(moderatorInverseDiffLength * R2, 1) /
+            BESSEL.besselk(moderatorInverseDiffLength * R2, 1)) *
+            BESSEL.besselk(moderatorInverseDiffLength * R1, 0)
     );
 };
 
@@ -248,13 +248,11 @@ export const calculateModeratorG1 = (
     moderatorInverseDiffLength: number,
     R1: number,
     R2: number,
-    besselI: Function,
-    besselK: Function,
 ): number => {
     return (
-        besselI(moderatorInverseDiffLength * R1, 1) -
-        (besselI(moderatorInverseDiffLength * R2, 1) /
-            besselK(moderatorInverseDiffLength * R2, 1)) *
-            besselK(moderatorInverseDiffLength * R1, 1)
+        BESSEL.besseli(moderatorInverseDiffLength * R1, 1) -
+        (BESSEL.besseli(moderatorInverseDiffLength * R2, 1) /
+            BESSEL.besselk(moderatorInverseDiffLength * R2, 1)) *
+            BESSEL.besselk(moderatorInverseDiffLength * R1, 1)
     );
 };

@@ -17,11 +17,11 @@ export const KNRTabs = () => {
     const { activeTab, isCalculated, isCalculating, setActiveTab } =
         useCalculationStore();
 
-    const { performAllCalculations } = useMainCalculations();
+    const { calculate } = useMainCalculations();
 
     useEffect(() => {
         if (isCalculating) {
-            performAllCalculations();
+            calculate();
         }
     }, [isCalculating]); // Если нужны зависимости, добавьте их сюда
 

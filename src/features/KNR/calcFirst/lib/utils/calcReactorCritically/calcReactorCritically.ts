@@ -48,9 +48,8 @@ export const calculateReactorCriticality = async (
         const coreDiameter = coreHeight / heightToDiameterRatio;
 
         const kEff =
-            (infiniteMultiplicationFactor *
-                Math.exp(-materialParameter * neutronAge)) /
-            (1 + materialParameter * migrationArea);
+            infiniteMultiplicationFactor *
+            (1 / (1 + materialParameter * migrationArea));
 
         const reactivity = (kEff - 1) / kEff;
 

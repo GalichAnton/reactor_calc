@@ -1,3 +1,7 @@
+import { LossFactorParams } from '@features/KNR/calcFirst/model/types/lossFactorParams.ts';
+import { SetParams } from '@shared/types/param.ts';
+import BESSEL from 'bessel';
+
 import {
     calculateBlockFlux,
     calculateDiffusionCoefficient,
@@ -31,30 +35,6 @@ interface LossFactorProps {
         blockAbsorptionCrossSection: number;
         moderatorAbsorptionCrossSection: number;
     };
-    /** Функции Бесселя */
-    besselFunctions: {
-        besselI: Function;
-        besselK: Function;
-    };
-}
-
-/**
- * Интерфейс выходных параметров расчета
- */
-interface LossFactorResults {
-    blockDiffusionCoef: number;
-    blockFluxDensity: number;
-    blockInverseDiffLength: number;
-    besselI0: number;
-    besselI1: number;
-    moderatorG0: number;
-    moderatorG1: number;
-    moderatorDiffusionCoef: number;
-    moderatorFluxDensity: number;
-    moderatorInverseDiffLength: number;
-    lossFactor: number;
-    powerRatio: number;
-    lossFactorOther: number;
 }
 
 /**
@@ -65,10 +45,9 @@ interface LossFactorResults {
  */
 export const calculateLossFactorParams = async (
     params: LossFactorProps,
-): Promise<LossFactorResults> => {
+): Promise<SetParams<LossFactorParams>> => {
     try {
-        const { moderationCapacity, twoZoneParams, besselFunctions } = params;
-        const { besselI, besselK } = besselFunctions;
+        const { moderationCapacity, twoZoneParams } = params;
 
         // Расчет коэффициента мощности
         const powerRatio = calculateP(
@@ -98,11 +77,11 @@ export const calculateLossFactorParams = async (
         );
 
         // Расчет функций Бесселя
-        const besselI1 = besselI(
+        const besselI1 = BESSEL.besseli(
             blockInverseDiffLength * twoZoneParams.firstZoneRadius,
             1,
         );
-        const besselI0 = besselI(
+        const besselI0 = BESSEL.besseli(
             blockInverseDiffLength * twoZoneParams.firstZoneRadius,
             0,
         );
@@ -112,15 +91,11 @@ export const calculateLossFactorParams = async (
             moderatorInverseDiffLength,
             twoZoneParams.firstZoneRadius,
             twoZoneParams.totalRadius,
-            besselI,
-            besselK,
         );
         const moderatorG1 = calculateModeratorG1(
             moderatorInverseDiffLength,
             twoZoneParams.firstZoneRadius,
             twoZoneParams.totalRadius,
-            besselI,
-            besselK,
         );
 
         // Расчет плотностей потока

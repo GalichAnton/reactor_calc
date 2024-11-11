@@ -29,10 +29,10 @@ export function calculateUraniumTemp(params: UraniumTempParams): number {
 interface ThermalNeutronParams {
     /** Объем блока */
     blockVolume: number;
-    /** Концентрация U-235 */
-    u235Concentration: number;
-    /** Сечение поглощения U-235 */
-    u235AbsorptionCrossSection: number;
+    /** Объем топлива */
+    fuelVolume: number;
+    /** Макро сечение поглощения U-235 */
+    u235MacroAbsorptionCrossSection: number;
     /** Макроскопическое сечение поглощения блока */
     blockMacroAbsorptionCrossSection: number;
     /** Коэффициент проигрыша */
@@ -51,18 +51,19 @@ interface ThermalNeutronParams {
 export function calculateThermalNeutronCoef(
     params: ThermalNeutronParams,
 ): number {
+    console.log('theha0', params);
+
     const {
         blockVolume,
-        u235Concentration,
-        u235AbsorptionCrossSection,
+        fuelVolume,
+        u235MacroAbsorptionCrossSection,
         blockMacroAbsorptionCrossSection,
         lossFactor,
         moderatorVolume,
         moderatorMacroAbsorptionCrossSection,
     } = params;
 
-    const numerator =
-        blockVolume * u235Concentration * u235AbsorptionCrossSection;
+    const numerator = fuelVolume * u235MacroAbsorptionCrossSection;
     const denominator =
         blockVolume * blockMacroAbsorptionCrossSection +
         lossFactor * moderatorVolume * moderatorMacroAbsorptionCrossSection;

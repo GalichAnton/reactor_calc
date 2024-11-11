@@ -30,7 +30,7 @@ export function calculateAZDiameter(V: number, H: number): number {
 export function calculateGeometricParameter(D: number, H: number): number {
     const part1 = (2 * 2.405) / D;
     const part2 = Math.PI / H;
-    return Math.sqrt(part1 ** 2 + part2 ** 2);
+    return part1 ** 2 + part2 ** 2;
 }
 
 /**
@@ -60,10 +60,8 @@ export function calculateKeffective(
     tau: number,
     L: number,
 ): number {
-    const B_squared = B * B;
-    const L_squared = L * L;
-    const exponentPart = Math.exp(-B_squared * tau);
-    const denominator = 1 + B_squared * L_squared;
+    const exponentPart = Math.exp(-B * tau);
+    const denominator = 1 + B * L;
 
     return (k_infinity * exponentPart) / denominator;
 }

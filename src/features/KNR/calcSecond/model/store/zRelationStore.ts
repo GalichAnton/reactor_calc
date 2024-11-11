@@ -10,7 +10,7 @@ interface ZRelationsStore {
     initialConcentrationN05: number;
     initialConcentrationN08: number;
     zRelationsParams?: ZRelations[];
-    setZRelationProperties: (value: ZRelations) => void;
+    setZRelationProperties: (value: ZRelations[]) => void;
     resetStore: () => void;
 }
 
@@ -26,7 +26,7 @@ export const useZRelationsStore = create<ZRelationsStore>()(
                             state.zRelationsParams = [];
                         }
 
-                        state.zRelationsParams.push(params);
+                        state.zRelationsParams = params;
                         state.filled = true;
                     },
                     undefined,

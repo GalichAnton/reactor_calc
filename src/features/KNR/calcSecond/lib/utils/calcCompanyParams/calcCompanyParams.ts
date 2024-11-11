@@ -1,3 +1,4 @@
+import { ZRelations } from '@features/KNR/calcSecond';
 import { findClosestToTarget } from '@shared/lib/utils';
 
 /**
@@ -7,18 +8,20 @@ interface CalcCompanyParamsProps {
     /** Параметры изотопов */
     isotopesParams: {
         /** Параметр Sf5 */
-        Sf5: { value: number };
+        Sf5: number;
         /** Средняя удельная объемная мощность */
-        averageSpecificByVolumePower: { value: number };
+        averageSpecificByVolumePower: number;
     };
+    /** Высота Аз см */
+    coreHeight: number;
+    /** Количество твэл шт */
+    nTvel: number;
+    /** Количество твс шт */
+    nTvs: number;
+    /** Объем урана */
+    V_U: number;
     /** Параметры Z-отношений */
-    zRelationsParams: Array<{
-        reactorOperationalTime: number;
-        effectiveNeutronMultiplicationFactor: number;
-        z: number;
-        reactivity: number;
-        nuclearConcentration235UByKR: number;
-    }>;
+    zRelationsParams: ZRelations[];
 }
 
 /**
@@ -109,13 +112,13 @@ export const calculateCompanyParams = async (
 
         // Расчет dN5 и времени без плутония
         const dN5 = Math.abs(
-            zRelationsParams[0].nuclearConcentration235UByKR -
-                zRelationsParams[companyIndex].nuclearConcentration235UByKR,
+            zRelationsParams[0].nuclearConcentration235UByRum -
+                zRelationsParams[companyIndex].nuclearConcentration235UByRum,
         );
 
         const tWithoutPu =
-            (dN5 * isotopesParams.Sf5.value) /
-            (2.85 * 1e18 * isotopesParams.averageSpecificByVolumePower.value);
+            (dN5 * isotopesParams.Sf5) /
+            (2.85 * 1e18 * isotopesParams.averageSpecificByVolumePower);
 
         // Расчет средних параметров
         const middleParams = findClosestToTarget(

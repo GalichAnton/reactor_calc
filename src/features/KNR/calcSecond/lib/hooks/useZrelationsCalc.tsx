@@ -131,7 +131,7 @@ export const useZrelationsCalc = () => {
         resetStore();
 
         try {
-            START_Z.forEach((z, i) => {
+            const dataArr = START_Z.map((z, i) => {
                 const averageNuclearConcentration235UByRum =
                     calculateNuclearConcentrationU5ByRum(N_05.value, z);
 
@@ -603,9 +603,9 @@ export const useZrelationsCalc = () => {
                 //     );
                 //     console.groupEnd();
                 // }
-
-                setZRelationProperties(data);
+                return data;
             });
+            setZRelationProperties(dataArr as ZRelations[]);
         } catch (error) {
             console.error(
                 'Ошибка при расчете параметров нейтронного газа',

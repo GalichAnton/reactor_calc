@@ -547,25 +547,26 @@ export function calculateDiffusionLength(
 }
 
 /**
- * Интерфейс для ввода параметров, необходимых для вычисления коэффициента использования тепловых нейтронов.
- *
- * @interface ThermalNeutronUtilizationParams
- * @property {number} V_U - Объем урана.
- * @property {number} averageAbsorptionCrossSection5 - Среднее сечение поглощения для 235U.
- * @property {number} averageAbsorptionCrossSection9 - Среднее сечение поглощения для 239Pu.
- * @property {number} averageAbsorptionCrossSection - Общее среднее сечение поглощения.
- * @property {number} d - Коэффициент коррекции.
- * @property {number} V_substitution - Объем замещения.
- * @property {number} substitutionAbsorptionCrossSection - Сечение поглощения для материала замещения.
+ * Параметры для расчета коэффициента использования тепловых нейтронов
+ * @interface
  */
-interface ThermalNeutronUtilizationParams {
-    V_U: number;
-    averageAbsorptionCrossSection5: number;
-    averageAbsorptionCrossSection9: number;
-    averageAbsorptionCrossSection: number;
-    d: number;
-    V_moderator: number;
-    moderatorAbsorptionCrossSection: number;
+interface ThermalNeutronParams {
+    /** Объем блока */
+    blockVolume: number;
+    /** Объем топлива */
+    fuelVolume: number;
+    /** Макро сечение поглощения U-235 */
+    u235MacroAbsorptionCrossSection: number;
+    /** Макро сечение поглощения Pu-239 */
+    PuMacroAbsorptionCrossSection: number;
+    /** Макроскопическое сечение поглощения блока */
+    blockMacroAbsorptionCrossSection: number;
+    /** Коэффициент проигрыша */
+    lossFactor: number;
+    /** Объем замедлителя */
+    moderatorVolume: number;
+    /** Макроскопическое сечение поглощения замедлителя */
+    moderatorMacroAbsorptionCrossSection: number;
 }
 
 /**
@@ -574,23 +575,25 @@ interface ThermalNeutronUtilizationParams {
  * @returns {number} - Вычисленный коэффициент использования тепловых нейтронов θ(z).
  */
 export function calculateThermalNeutronUtilization(
-    params: ThermalNeutronUtilizationParams,
+    params: ThermalNeutronParams,
 ): number {
     const {
-        V_U,
-        averageAbsorptionCrossSection5,
-        averageAbsorptionCrossSection9,
-        averageAbsorptionCrossSection,
-        d,
-        V_moderator,
-        moderatorAbsorptionCrossSection,
+        blockVolume,
+        fuelVolume,
+        u235MacroAbsorptionCrossSection,
+        PuMacroAbsorptionCrossSection,
+        blockMacroAbsorptionCrossSection,
+        lossFactor,
+        moderatorVolume,
+        moderatorMacroAbsorptionCrossSection,
     } = params;
 
     const numerator =
-        V_U * (averageAbsorptionCrossSection5 + averageAbsorptionCrossSection9);
+        blockVolume *
+        (u235MacroAbsorptionCrossSection + PuMacroAbsorptionCrossSection);
     const denominator =
-        V_U * averageAbsorptionCrossSection +
-        d * V_moderator * moderatorAbsorptionCrossSection;
+        fuelVolume * blockMacroAbsorptionCrossSection +
+        lossFactor * moderatorVolume * moderatorMacroAbsorptionCrossSection;
 
     return numerator / denominator;
 }
@@ -669,9 +672,7 @@ export function calculateEffectiveNeutronMultiplication(
     } = params;
 
     return (
-        k_infinite *
-        (Math.exp(-Math.pow(geometricParameter, 2) * thermalNeutronAge) /
-            (1 +
-                Math.pow(geometricParameter, 2) * Math.pow(diffusionLength, 2)))
+        (k_infinite * Math.exp(-geometricParameter * thermalNeutronAge)) /
+        (1 + geometricParameter * diffusionLength)
     );
 }

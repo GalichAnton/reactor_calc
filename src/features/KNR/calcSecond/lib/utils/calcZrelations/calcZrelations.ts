@@ -105,6 +105,13 @@ interface ZrelationsParamsInput {
 export const calculateZrelationsParams = async (
     params: ZrelationsParamsInput,
 ): Promise<ZRelations[]> => {
+    const zeroZvalues = {
+        averageNuclearConcentration235UByZero: 0,
+        averageAbsorptionMacroCrossSection235UByZero: 0,
+        averageSecondaryNeutronsPerAbsorptionByZero: 0,
+        thermalNeutronUtilizationByZero: 0,
+    };
+
     try {
         const results: ZRelations[] = [];
         const epsilon =
@@ -119,10 +126,16 @@ export const calculateZrelationsParams = async (
                     z,
                 );
 
+            if (z === 0) {
+                zeroZvalues.averageNuclearConcentration235UByZero =
+                    averageNuclearConcentration235UByRum;
+            }
+
             const averageNuclearConcentration239PuByRum =
                 calculateNuclearConcentrationPuByRum({
                     nuclearConcentration238U: params.concentrations.N_08,
-                    initialNuclearConcentration235U: params.concentrations.N_05,
+                    initialNuclearConcentration235U:
+                        zeroZvalues.averageNuclearConcentration235UByZero,
                     thermalNeutronAge:
                         params.neutronDiffusionAgeParams.neutronAge,
                     fastNeutronReproductionCoefficient:
@@ -144,7 +157,8 @@ export const calculateZrelationsParams = async (
                     params.kInfParams.resonanceEscapeProbability,
                 nuclearConcentration239PUbyZ:
                     averageNuclearConcentration239PuByRum,
-                nuclearConcentration235Uby0: params.concentrations.N_05,
+                nuclearConcentration235Uby0:
+                    zeroZvalues.averageNuclearConcentration235UByZero,
                 averageSpecificByVolumePower:
                     params.isotopesParams.averageSpecificByVolumePower,
                 Sf9: params.isotopesParams.Sf9,
@@ -196,6 +210,11 @@ export const calculateZrelationsParams = async (
                     averageAbsorptionCrossSection235U:
                         params.averagedCrossSections.averagedMicroAU5,
                 });
+
+            if (z === 0) {
+                zeroZvalues.averageAbsorptionMacroCrossSection235UByZero =
+                    averageAbsorptionMacroCrossSection235U;
+            }
 
             const averageAbsorptionMacroCrossSection239Pu =
                 calculateMeanMacroscopicAbsorptionCrossSectionPu239({
@@ -253,6 +272,11 @@ export const calculateZrelationsParams = async (
                             .secondaryNeutronsPerAbsorption239Pu,
                 });
 
+            if (z === 0) {
+                zeroZvalues.averageSecondaryNeutronsPerAbsorptionByZero =
+                    averageSecondaryNeutronsPerAbsorption;
+            }
+
             const blockAbsorptionCrossSection =
                 calculateBlockAbsorptionCrossSection({
                     blockVolume:
@@ -271,7 +295,7 @@ export const calculateZrelationsParams = async (
                     meanSamariumAbsorptionCrossSection:
                         samariumAbsorptionCrossSection,
                     meanMacroscopicAbsorptionCrossSectionU235By0:
-                        params.averagedCrossSections.averagedMacroAU5,
+                        zeroZvalues.averageAbsorptionMacroCrossSection235UByZero,
                 });
 
             const cosTeta5 = 2 / (3 * 235);
@@ -327,29 +351,37 @@ export const calculateZrelationsParams = async (
 
             const thermalNeutronUtilization =
                 calculateThermalNeutronUtilization({
-                    V_U: params.cellParams.fuelVolume,
-                    V_moderator:
+                    blockVolume:
+                        params.twoZoneModelParams.twoZoneFirstZoneVolume,
+                    moderatorVolume:
                         params.twoZoneModelParams.twoZoneModeratorVolume,
-                    averageAbsorptionCrossSection5:
+                    u235MacroAbsorptionCrossSection:
                         averageAbsorptionMacroCrossSection235U,
-                    averageAbsorptionCrossSection9:
+                    PuMacroAbsorptionCrossSection:
                         averageAbsorptionMacroCrossSection239Pu,
-                    averageAbsorptionCrossSection: blockAbsorptionCrossSection,
-                    d: params.lossFactorParams.lossFactor,
-                    moderatorAbsorptionCrossSection:
+                    blockMacroAbsorptionCrossSection:
+                        blockAbsorptionCrossSection,
+                    lossFactor: params.lossFactorParams.lossFactor,
+                    moderatorMacroAbsorptionCrossSection:
                         params.twoZoneModelParams
                             .twoZoneModeratorAbsorptionCrossSection,
+                    fuelVolume: params.cellParams.fuelVolume,
                 });
+
+            if (z === 0) {
+                zeroZvalues.thermalNeutronUtilizationByZero =
+                    thermalNeutronUtilization;
+            }
 
             const infiniteMediumNeutronMultiplicationFactor =
                 calculateNeutronMultiplication({
                     k_infinite: params.kInfParams.infiniteMultiplicationFactor,
                     theta: thermalNeutronUtilization,
-                    theta0: params.kInfParams.thermalUtilization,
+                    theta0: zeroZvalues.thermalNeutronUtilizationByZero,
                     secondaryNeutronsPerAbsorption235UorPu9:
                         averageSecondaryNeutronsPerAbsorption,
                     secondaryNeutrons0PerAbsorption235UorPu9:
-                        params.kInfParams.reproductionFactor,
+                        zeroZvalues.averageSecondaryNeutronsPerAbsorptionByZero,
                 });
 
             const effectiveNeutronMultiplicationFactor =
@@ -467,6 +499,115 @@ export const calculateZrelationsParams = async (
                 nuclearConcentration238UByKR,
                 reactivity,
             };
+            if (z === 0) {
+                // console.group('data');
+                // console.log(
+                //     'averageNuclearConcentration235U',
+                //     averageNuclearConcentration235UByRum.toExponential(3),
+                // );
+                // console.log(
+                //     'averageNuclearConcentration239PuByRum',
+                //     averageNuclearConcentration239PuByRum.toExponential(3),
+                // );
+                // console.log(
+                //     'reactorOperationalDays',
+                //     reactorOperationalDays.toExponential(3),
+                // );
+                // console.log('epsilon', epsilon.toExponential(3));
+                // console.log(
+                //     'absorptionSlagCrossSection',
+                //     absorptionSlagCrossSection.toExponential(3),
+                // );
+                // console.log(
+                //     'meanNuclearConcentrationU235',
+                //     meanNuclearConcentrationU235.toExponential(3),
+                // );
+                // console.log(
+                //     'meanPlutoniumConcentration',
+                //     meanPlutoniumConcentration.toExponential(3),
+                // );
+                // console.log(
+                //     'meanXenonAbsorptionCrossSection',
+                //     meanXenonAbsorptionCrossSection.toExponential(3),
+                // );
+                // console.log(
+                //     'meanMacroscopicFissionCrossSection235U',
+                //     meanMacroscopicFissionCrossSection235U.toExponential(3),
+                // );
+                // console.log(
+                //     'averageAbsorptionMacroCrossSection239Pu',
+                //     averageAbsorptionMacroCrossSection239Pu.toExponential(3),
+                // );
+                // console.log(
+                //     'averageAbsorptionMacroCrossSection235U',
+                //     averageAbsorptionMacroCrossSection235U.toExponential(3),
+                // );
+                // console.log(
+                //     'meanMacroscopicFissionCrossSection239Pu',
+                //     meanMacroscopicFissionCrossSection239Pu.toExponential(3),
+                // );
+                // console.log(
+                //     'neutronFluxDensity',
+                //     neutronFluxDensity.toExponential(3),
+                // );
+                // console.log(
+                //     'xenonAbsorptionCrossSection',
+                //     xenonAbsorptionCrossSection.toExponential(3),
+                // );
+                // console.log(
+                //     'samariumAbsorptionCrossSection',
+                //     samariumAbsorptionCrossSection.toExponential(3),
+                // );
+                // console.log(
+                //     'averageSecondaryNeutronsPerAbsorption',
+                //     averageSecondaryNeutronsPerAbsorption.toExponential(3),
+                // );
+                // console.log(
+                //     'blockAbsorptionCrossSection',
+                //     blockAbsorptionCrossSection.toExponential(3),
+                // );
+                // console.log(
+                //     'transportCrossSectionU235',
+                //     transportCrossSectionU235.toExponential(3),
+                // );
+                // console.log(
+                //     'transportCrossSectionPu239',
+                //     transportCrossSectionPu239.toExponential(3),
+                // );
+                // console.log(
+                //     'totalTransportCrossSection',
+                //     totalTransportCrossSection.toExponential(3),
+                // );
+                // console.log(
+                //     'totalAbsorptionCrossSection',
+                //     totalAbsorptionCrossSection.toExponential(3),
+                // );
+                // console.log(
+                //     'diffusionLength',
+                //     diffusionLength.toExponential(3),
+                // );
+                // console.log(
+                //     'thermalNeutronUtilization',
+                //     thermalNeutronUtilization.toExponential(3),
+                // );
+                // console.log(
+                //     'infiniteMediumNeutronMultiplicationFactor',
+                //     infiniteMediumNeutronMultiplicationFactor.toExponential(3),
+                // );
+                // console.log(
+                //     'effectiveNeutronMultiplicationFactor',
+                //     effectiveNeutronMultiplicationFactor.toExponential(3),
+                // );
+                // console.log(
+                //     'averageNuclearConcentration239PuByBat',
+                //     averageNuclearConcentration239PuByBat.toExponential(3),
+                // );
+                // console.log(
+                //     'averageNuclearConcentration235UByBat',
+                //     averageNuclearConcentration235UByBat.toExponential(3),
+                // );
+                // console.groupEnd();
+            }
 
             results.push(data);
         }

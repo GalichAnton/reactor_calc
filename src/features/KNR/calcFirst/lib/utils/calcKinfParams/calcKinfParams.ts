@@ -19,6 +19,8 @@ interface CalcKInfParamsProps {
     // Усредненные микросечения
     /** Усредненное микроскопическое сечение поглощения U-235 */
     averagedMicroAU5: number;
+    /** Усредненное макроскопическое сечение поглощения U-235 */
+    averagedMacroAU5: number;
     /** Усредненное микроскопическое сечение деления U-235 */
     averagedMicroFU5: number;
 
@@ -74,6 +76,7 @@ export const calculateKInfParams = async (
     try {
         const {
             averagedMicroAU5,
+            averagedMacroAU5,
             averagedMicroFU5,
             coolantTemperature,
             twoZoneCellVolume,
@@ -81,7 +84,6 @@ export const calculateKInfParams = async (
             twoZoneModeratorAbsorptionCrossSection,
             twoZoneModeratorVolume,
             lossFactor,
-            averageN_5,
             N_0U,
             waterVolume,
             fuelVolume,
@@ -102,8 +104,8 @@ export const calculateKInfParams = async (
                 twoZoneModeratorAbsorptionCrossSection,
             moderatorVolume: twoZoneModeratorVolume,
             lossFactor,
-            u235AbsorptionCrossSection: averagedMicroAU5,
-            u235Concentration: averageN_5,
+            u235MacroAbsorptionCrossSection: averagedMacroAU5,
+            fuelVolume: fuelVolume,
         });
 
         const reproductionFactor = calculateSecondaryNeutrons({

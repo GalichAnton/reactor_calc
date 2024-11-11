@@ -76,7 +76,7 @@ export const calculateAZParams = async (
         );
 
         // Расчет реактивности
-        const ro = roundToDecimal(calculateReactivity(keff), 3);
+        const ro = calculateReactivity(keff);
 
         // Формирование и возврат объекта с результатами
         return {

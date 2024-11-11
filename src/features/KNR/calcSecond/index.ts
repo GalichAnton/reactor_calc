@@ -16,3 +16,4 @@ export { useCalcCompanyParams } from './lib/hooks/useCalcCompanyParams';
 export { useAzCalc } from './lib/hooks/useAzCalc';
 export { useCalcIsotopes } from './lib/hooks/useCalcIsotopes';
 export type { ZRelations } from './model/types/zRelations.ts';
+export * from './lib/utils';

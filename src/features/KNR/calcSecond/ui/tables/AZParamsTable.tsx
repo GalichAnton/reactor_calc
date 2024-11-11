@@ -1,13 +1,13 @@
-import { CellParams } from '@features/KNR/calcFirst/model/types/cellParams.ts';
 import { ParamsTable } from '@shared/ui';
 
 import { useAZPhysParamsStore } from '../../model/store/azPhysParamsStore.ts';
+import { AZPhysParams } from '../../model/types/azPhysParams.ts';
 
 export const AZParamsTable = () => {
     const { azPhysParams } = useAZPhysParamsStore();
 
     return (
-        <ParamsTable<CellParams>
+        <ParamsTable<AZPhysParams>
             params={azPhysParams}
             title={'Параметры активной зоны'}
             rowKey={'geometricParameter'}

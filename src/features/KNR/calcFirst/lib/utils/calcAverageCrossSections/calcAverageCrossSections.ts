@@ -111,7 +111,6 @@ export const calculateAverageCrossSections = async (
             averagedMacroAO2 +
             averagedMacroAH2O +
             averagedMacroAU8 +
-            averagedMacroFU5 +
             averagedMacroAU5;
 
         return {

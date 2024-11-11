@@ -46,6 +46,7 @@ export const KefChart = () => {
             withoutPu: { z: zWithoutPu },
         },
     } = useCompanyParamsStore();
+
     const { isLight, theme } = useTheme();
 
     const data = zRelationsParams?.map((p) => ({
