@@ -23,7 +23,7 @@ export const KNRTabs = () => {
         if (isCalculating) {
             calculate();
         }
-    }, [isCalculating]); // Если нужны зависимости, добавьте их сюда
+    }, [isCalculating]);
 
     const items: TabsProps['items'] = useMemo(() => {
         return [

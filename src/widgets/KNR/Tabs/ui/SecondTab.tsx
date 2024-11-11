@@ -6,6 +6,7 @@ import {
     KefChart,
     KefZTable,
 } from '@features/KNR/calcSecond';
+import { ReactivityTable } from '@features/KNR/calcSecond/ui/tables/ReactivityTable.tsx';
 import { Space, Text } from '@shared/ui';
 import { Col, Divider, Row } from 'antd';
 
@@ -54,6 +55,7 @@ export const SecondTab = () => {
                         РЕАКТИВНОСТИ
                     </strong>
                 </Text>
+                <ReactivityTable />
             </Col>
             <Divider />
         </Row>

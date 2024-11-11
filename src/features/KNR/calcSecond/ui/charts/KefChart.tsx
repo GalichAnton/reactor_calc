@@ -46,7 +46,7 @@ export const KefChart = () => {
             withoutPu: { z: zWithoutPu },
         },
     } = useCompanyParamsStore();
-
+    console.log(z, zYear, zWithoutPu);
     const { isLight, theme } = useTheme();
 
     const data = zRelationsParams?.map((p) => ({
@@ -70,7 +70,7 @@ export const KefChart = () => {
                 <XAxis
                     dataKey="z"
                     type="number"
-                    domain={[0, 2]}
+                    domain={[0, 2.5]}
                     allowDataOverflow
                     label={{
                         value: 'Глубина выгорания',
@@ -165,7 +165,6 @@ export const KefChart = () => {
                     dataKey="k_ef"
                     yAxisId="k_ef"
                     stroke={themeColors.k_ef}
-                    isAnimationActive={false}
                     dot={(props) => {
                         const { cx, cy, payload } = props;
                         const labels = [
@@ -220,7 +219,6 @@ export const KefChart = () => {
                     dataKey="reactorOperationalTime"
                     yAxisId="reactorOperationalTime"
                     stroke={themeColors.time}
-                    isAnimationActive={false}
                     dot={false}
                     hide={!showTime}
                 />{' '}

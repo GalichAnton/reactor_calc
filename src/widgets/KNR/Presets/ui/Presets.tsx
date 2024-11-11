@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { REACTOR_TYPES } from '@entities/reactor';
 import { useInitialParamsStore } from '@features/KNR/VVER/setInitialValues';
 import { Select, Space, Text } from '@shared/ui';
+import { VVER_440 } from '@widgets/KNR/Presets/constants/VVER_440.ts';
 import { Radio, RadioChangeEvent } from 'antd';
 import { DefaultOptionType } from 'antd/es/select';
 
@@ -17,6 +18,7 @@ export const Presets = () => {
 
     const powerOptions: DefaultOptionType[] = [
         { value: 1300, label: '1300 МВт' },
+        { value: 440, label: '440 МВт' },
     ];
 
     const changeReactorTypeHandler = (e: RadioChangeEvent) => {
@@ -37,6 +39,9 @@ export const Presets = () => {
         switch (key) {
             case 'ВВЭР-1300':
                 setInitialParams(VVER_1300.initialParams);
+                break;
+            case 'ВВЭР-440':
+                setInitialParams(VVER_440.initialParams);
                 break;
             default:
                 return;

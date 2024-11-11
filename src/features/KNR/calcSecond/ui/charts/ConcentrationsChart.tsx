@@ -73,7 +73,7 @@ export const ConcentrationsChart = (props: ConcentrationsChartProps) => {
                 <XAxis
                     dataKey="z"
                     type="number"
-                    domain={[0, 3]}
+                    domain={[0, 'dataMax']}
                     allowDataOverflow
                     label={{
                         value: 'Глубина выгорания',

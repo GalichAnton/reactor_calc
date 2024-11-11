@@ -441,11 +441,11 @@ export const calculateZrelationsParams = async (
             } = calculateNuclearConcentrationByKR({
                 dz: 0.01,
                 initialNuclearConcentration235U:
-                    KRParams.initialNuclearConcentration235U || 0,
+                    KRParams.initialNuclearConcentration235U,
                 initialNuclearConcentration239Pu:
-                    KRParams.initialNuclearConcentration239Pu || 0,
+                    KRParams.initialNuclearConcentration239Pu,
                 initialNuclearConcentration238U:
-                    KRParams.initialNuclearConcentration238U || 0,
+                    KRParams.initialNuclearConcentration238U,
                 averageAbsorptionCrossSection238U:
                     params.averagedCrossSections.averagedMicroAU8,
                 averageAbsorptionCrossSection235U:
