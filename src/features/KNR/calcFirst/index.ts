@@ -12,19 +12,6 @@ export { KInfTable } from './ui/tables/KInfTable';
 export { TwoZoneTable } from './ui/tables/TwoZoneTable.tsx';
 export { NeutronAgeTable } from './ui/tables/NeutronAgeTable.tsx';
 export { ReactorCriticalityTable } from './ui/tables/ReactorCriticalityTable.tsx';
-// === calc functions
-export { useCalcCellParams } from './lib/hooks/useCalcCellParams';
-export { useCalcConcentrationParams } from './lib/hooks/useCalcConcentrationParams';
-export { useCalcMacroscopicCrossSections } from './lib/hooks/useCalcMacroscopicCrossSections';
-export { useCalcModerationCapacity } from './lib/hooks/useCalcModerationCapacity.ts';
-export { useCalcNeutronGasParams } from './lib/hooks/useCalcNeutronGasParams';
-export { useCalcAverageCrossSections } from './lib/hooks/useCalcAverageCrossSections';
-export { useCalcTransportMacroSections } from './lib/hooks/useCalcTransportMacroSections';
-export { useCalcLossFactorParams } from './lib/hooks/useCalcLossFactor.ts';
-export { useCalcTwoZoneParams } from './lib/hooks/useCalcTwoZoneParams.ts';
-export { useCalcKInfParams } from './lib/hooks/useCalcKInfParams.ts';
-export { useCalcNeutronAgeParams } from './lib/hooks/useCalcNeutronAgeParams.ts';
-export { useCalcReactorCritically } from './lib/hooks/useCalcReactorCritically.ts';
 // stores
 export * from './model/stores';
 export * from './lib/utils';
