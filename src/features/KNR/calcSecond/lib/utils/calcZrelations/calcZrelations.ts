@@ -435,9 +435,9 @@ export const calculateZrelationsParams = async (
             }
 
             const {
-                nuclearConcentration239PuByKR,
                 nuclearConcentration235UByKR,
                 nuclearConcentration238UByKR,
+                nuclearConcentration239PuByKR,
             } = calculateNuclearConcentrationByKR({
                 dz: 0.01,
                 initialNuclearConcentration235U:
@@ -453,7 +453,7 @@ export const calculateZrelationsParams = async (
                 averageAbsorptionCrossSection239Pu:
                     params.isotopesParams.averageAbsorptionCrossSection239Pu,
                 fastNeutronReproductionCoefficient:
-                    params.kInfParams.reproductionFactor,
+                    params.kInfParams.fastFissionFactor,
                 resonanceEscapeProbability:
                     params.kInfParams.resonanceEscapeProbability,
                 averageFissionCrossSection235U:
@@ -462,9 +462,36 @@ export const calculateZrelationsParams = async (
                     params.isotopesParams.averageFissionCrossSection239Pu,
             });
 
+            if (z === 0) {
+                console.log({
+                    dz: 0.01,
+                    initialNuclearConcentration235U:
+                        KRParams.initialNuclearConcentration235U,
+                    initialNuclearConcentration239Pu:
+                        KRParams.initialNuclearConcentration239Pu,
+                    initialNuclearConcentration238U:
+                        KRParams.initialNuclearConcentration238U,
+                    averageAbsorptionCrossSection238U:
+                        params.averagedCrossSections.averagedMicroAU8,
+                    averageAbsorptionCrossSection235U:
+                        params.averagedCrossSections.averagedMicroAU5,
+                    averageAbsorptionCrossSection239Pu:
+                        params.isotopesParams
+                            .averageAbsorptionCrossSection239Pu,
+                    fastNeutronReproductionCoefficient:
+                        params.kInfParams.reproductionFactor,
+                    resonanceEscapeProbability:
+                        params.kInfParams.resonanceEscapeProbability,
+                    averageFissionCrossSection235U:
+                        params.averagedCrossSections.averagedMicroFU5,
+                    averageFissionCrossSection239Pu:
+                        params.isotopesParams.averageFissionCrossSection239Pu,
+                });
+            }
+
             const reactivity =
                 (effectiveNeutronMultiplicationFactor - 1) /
-                infiniteMediumNeutronMultiplicationFactor;
+                effectiveNeutronMultiplicationFactor;
 
             const data: ZRelations = {
                 z,

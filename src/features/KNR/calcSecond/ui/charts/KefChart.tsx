@@ -70,7 +70,7 @@ export const KefChart = () => {
                 <XAxis
                     dataKey="z"
                     type="number"
-                    domain={[0, 2.5]}
+                    domain={[0, 2]}
                     allowDataOverflow
                     label={{
                         value: 'Глубина выгорания',
