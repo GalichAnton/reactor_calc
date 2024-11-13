@@ -4,12 +4,17 @@ import {
     useReactivityStore,
     InitialReactivityParams,
 } from '@features/reactivityCalc';
-import { Button } from '@shared/ui';
-import { Card, Col, Form, InputNumber, Radio, Row } from 'antd';
-import Checkbox from 'antd/es/checkbox/Checkbox';
-import { CheckboxChangeEvent } from 'antd/lib/checkbox';
-
-const span = 4;
+import { Button, Space } from '@shared/ui';
+import {
+    Card,
+    Col,
+    Form,
+    Grid,
+    InputNumber,
+    Radio,
+    RadioChangeEvent,
+    Row,
+} from 'antd';
 
 export const ReactivityForm = () => {
     const {
@@ -28,12 +33,14 @@ export const ReactivityForm = () => {
             height,
         },
         setInitialParams,
-        setConfig,
+        setInitialParam,
         setStart,
-        config: { isSix, start },
+        config: { start },
 
         reset,
     } = useReactivityStore();
+    const screens = Grid.useBreakpoint();
+    const span = screens.xxl ? 4 : screens.xl ? 5 : screens.lg ? 6 : 8;
 
     const onFinish = () => {
         setStart();
@@ -43,9 +50,13 @@ export const ReactivityForm = () => {
         setInitialParams(allValues);
     };
 
-    const changeSixHandler = (e: CheckboxChangeEvent) => {
+    const onResetHandler = () => {
         reset();
-        setConfig('isSix', e.target.checked);
+        setStart();
+    };
+
+    const onChangeMode = (e: RadioChangeEvent) => {
+        setInitialParam('mode', e.target.value);
     };
 
     return (
@@ -57,13 +68,9 @@ export const ReactivityForm = () => {
             <Form
                 layout={'vertical'}
                 disabled={start}
-                onFinish={onFinish}
                 onValuesChange={onValuesChange}
             >
-                <Checkbox checked={isSix} onChange={changeSixHandler}>
-                    Шестигрупповое
-                </Checkbox>
-                <Row gutter={[8, 8]}>
+                <Row gutter={[12, 12]}>
                     <Col span={span}>
                         <Form.Item
                             id={'power'}
@@ -171,11 +178,11 @@ export const ReactivityForm = () => {
                     <Col span={span}>
                         <Form.Item
                             id={'nTvel'}
-                            label={<strong>Шаг интегрирования</strong>}
+                            label={<strong>Число ТВЭЛ</strong>}
                         >
                             <InputNumber
                                 style={{ width: '100%' }}
-                                placeholder={'Число твэл'}
+                                placeholder={'Число ТВЭЛ'}
                                 value={nTvel}
                                 addonAfter={'шт'}
                             />
@@ -184,7 +191,7 @@ export const ReactivityForm = () => {
                     <Col span={span}>
                         <Form.Item
                             id={'nTvs'}
-                            label={<strong>Шаг интегрирования</strong>}
+                            label={<strong>Число ТВС</strong>}
                         >
                             <InputNumber
                                 style={{ width: '100%' }}
@@ -207,37 +214,33 @@ export const ReactivityForm = () => {
                             />
                         </Form.Item>
                     </Col>
-                    <Col span={span}>
-                        <Form.Item
-                            id={'mode'}
-                            label={<strong>Режим работы стержней</strong>}
-                        >
-                            <Radio.Group value={mode} disabled={false}>
-                                <Radio.Button value={OPERATING_MODE.STOP}>
-                                    Остановить
-                                </Radio.Button>
-                                <Radio.Button value={OPERATING_MODE.UP}>
-                                    Вверх
-                                </Radio.Button>
-                                <Radio.Button value={OPERATING_MODE.DOWN}>
-                                    Вниз
-                                </Radio.Button>
-                            </Radio.Group>
-                        </Form.Item>
-                    </Col>
                 </Row>
-                <Form.Item>
-                    <Button
-                        type="primary"
-                        htmlType={'submit'}
-                        icon={
-                            start ? <LoadingOutlined /> : <PlayCircleOutlined />
-                        }
-                    >
-                        {start ? 'Стоп' : 'Старт'}
-                    </Button>
-                </Form.Item>
             </Form>
+            <Space style={{ marginTop: '20px' }}>
+                <Button
+                    type="primary"
+                    onClick={onFinish}
+                    icon={start ? <LoadingOutlined /> : <PlayCircleOutlined />}
+                >
+                    {start ? 'Стоп' : 'Старт'}
+                </Button>
+                <Button danger onClick={onResetHandler} disabled={!start}>
+                    Сбросить
+                </Button>
+                <Radio.Group
+                    value={mode}
+                    disabled={false}
+                    onChange={onChangeMode}
+                >
+                    <Radio.Button value={OPERATING_MODE.STOP}>
+                        Остановить
+                    </Radio.Button>
+                    <Radio.Button value={OPERATING_MODE.UP}>Вверх</Radio.Button>
+                    <Radio.Button value={OPERATING_MODE.DOWN}>
+                        Вниз
+                    </Radio.Button>
+                </Radio.Group>
+            </Space>
         </Card>
     );
 };

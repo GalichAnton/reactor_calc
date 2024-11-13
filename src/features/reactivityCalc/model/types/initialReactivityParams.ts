@@ -14,4 +14,5 @@ export interface InitialReactivityParams {
     nTvs: number;
     nTvel: number;
     r_t: number;
+    uraniumVolume: number;
 }

@@ -2,16 +2,9 @@ import { useEffect } from 'react';
 
 import { ReactorParams } from '@entities/reactor';
 
-import {
-    betta,
-    bettaSix,
-    Lambda,
-    lambda,
-    lambdaSix,
-} from '../../constants/general.ts';
-import { calcPowerSix, calcPower } from '../../lib/utils/calcPower';
+import { bettaSix, Lambda, lambdaSix } from '../../constants/general.ts';
+import { calcPowerSix } from '../../lib/utils/calcPower';
 import { useReactivityStore } from '../../model/store.ts';
-import { ComputedParams } from '../../model/types/computedParams.ts';
 
 export const useCalc = () => {
     const {
@@ -25,98 +18,85 @@ export const useCalc = () => {
             reactorHeight,
         },
         setComputedParams,
-        config: { start, isSix },
+        setComputedParam,
+        setInitialParam,
+        config: { start },
         computedParams,
     } = useReactivityStore();
 
     useEffect(() => {
         if (start && !computedParams.calcC.length) {
-            const initialParams: ComputedParams = {
-                calcTime: [0],
-                calcHeight: [height],
-                calcReactivity: [startReactivity],
-                calcPower: [0.5 * nominalPower],
-                calcC: [(0.5 * nominalPower * betta) / (lambda * Lambda)],
-                calcRel: [1],
-                calcCSix: [],
+            const initialParams = {
+                calcTime: 0,
+                calcHeight: height,
+                calcReactivity: startReactivity,
+                calcPower: 0.5 * nominalPower,
+                calcC: bettaSix.map((b, i) => {
+                    return (b * 0.5 * nominalPower) / (lambdaSix[i] * Lambda);
+                }),
+                calcRel: 1,
                 calcThermalCoefficient: [],
             };
 
-            const initialSixParams: ComputedParams = {
-                ...initialParams,
-                calcC: [],
-                calcCSix: [
-                    bettaSix.map((b, i) => {
-                        return (b * nominalPower) / (lambdaSix[i] * Lambda);
-                    }),
-                ],
-            };
-
-            setComputedParams(isSix ? initialSixParams : initialParams);
+            setComputedParams(initialParams);
         }
     }, [start]);
 
     useEffect(() => {
-        if (!start || !params) {
+        if (!start || !computedParams.calcC.length) {
             return;
         }
 
         const timeInterval = setInterval(() => {
             const currentState = useReactivityStore.getState();
 
-            if (!currentState.data.computedParams) {
+            if (!currentState.computedParams) {
                 return;
             }
             const lastIndex =
-                currentState.data.computedParams.calcReactivity.length - 1;
+                currentState.computedParams.calcReactivity.length - 1;
             const currentHeight =
-                currentState.data.computedParams.calcHeight[lastIndex];
-            const currentTime =
-                currentState.data.computedParams.calcTime[lastIndex];
+                currentState.computedParams.calcHeight[lastIndex];
+            const currentTime = currentState.computedParams.calcTime[lastIndex];
             if (currentHeight >= reactorHeight) {
-                changeCalcHeight(reactorHeight);
+                setComputedParam('calcHeight', reactorHeight);
             }
 
             if (currentHeight <= 0) {
-                changeCalcHeight(0);
+                setComputedParam('calcHeight', 0);
             }
 
-            const calcFn = isSix ? calcPowerSix : calcPower;
-
-            const newParams = calcFn({
+            const newParams = calcPowerSix({
                 prevH: currentHeight,
-                prevRo: currentState.data.computedParams.calcReactivity[
-                    lastIndex
-                ],
-                prevPower:
-                    currentState.data.computedParams.calcPower[lastIndex],
-                // @ts-ignore
-                prevC: currentState.data.computedParams.calcC[lastIndex],
+                prevRo: currentState.computedParams.calcReactivity[lastIndex],
+                prevPower: currentState.computedParams.calcPower[lastIndex],
+                prevC: currentState.computedParams.calcC[lastIndex],
                 velocity: velocity,
                 interval: interval,
-                mode: currentState.data.mode,
-                reactorHeight: currentState.data.reactorHeight,
+                mode: currentState.initialParams.mode,
+                reactorHeight: reactorHeight,
                 nominalPower,
             });
+            console.log(newParams);
+            setInitialParam('height', newParams.newH);
+            setInitialParam('power', newParams.newPower);
+            setInitialParam('startReactivity', newParams.newRo);
 
-            changeHeight(newParams.newH);
-            changePower(newParams.newPower);
-            changeStartReactivity(newParams.newRo);
-
-            updateCalcParams({
-                height: newParams.newH,
-                time: currentTime + interval,
-                reactivity: newParams.newRo,
-                power: newParams.newPower,
-                c: newParams.newC,
-                rel: newParams.rel,
+            setComputedParams({
+                calcHeight: newParams.newH,
+                calcTime: currentTime + interval,
+                calcReactivity: newParams.newRo,
+                calcPower: newParams.newPower,
+                calcC: newParams.newC,
+                calcRel: newParams.rel,
+                calcThermalCoefficient: 0,
             });
         }, interval * 1000);
 
         return () => {
             clearInterval(timeInterval);
         };
-    }, [interval, velocity, mode, start, height, params]);
+    }, [interval, velocity, mode, start, height, computedParams]);
 
-    return params || ({} as ReactorParams);
+    return computedParams || ({} as ReactorParams);
 };

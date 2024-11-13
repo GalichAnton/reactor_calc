@@ -3,7 +3,7 @@ import { roundToDecimal } from '@shared/lib/utils';
 import {
     betta,
     bettaSix,
-    k,
+    kh,
     Lambda,
     lambda,
     lambdaSix,
@@ -16,9 +16,9 @@ interface CalcPowerProps {
     velocity: number;
     interval: number;
     mode: number;
-    prevC: number;
     nominalPower: number;
     reactorHeight: number;
+    prevC: number[];
 }
 
 const calculateNewHeight = (
@@ -43,7 +43,7 @@ const calculateNewReactivity = (
     dH: number,
     interval: number,
 ) => {
-    return prevRo + k * interval * dH;
+    return prevRo + kh * interval * dH;
 };
 
 const calculateNewPower = (
@@ -71,47 +71,16 @@ const calculateRelativePower = (prevPower: number, nominalPower: number) => {
     return prevPower / (0.5 * nominalPower);
 };
 
-export const calcPower = (props: CalcPowerProps) => {
-    const {
-        prevPower,
-        prevH,
-        interval,
-        prevC,
-        prevRo,
-        velocity,
-        mode,
-        nominalPower,
-        reactorHeight,
-    } = props;
-
-    const newH = calculateNewHeight(
-        prevH,
-        velocity,
-        mode,
-        interval,
-        reactorHeight,
-    );
-    const dH = (newH - prevH) / interval;
-    const newRo = calculateNewReactivity(prevRo, dH, interval);
-    const newPower = calculateNewPower(prevPower, interval, newRo, prevC);
-    const newC = calculateNewConcentration(prevC, interval, newPower);
-    const rel = calculateRelativePower(prevPower, nominalPower);
-
-    return {
-        newH,
-        newC,
-        newRo,
-        newPower,
-        rel,
-        dH,
-    };
+const calculateUraniumVolume = (
+    radius: number,
+    H_AZ: number,
+    nTvel: number,
+    nTvs: number,
+) => {
+    return Math.PI * radius ** 2 * H_AZ * nTvel * nTvs;
 };
 
-interface CalcPowerPropsSix extends Omit<CalcPowerProps, 'prevC'> {
-    prevC: number[];
-}
-
-export const calcPowerSix = (props: CalcPowerPropsSix) => {
+export const calcPowerSix = (props: CalcPowerProps) => {
     const {
         prevPower,
         prevH,
@@ -123,6 +92,7 @@ export const calcPowerSix = (props: CalcPowerPropsSix) => {
         nominalPower,
         reactorHeight,
     } = props;
+    console.log('props', props);
 
     const newH = calculateNewHeight(
         prevH,

@@ -23,13 +23,12 @@ type ReactivityStateType = {
         value: K,
     ) => void;
     setInitialParams: (value: InitialReactivityParams) => void;
-    setComputedParams: (value: ComputedParams) => void;
-    setComputedParam: <
-        T extends keyof ComputedParams,
-        K extends ComputedParams[T],
-    >(
+    setComputedParams: (
+        value: Record<keyof ComputedParams, number | number[]>,
+    ) => void;
+    setComputedParam: <T extends keyof ComputedParams>(
         key: T,
-        value: K,
+        value: number,
     ) => void;
     setConfig: <T extends keyof Config, K extends Config[T]>(
         key: T,
@@ -69,7 +68,6 @@ const initialState: initialStoreValues = {
         calcPower: [],
         calcReactivity: [],
         calcRel: [],
-        calcCSix: [],
         calcThermalCoefficient: [],
     },
     config: {
@@ -106,7 +104,7 @@ export const useReactivityStore = create<ReactivityStateType>()(
             setComputedParam: (key, value) =>
                 set(
                     (state) => {
-                        // @ts-expect-error err
+                        // @ts-expect-error not err
                         state.computedParams[key].push(value);
                     },
                     undefined,
@@ -115,7 +113,13 @@ export const useReactivityStore = create<ReactivityStateType>()(
             setComputedParams: (params) =>
                 set(
                     (state) => {
-                        state.computedParams = params;
+                        Object.keys(params).forEach((key) => {
+                            const keyParam = key as keyof ComputedParams;
+                            state.computedParams[keyParam].push(
+                                // @ts-expect-error not err
+                                params[keyParam],
+                            );
+                        });
                     },
                     undefined,
                     getActionName('ReactivityStore', `setKInfParams`),
