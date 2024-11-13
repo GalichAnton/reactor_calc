@@ -1,97 +1,51 @@
 import { LoadingOutlined, PlayCircleOutlined } from '@ant-design/icons';
-import { OPERATING_MODE, useReactivityStore } from '@features/reactivityCalc';
+import {
+    OPERATING_MODE,
+    useReactivityStore,
+    InitialReactivityParams,
+} from '@features/reactivityCalc';
 import { Button } from '@shared/ui';
 import { Card, Col, Form, InputNumber, Radio, Row } from 'antd';
 import Checkbox from 'antd/es/checkbox/Checkbox';
 import { CheckboxChangeEvent } from 'antd/lib/checkbox';
 
+const span = 4;
+
 export const ReactivityForm = () => {
     const {
-        data: {
+        initialParams: {
+            nominalPower,
+            thermalPower,
+            reactorHeight,
+            startReactivity,
+            interval,
+            r_t,
+            power,
             velocity,
             mode,
-            startReactivity,
+            nTvel,
+            nTvs,
             height,
-            power,
-            interval,
-            nominalPower,
-            start,
-            reactorHeight,
-            isSix,
         },
+        setInitialParams,
+        setConfig,
+        setStart,
+        config: { isSix, start },
 
-        actions: {
-            changeMode,
-            changeIsSix,
-            changeVelocity,
-            changeStartReactivity,
-            changeHeight,
-            changeInterval,
-            changeNominalPower,
-            changeStart,
-            changeReactorHeight,
-            reset,
-        },
+        reset,
     } = useReactivityStore();
 
-    const onChangeVelocityHandler = (value: number | null) => {
-        if (value === null || value === undefined) {
-            return;
-        }
-
-        changeVelocity(value);
+    const onFinish = () => {
+        setStart();
     };
 
-    const onChangeStartReactivityHandler = (value: number | null) => {
-        if (value === null || value === undefined) {
-            return;
-        }
-
-        changeStartReactivity(value);
-    };
-
-    const onChangeHeightHandler = (value: number | null) => {
-        if (value === null || value === undefined) {
-            return;
-        }
-
-        changeHeight(value);
-    };
-
-    // const onChangePowerHandler = (value: number | null) => {
-    //     if (value === null || value === undefined) {
-    //         return;
-    //     }
-    //
-    //     changePower(value);
-    // };
-
-    const onChangeIntervalHandler = (value: number | null) => {
-        if (value === null || value === undefined) {
-            return;
-        }
-
-        changeInterval(value);
-    };
-
-    const onChangeReactorHeightHandler = (value: number | null) => {
-        if (value === null || value === undefined) {
-            return;
-        }
-
-        changeReactorHeight(value);
-    };
-    const onChangeNominalPowerHandler = (value: number | null) => {
-        if (value === null || value === undefined) {
-            return;
-        }
-
-        changeNominalPower(value);
+    const onValuesChange = (_: any, allValues: InitialReactivityParams) => {
+        setInitialParams(allValues);
     };
 
     const changeSixHandler = (e: CheckboxChangeEvent) => {
         reset();
-        changeIsSix(e.target.checked);
+        setConfig('isSix', e.target.checked);
     };
 
     return (
@@ -100,12 +54,17 @@ export const ReactivityForm = () => {
             title={'Введите значения'}
             size={'small'}
         >
-            <Form layout={'vertical'} disabled={start}>
+            <Form
+                layout={'vertical'}
+                disabled={start}
+                onFinish={onFinish}
+                onValuesChange={onValuesChange}
+            >
                 <Checkbox checked={isSix} onChange={changeSixHandler}>
                     Шестигрупповое
                 </Checkbox>
                 <Row gutter={[8, 8]}>
-                    <Col span={6}>
+                    <Col span={span}>
                         <Form.Item
                             id={'power'}
                             label={<strong>Мощность номинальная</strong>}
@@ -114,12 +73,24 @@ export const ReactivityForm = () => {
                                 style={{ width: '100%' }}
                                 placeholder={'Мощность номинальная'}
                                 value={nominalPower}
-                                onChange={onChangeNominalPowerHandler}
                                 addonAfter={'Нейтронов'}
                             />
                         </Form.Item>
                     </Col>
-                    <Col span={6}>
+                    <Col span={span}>
+                        <Form.Item
+                            id={'thermalPower'}
+                            label={<strong>Мощность тепловая</strong>}
+                        >
+                            <InputNumber
+                                style={{ width: '100%' }}
+                                placeholder={'Мощность тепловая'}
+                                value={thermalPower}
+                                addonAfter={'МВт'}
+                            />
+                        </Form.Item>
+                    </Col>
+                    <Col span={span}>
                         <Form.Item
                             id={'reactorHeight'}
                             label={<strong>Высота АЗ</strong>}
@@ -128,12 +99,11 @@ export const ReactivityForm = () => {
                                 style={{ width: '100%' }}
                                 placeholder={'Высота АЗ'}
                                 value={reactorHeight}
-                                onChange={onChangeReactorHeightHandler}
                                 addonAfter={'см'}
                             />
                         </Form.Item>
                     </Col>
-                    <Col span={6}>
+                    <Col span={span}>
                         <Form.Item
                             id={'power'}
                             label={<strong>Мощность</strong>}
@@ -146,7 +116,7 @@ export const ReactivityForm = () => {
                             />
                         </Form.Item>
                     </Col>
-                    <Col span={6}>
+                    <Col span={span}>
                         <Form.Item
                             id={'velocity'}
                             label={<strong>Скорость</strong>}
@@ -156,11 +126,10 @@ export const ReactivityForm = () => {
                                 placeholder={'Скорость'}
                                 addonAfter={'см/c'}
                                 value={velocity}
-                                onChange={onChangeVelocityHandler}
                             />
                         </Form.Item>
                     </Col>
-                    <Col span={6}>
+                    <Col span={span}>
                         <Form.Item
                             id={'height'}
                             label={<strong>Положение группы ОР СУЗ</strong>}
@@ -170,11 +139,10 @@ export const ReactivityForm = () => {
                                 placeholder={'Положение группы ОР СУЗ'}
                                 addonAfter={'см'}
                                 value={height}
-                                onChange={onChangeHeightHandler}
                             />
                         </Form.Item>
                     </Col>
-                    <Col span={6}>
+                    <Col span={span}>
                         <Form.Item
                             id={'ro'}
                             label={<strong>Реактивность</strong>}
@@ -183,11 +151,10 @@ export const ReactivityForm = () => {
                                 style={{ width: '100%' }}
                                 placeholder={'Реактивность'}
                                 value={startReactivity}
-                                onChange={onChangeStartReactivityHandler}
                             />
                         </Form.Item>
                     </Col>
-                    <Col span={6}>
+                    <Col span={span}>
                         <Form.Item
                             id={'interval'}
                             label={<strong>Шаг интегрирования</strong>}
@@ -196,22 +163,56 @@ export const ReactivityForm = () => {
                                 style={{ width: '100%' }}
                                 placeholder={'Шаг интегрирования'}
                                 value={interval}
-                                onChange={onChangeIntervalHandler}
                                 addonAfter={'с'}
                                 step="0.01"
                             />
                         </Form.Item>
                     </Col>
-                    <Col span={6}>
+                    <Col span={span}>
                         <Form.Item
-                            id={'control'}
+                            id={'nTvel'}
+                            label={<strong>Шаг интегрирования</strong>}
+                        >
+                            <InputNumber
+                                style={{ width: '100%' }}
+                                placeholder={'Число твэл'}
+                                value={nTvel}
+                                addonAfter={'шт'}
+                            />
+                        </Form.Item>
+                    </Col>
+                    <Col span={span}>
+                        <Form.Item
+                            id={'nTvs'}
+                            label={<strong>Шаг интегрирования</strong>}
+                        >
+                            <InputNumber
+                                style={{ width: '100%' }}
+                                placeholder={'Число ТВС'}
+                                value={nTvs}
+                                addonAfter={'шт'}
+                            />
+                        </Form.Item>
+                    </Col>
+                    <Col span={span}>
+                        <Form.Item
+                            id={'r_t'}
+                            label={<strong>Радиус твэл</strong>}
+                        >
+                            <InputNumber
+                                style={{ width: '100%' }}
+                                placeholder={'Радиус твэл'}
+                                value={r_t}
+                                addonAfter={'см'}
+                            />
+                        </Form.Item>
+                    </Col>
+                    <Col span={span}>
+                        <Form.Item
+                            id={'mode'}
                             label={<strong>Режим работы стержней</strong>}
                         >
-                            <Radio.Group
-                                value={mode}
-                                onChange={(e) => changeMode(e.target.value)}
-                                disabled={false}
-                            >
+                            <Radio.Group value={mode} disabled={false}>
                                 <Radio.Button value={OPERATING_MODE.STOP}>
                                     Остановить
                                 </Radio.Button>
@@ -225,16 +226,18 @@ export const ReactivityForm = () => {
                         </Form.Item>
                     </Col>
                 </Row>
+                <Form.Item>
+                    <Button
+                        type="primary"
+                        htmlType={'submit'}
+                        icon={
+                            start ? <LoadingOutlined /> : <PlayCircleOutlined />
+                        }
+                    >
+                        {start ? 'Стоп' : 'Старт'}
+                    </Button>
+                </Form.Item>
             </Form>
-            <Col span={3}>
-                <Button
-                    type="primary"
-                    icon={start ? <LoadingOutlined /> : <PlayCircleOutlined />}
-                    onClick={changeStart}
-                >
-                    {start ? 'Стоп' : 'Старт'}
-                </Button>
-            </Col>
         </Card>
     );
 };

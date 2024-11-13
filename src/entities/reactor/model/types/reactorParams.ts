@@ -6,4 +6,5 @@ export interface ReactorParams {
     rel: number;
     height: number;
     reactorHeight?: number;
+    thermalCoefficient: number;
 }

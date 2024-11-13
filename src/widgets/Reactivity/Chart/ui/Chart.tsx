@@ -37,9 +37,9 @@ const darkThemeColors = {
 
 export const Chart = () => {
     const { isLight, theme } = useTheme();
-    const params = useReactivityStore((state) => state.data.params);
+    const params = useReactivityStore((state) => state.computedParams);
     const reactorHeight = useReactivityStore(
-        (state) => state.data.reactorHeight,
+        (state) => state.initialParams.reactorHeight,
     );
     useCalc();
     const data = params?.calcTime?.map((t, i) => ({
@@ -74,7 +74,7 @@ export const Chart = () => {
                     type="number"
                     domain={[
                         0,
-                        (dataMax: number) => (dataMax > 100 ? dataMax : 100),
+                        (dataMax: number) => (dataMax > 150 ? dataMax : 150),
                     ]}
                     allowDataOverflow
                     label={{
@@ -197,6 +197,7 @@ export const Chart = () => {
                     isAnimationActive={false}
                     dot={false}
                     hide={!showRel}
+                    strokeWidth={2}
                 />
                 <Line
                     type="monotone"
@@ -206,6 +207,7 @@ export const Chart = () => {
                     stroke={themeColors.reactivity}
                     dot={false}
                     hide={!showReactivity}
+                    strokeWidth={2}
                 />
                 <Line
                     name="Мощность"
@@ -215,6 +217,7 @@ export const Chart = () => {
                     stroke={themeColors.power}
                     dot={false}
                     hide={!showPower}
+                    strokeWidth={2}
                 />
                 <Line
                     name="Высота"
@@ -224,6 +227,7 @@ export const Chart = () => {
                     stroke={themeColors.height}
                     dot={false}
                     hide={!showHeight}
+                    strokeWidth={2}
                 />
             </LineChart>
         </div>

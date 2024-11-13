@@ -11,55 +11,48 @@ import {
 } from '../../constants/general.ts';
 import { calcPowerSix, calcPower } from '../../lib/utils/calcPower';
 import { useReactivityStore } from '../../model/store.ts';
+import { ComputedParams } from '../../model/types/computedParams.ts';
 
 export const useCalc = () => {
     const {
-        data: {
+        initialParams: {
             velocity,
             mode,
             startReactivity,
             height,
             interval,
             nominalPower,
-            start,
             reactorHeight,
-            params,
-            isSix,
         },
-        actions: {
-            changeHeight,
-            changeCalcHeight,
-            changePower,
-            changeStartReactivity,
-            updateCalcParams,
-        },
+        setComputedParams,
+        config: { start, isSix },
+        computedParams,
     } = useReactivityStore();
 
     useEffect(() => {
-        if (start && !params) {
-            const initialParams = {
-                time: 0,
-                height: height,
-                reactivity: startReactivity,
-                power: 0.5 * nominalPower,
-                c: (0.5 * nominalPower * betta) / (lambda * Lambda),
-                rel: 1,
-                reactorHeight,
+        if (start && !computedParams.calcC.length) {
+            const initialParams: ComputedParams = {
+                calcTime: [0],
+                calcHeight: [height],
+                calcReactivity: [startReactivity],
+                calcPower: [0.5 * nominalPower],
+                calcC: [(0.5 * nominalPower * betta) / (lambda * Lambda)],
+                calcRel: [1],
+                calcCSix: [],
+                calcThermalCoefficient: [],
             };
 
-            const initialSixParams = {
-                time: 0,
-                height: height,
-                reactivity: startReactivity,
-                power: 0.5 * nominalPower,
-                c: bettaSix.map((b, i) => {
-                    return (b * nominalPower) / (lambdaSix[i] * Lambda);
-                }),
-                rel: 1,
-                reactorHeight,
+            const initialSixParams: ComputedParams = {
+                ...initialParams,
+                calcC: [],
+                calcCSix: [
+                    bettaSix.map((b, i) => {
+                        return (b * nominalPower) / (lambdaSix[i] * Lambda);
+                    }),
+                ],
             };
 
-            updateCalcParams(isSix ? initialSixParams : initialParams);
+            setComputedParams(isSix ? initialSixParams : initialParams);
         }
     }, [start]);
 
@@ -71,14 +64,15 @@ export const useCalc = () => {
         const timeInterval = setInterval(() => {
             const currentState = useReactivityStore.getState();
 
-            if (!currentState.data.params) {
+            if (!currentState.data.computedParams) {
                 return;
             }
             const lastIndex =
-                currentState.data.params.calcReactivity.length - 1;
+                currentState.data.computedParams.calcReactivity.length - 1;
             const currentHeight =
-                currentState.data.params.calcHeight[lastIndex];
-            const currentTime = currentState.data.params.calcTime[lastIndex];
+                currentState.data.computedParams.calcHeight[lastIndex];
+            const currentTime =
+                currentState.data.computedParams.calcTime[lastIndex];
             if (currentHeight >= reactorHeight) {
                 changeCalcHeight(reactorHeight);
             }
@@ -91,10 +85,13 @@ export const useCalc = () => {
 
             const newParams = calcFn({
                 prevH: currentHeight,
-                prevRo: currentState.data.params.calcReactivity[lastIndex],
-                prevPower: currentState.data.params.calcPower[lastIndex],
+                prevRo: currentState.data.computedParams.calcReactivity[
+                    lastIndex
+                ],
+                prevPower:
+                    currentState.data.computedParams.calcPower[lastIndex],
                 // @ts-ignore
-                prevC: currentState.data.params.calcC[lastIndex],
+                prevC: currentState.data.computedParams.calcC[lastIndex],
                 velocity: velocity,
                 interval: interval,
                 mode: currentState.data.mode,
