@@ -58,6 +58,7 @@ export const KefChart = () => {
 
     const [showTime, setShowTime] = useState(true);
     const [showKef, setShowKef] = useState(true);
+    const [showReactivity, setShowReactivity] = useState(true);
 
     const themeColors = isLight(theme) ? lightThemeColors : darkThemeColors;
     return (
@@ -83,8 +84,10 @@ export const KefChart = () => {
                     onClick={(data) => {
                         if (data.dataKey === 'k_ef') {
                             setShowKef(!showKef);
-                        } else if (data.dataKey === 'time') {
+                        } else if (data.dataKey === 'reactorOperationalTime') {
                             setShowTime(!showTime);
+                        } else if (data.dataKey === 'reactivity') {
+                            setShowReactivity(!showReactivity);
                         }
                     }}
                     wrapperStyle={{
@@ -229,7 +232,7 @@ export const KefChart = () => {
                     yAxisId="reactivity"
                     stroke={themeColors.reactivity}
                     dot={false}
-                    hide={!showTime}
+                    hide={!showReactivity}
                 />
             </LineChart>
         </div>
