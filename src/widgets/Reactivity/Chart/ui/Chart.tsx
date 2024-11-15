@@ -44,10 +44,11 @@ export const Chart = () => {
     useCalc();
     const data = params?.calcTime?.map((t, i) => ({
         time: t.toFixed(1),
-        rel: params?.calcRel[i].toExponential(3),
-        power: params?.calcPower[i].toExponential(3),
-        reactivity: params?.calcReactivity[i].toExponential(3),
-        height: params?.calcHeight[i].toFixed(2),
+        rel: params?.calcRel[i],
+        power: params?.calcPower[i],
+        reactivity: params?.calcReactivity[i],
+        height: params?.calcHeight[i],
+        uTemp: params?.calcUraniumTemperature[i],
     }));
 
     const [showRel, setShowRel] = useState(true);
@@ -118,31 +119,13 @@ export const Chart = () => {
                     }}
                 />
                 <YAxis
-                    yAxisId="reactivity"
-                    dataKey="reactivity"
-                    type="number"
-                    domain={[-0.005, 0.005]}
-                    allowDataOverflow
-                    label={{
-                        value: 'reactivity',
-                        angle: -90,
-                        offset: 50,
-                        position: 'insideTop',
-                        style: { fill: themeColors.reactivity },
-                    }}
-                    tick={{
-                        fill: themeColors.reactivity,
-                    }}
-                    tickFormatter={(value) => value.toExponential()}
-                />
-                <YAxis
-                    yAxisId="power"
-                    dataKey="power"
+                    yAxisId="uTemp"
+                    dataKey="uTemp"
                     type="number"
                     domain={[0, 5e3]}
                     allowDataOverflow
                     label={{
-                        value: 'power',
+                        value: 'uTemp',
                         angle: -90,
                         offset: 50,
                         position: 'insideTop',
@@ -151,7 +134,6 @@ export const Chart = () => {
                     tick={{
                         fill: themeColors.power,
                     }}
-                    tickFormatter={(value) => value.toExponential()}
                 />
                 <YAxis
                     yAxisId="height"
@@ -185,9 +167,6 @@ export const Chart = () => {
                 <ReferenceLine y={1} stroke="darkblue" yAxisId={'rel'}>
                     <Label value="Отношение = 1" position="insideTop" />
                 </ReferenceLine>
-                <ReferenceLine y={0} stroke="darkblue" yAxisId={'reactivity'}>
-                    <Label value="Реактивность = 0" position="insideTop" />
-                </ReferenceLine>
                 <Line
                     name="Мощность/(0.5×номинальная мощность)"
                     type="monotone"
@@ -200,20 +179,10 @@ export const Chart = () => {
                     strokeWidth={2}
                 />
                 <Line
+                    name="Температура урана"
                     type="monotone"
-                    name="Реактивность"
-                    dataKey="reactivity"
-                    yAxisId="reactivity"
-                    stroke={themeColors.reactivity}
-                    dot={false}
-                    hide={!showReactivity}
-                    strokeWidth={2}
-                />
-                <Line
-                    name="Мощность"
-                    type="monotone"
-                    dataKey="power"
-                    yAxisId={'power'}
+                    dataKey="uTemp"
+                    yAxisId={'uTemp'}
                     stroke={themeColors.power}
                     dot={false}
                     hide={!showPower}

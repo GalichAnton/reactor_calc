@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
 
 import { ReactorParams } from '@entities/reactor';
+import { precision } from '@shared/constants/precision.ts';
+import { roundToDecimal } from '@shared/lib/utils';
 
 import {
     bettaSix,
@@ -13,6 +15,7 @@ import {
     LAMBDA_OB,
     URANIUM_DENSITY,
     URANIUM_HEAT_CAPACITY,
+    ALPHA_COEF,
 } from '../../constants/general.ts';
 import { calcPowerSix } from '../../lib/utils/calcPower';
 import { useReactivityStore } from '../../model/store.ts';
@@ -34,6 +37,8 @@ export const useCalc = () => {
             aCoef,
             uraniumVolume,
             tauZero,
+            thermalPower,
+            averageUraniumTemp,
         },
         setComputedParams,
         setComputedParam,
@@ -48,29 +53,30 @@ export const useCalc = () => {
                 calcTime: 0,
                 calcHeight: height,
                 calcReactivity: startReactivity,
-                calcPower: 0.5 * nominalPower,
+                calcPower: nominalPower,
                 calcC: bettaSix.map((b, i) => {
-                    return (b * 0.5 * nominalPower) / (lambdaSix[i] * Lambda);
+                    return (b * nominalPower) / (lambdaSix[i] * Lambda);
                 }),
                 calcRel: 1,
                 calcThermalReactivity: 0,
                 calcHeightReactivity: 0,
-                calcThermalPower: 0,
-                calcUraniumTemperature: 0,
+                calcThermalPower: thermalPower,
+                calcUraniumTemperature: averageUraniumTemp,
             };
 
             const uraniumVolume =
-                Math.PI * r_t ** 2 * nTvel * nTvs * reactorHeight;
+                Math.PI * r_t ** 2 * nTvel * nTvs * (reactorHeight / 100);
 
             const thermalTransferCoeff =
                 1 /
                 ((r_t * 0.4) / LAMBDA_U +
                     DELTA_ZAZ / LAMBDA_ZAZ +
-                    DELTA_OB / LAMBDA_OB);
+                    DELTA_OB / LAMBDA_OB +
+                    1 / ALPHA_COEF);
 
             const tauZero =
-                ((r_t * URANIUM_DENSITY * URANIUM_HEAT_CAPACITY) / 2) *
-                thermalTransferCoeff;
+                (r_t * URANIUM_DENSITY * URANIUM_HEAT_CAPACITY) /
+                (2 * thermalTransferCoeff);
 
             const aCoef = r_t / (2 * thermalTransferCoeff);
 
@@ -128,12 +134,30 @@ export const useCalc = () => {
                 aCoef,
             });
 
-            setInitialParam('height', newParams.newH);
-            setInitialParam('power', newParams.newPower);
-            setInitialParam('startReactivity', newParams.newRo);
-            setInitialParam('thermalPower', newParams.thermalPower);
-            setInitialParam('averageUraniumTemp', newParams.uraniumTemp);
-            setInitialParam('corePowerDensity', newParams.thermalDensity);
+            setInitialParam(
+                'height',
+                roundToDecimal(newParams.newH, precision),
+            );
+            setInitialParam(
+                'power',
+                roundToDecimal(newParams.newPower, precision),
+            );
+            setInitialParam(
+                'startReactivity',
+                roundToDecimal(newParams.newRo, precision),
+            );
+            setInitialParam(
+                'thermalPower',
+                roundToDecimal(newParams.thermalPower, precision),
+            );
+            setInitialParam(
+                'averageUraniumTemp',
+                roundToDecimal(newParams.uraniumTemp, precision),
+            );
+            setInitialParam(
+                'corePowerDensity',
+                roundToDecimal(newParams.thermalDensity, precision),
+            );
 
             setComputedParams({
                 calcHeight: newParams.newH,
@@ -145,6 +169,7 @@ export const useCalc = () => {
                 calcHeightReactivity: newParams.heightReactivity,
                 calcThermalReactivity: newParams.thermalReactivity,
                 calcThermalPower: newParams.thermalPower,
+
                 calcUraniumTemperature: newParams.uraniumTemp,
             });
         }, interval * 1000);

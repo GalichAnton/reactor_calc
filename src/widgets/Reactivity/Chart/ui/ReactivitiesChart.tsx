@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import { useCalc, useReactivityStore } from '@features/reactivityCalc';
+import { precision } from '@shared/constants/precision.ts';
 import { useTheme } from '@shared/lib/hooks';
 import classNames from 'classnames';
 import {
@@ -42,9 +43,11 @@ export const ReactivitiesChart = () => {
     useCalc();
     const data = params?.calcTime?.map((t, i) => ({
         time: t.toFixed(1),
-        thermalReactivity: params?.calcThermalReactivity[i].toExponential(3),
-        heightReactivity: params?.calcHeightReactivity[i].toExponential(3),
-        reactivity: params?.calcReactivity[i].toExponential(3),
+        thermalReactivity:
+            params?.calcThermalReactivity[i].toExponential(precision),
+        heightReactivity:
+            params?.calcHeightReactivity[i].toExponential(precision),
+        reactivity: params?.calcReactivity[i].toExponential(precision),
     }));
 
     const [showReactivity, setShowReactivity] = useState(true);

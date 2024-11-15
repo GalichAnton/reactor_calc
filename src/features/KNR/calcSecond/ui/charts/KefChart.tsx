@@ -50,7 +50,7 @@ export const KefChart = () => {
     const { isLight, theme } = useTheme();
 
     const data = zRelationsParams?.map((p) => ({
-        reactorOperationalTime: p.reactorOperationalTime.toFixed(0),
+        reactorOperationalTime: p.reactorOperationalTime.toFixed(3),
         k_ef: p.effectiveNeutronMultiplicationFactor.toExponential(3),
         z: p.z.toFixed(2),
         reactivity: p.reactivity.toExponential(3),

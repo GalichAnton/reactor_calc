@@ -34,7 +34,7 @@ export const KefZTable = () => {
                 key: 'reactorOperationalTime',
                 dataIndex: 'reactorOperationalTime',
                 align: 'center',
-                render: (value: number) => value.toFixed(0),
+                render: (value: number) => value.toFixed(2),
             },
             {
                 title: (

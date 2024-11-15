@@ -55,7 +55,6 @@ export const ReactivityForm = () => {
 
     const onResetHandler = () => {
         reset();
-        setStart();
     };
 
     const onChangeMode = (e: RadioChangeEvent) => {
@@ -96,7 +95,7 @@ export const ReactivityForm = () => {
                                 style={{ width: '100%' }}
                                 placeholder={'Мощность тепловая'}
                                 value={thermalPower}
-                                addonAfter={'МВт'}
+                                addonAfter={'Вт'}
                             />
                         </Form.Item>
                     </Col>
@@ -266,7 +265,7 @@ export const ReactivityForm = () => {
                 >
                     {start ? 'Стоп' : 'Старт'}
                 </Button>
-                <Button danger onClick={onResetHandler} disabled={!start}>
+                <Button danger onClick={onResetHandler} disabled={start}>
                     Сбросить
                 </Button>
                 <Radio.Group

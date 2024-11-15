@@ -1,3 +1,4 @@
+import { precision } from '@shared/constants/precision.ts';
 import { roundToDecimal } from '@shared/lib/utils';
 
 import {
@@ -29,7 +30,22 @@ interface CalcPowerProps {
     coolantTemp: number;
 }
 
-export const calcPowerSix = (props: CalcPowerProps) => {
+interface ReturnParams {
+    newH: number;
+    newC: number[];
+    newRo: number;
+    newPower: number;
+    rel: number;
+    dH: number;
+    thermalPower: number;
+    uraniumTemp: number;
+    uraniumTempSh: number;
+    heightReactivity: number;
+    thermalReactivity: number;
+    thermalDensity: number;
+}
+
+export const calcPowerSix = (props: CalcPowerProps): ReturnParams => {
     const {
         prevPower,
         prevH,
@@ -57,13 +73,15 @@ export const calcPowerSix = (props: CalcPowerProps) => {
         interval,
         reactorHeight,
     );
-    const dH = (newH - prevH) / interval;
+    const dH = roundToDecimal(Math.abs(newH - prevH) / interval, precision);
     const sigma = prevC.reduce((acc, c, i) => acc + lambdaSix[i] * c, 0);
 
     const newC = prevC.map((c, i) => {
-        return (
+        return roundToDecimal(
             c +
-            interval * ((bettaSix[i] * prevPower) / Lambda - lambdaSix[i] * c)
+                interval *
+                    ((bettaSix[i] * prevPower) / Lambda - lambdaSix[i] * c),
+            precision,
         );
     });
 
@@ -73,26 +91,38 @@ export const calcPowerSix = (props: CalcPowerProps) => {
 
     const rel = calculateRelativePower(prevPower, nominalPower);
 
-    const thermalPower = prevThermalPower * rel;
+    const thermalPower = roundToDecimal(prevThermalPower * rel, precision);
 
-    const thermalDensity = thermalPower / uraniumVolume;
+    const thermalDensity = roundToDecimal(
+        thermalPower / uraniumVolume,
+        precision,
+    );
 
-    const uraniumTemp =
+    const uraniumTemp = roundToDecimal(
         (prevCalcUraniumTemperature +
             (interval / tauZero) * (aCoef * thermalDensity + coolantTemp)) /
-        (1 + interval / tauZero);
+            (1 + interval / tauZero),
+        precision,
+    );
 
-    const uraniumTempSh =
-        (aCoef * thermalDensity + coolantTemp - uraniumTemp) / tauZero;
+    const uraniumTempSh = roundToDecimal(
+        (aCoef * thermalDensity + coolantTemp - uraniumTemp) / tauZero,
+        precision,
+    );
 
-    const heightReactivity = prevCalcHeightReactivity + KH * dH * interval;
+    const heightReactivity = roundToDecimal(
+        prevCalcHeightReactivity + KH * dH * interval,
+        precision,
+    );
 
-    const thermalReactivity =
-        prevCalcThermalReactivity + K_U * uraniumTempSh * interval;
+    const thermalReactivity = roundToDecimal(
+        prevCalcThermalReactivity + K_U * uraniumTempSh * interval,
+        precision,
+    );
 
     const newRo = prevRo + thermalReactivity + heightReactivity;
 
-    return {
+    const data: ReturnParams = {
         newH,
         newC,
         newRo,
@@ -106,6 +136,8 @@ export const calcPowerSix = (props: CalcPowerProps) => {
         thermalReactivity,
         thermalDensity,
     };
+    console.log(data);
+    return data;
 };
 
 const calculateNewHeight = (
