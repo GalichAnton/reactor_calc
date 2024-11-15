@@ -52,9 +52,9 @@ const initialState: initialStoreValues = {
         startReactivity: 0,
         height: 187.5,
         power: 0,
-        thermalPower: 3200e6,
+        thermalPower: 0,
         interval: 0.1,
-        nominalPower: 1000,
+        nominalPower: 7.8e8,
         reactorHeight: 373,
         process: 0,
         nTvs: 163,
@@ -66,6 +66,7 @@ const initialState: initialStoreValues = {
         corePowerDensity: 0,
         tauZero: 0,
         thermalTransferCoeff: 0,
+        nominalThermalPower: 3200e6,
         aCoef: 0,
     },
     computedParams: {
@@ -79,6 +80,7 @@ const initialState: initialStoreValues = {
         calcThermalReactivity: [],
         calcThermalPower: [],
         calcUraniumTemperature: [],
+        calcPrevSigma: [],
     },
     config: {
         isSix: false,

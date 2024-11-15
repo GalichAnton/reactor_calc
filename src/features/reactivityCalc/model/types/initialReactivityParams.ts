@@ -32,6 +32,9 @@ export interface InitialReactivityParams {
     /** Тепловая мощность реактора (в мегаваттах) */
     thermalPower: number;
 
+    /** Тепловая мощность реактора (в мегаваттах) */
+    nominalThermalPower: number;
+
     /** Степень протекания процесса (в процентах) */
     process: number;
 

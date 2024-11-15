@@ -61,6 +61,11 @@ export const ReactivityForm = () => {
         setInitialParam('mode', e.target.value);
     };
 
+    const onChangeVelocity = (val: number | null) => {
+        if (val === null) return;
+        setInitialParam('velocity', val);
+    };
+
     return (
         <Card
             style={{ width: '100%', boxShadow: '0 4px 30px #0000001a' }}
@@ -174,6 +179,7 @@ export const ReactivityForm = () => {
                                 placeholder={'Скорость'}
                                 addonAfter={'см/c'}
                                 value={velocity}
+                                onChange={onChangeVelocity}
                             />
                         </Form.Item>
                     </Col>

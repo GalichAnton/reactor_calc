@@ -37,8 +37,8 @@ export const useCalc = () => {
             aCoef,
             uraniumVolume,
             tauZero,
-            thermalPower,
             averageUraniumTemp,
+            nominalThermalPower,
         },
         setComputedParams,
         setComputedParam,
@@ -60,8 +60,9 @@ export const useCalc = () => {
                 calcRel: 1,
                 calcThermalReactivity: 0,
                 calcHeightReactivity: 0,
-                calcThermalPower: thermalPower,
+                calcThermalPower: nominalThermalPower,
                 calcUraniumTemperature: averageUraniumTemp,
+                calcPrevSigma: 0,
             };
 
             const uraniumVolume =
@@ -126,8 +127,9 @@ export const useCalc = () => {
                     computedParams.calcThermalReactivity[lastIndex],
                 prevCalcHeightReactivity:
                     computedParams.calcHeightReactivity[lastIndex],
-                prevThermalPower: computedParams.calcThermalPower[lastIndex],
+                nominalThermalPower,
                 coolantTemp: coolantTemp,
+                prevSigma: computedParams.calcPrevSigma[lastIndex],
                 uraniumVolume,
                 nominalPower,
                 tauZero,
@@ -169,7 +171,7 @@ export const useCalc = () => {
                 calcHeightReactivity: newParams.heightReactivity,
                 calcThermalReactivity: newParams.thermalReactivity,
                 calcThermalPower: newParams.thermalPower,
-
+                calcPrevSigma: newParams.newSigma,
                 calcUraniumTemperature: newParams.uraniumTemp,
             });
         }, interval * 1000);

@@ -1,7 +1,6 @@
 import { useState } from 'react';
 
-import { useCalc, useReactivityStore } from '@features/reactivityCalc';
-import { precision } from '@shared/constants/precision.ts';
+import { useReactivityStore } from '@features/reactivityCalc';
 import { useTheme } from '@shared/lib/hooks';
 import classNames from 'classnames';
 import {
@@ -40,14 +39,11 @@ export const ReactivitiesChart = () => {
     const { isLight, theme } = useTheme();
     const params = useReactivityStore((state) => state.computedParams);
 
-    useCalc();
     const data = params?.calcTime?.map((t, i) => ({
         time: t.toFixed(1),
-        thermalReactivity:
-            params?.calcThermalReactivity[i].toExponential(precision),
-        heightReactivity:
-            params?.calcHeightReactivity[i].toExponential(precision),
-        reactivity: params?.calcReactivity[i].toExponential(precision),
+        thermalReactivity: params?.calcThermalReactivity[i],
+        heightReactivity: params?.calcHeightReactivity[i],
+        reactivity: params?.calcReactivity[i],
     }));
 
     const [showReactivity, setShowReactivity] = useState(true);
@@ -61,6 +57,7 @@ export const ReactivitiesChart = () => {
 
     const themeColors = isLight(theme) ? lightThemeColors : darkThemeColors;
 
+    const domain = [-0.05, 0.05];
     return (
         <div
             className={classNames(styles.chartContainer, {
@@ -101,7 +98,7 @@ export const ReactivitiesChart = () => {
                     yAxisId="reactivity"
                     dataKey="reactivity"
                     type="number"
-                    domain={[0.5, 0.5]}
+                    domain={[-3, 3]}
                     allowDataOverflow
                     label={{
                         value: 'reactivity',
@@ -118,7 +115,7 @@ export const ReactivitiesChart = () => {
                     yAxisId="thermalReactivity"
                     dataKey="thermalReactivity"
                     type="number"
-                    domain={[0.5, 0.5]}
+                    domain={domain}
                     allowDataOverflow
                     label={{
                         value: 'thermalReactivity',
@@ -130,13 +127,12 @@ export const ReactivitiesChart = () => {
                     tick={{
                         fill: themeColors.reactivity,
                     }}
-                    tickFormatter={(value) => value.toExponential()}
                 />
                 <YAxis
                     yAxisId="heightReactivity"
                     dataKey="heightReactivity"
                     type="number"
-                    domain={[0.5, 0.5]}
+                    domain={domain}
                     allowDataOverflow
                     label={{
                         value: 'heightReactivity',
@@ -148,7 +144,6 @@ export const ReactivitiesChart = () => {
                     tick={{
                         fill: themeColors.power,
                     }}
-                    tickFormatter={(value) => value.toExponential()}
                 />
                 <Tooltip
                     labelFormatter={(label) => `Время (с): ${label}`}

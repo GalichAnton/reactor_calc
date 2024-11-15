@@ -105,7 +105,7 @@ export const Chart = () => {
                     yAxisId="rel"
                     dataKey="rel"
                     type="number"
-                    domain={[0, 5]}
+                    domain={[-2, 15]}
                     allowDataOverflow
                     label={{
                         value: 'rel',
