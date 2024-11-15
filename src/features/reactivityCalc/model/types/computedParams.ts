@@ -5,7 +5,8 @@ export interface ComputedParams {
     calcC: number[][];
     calcRel: number[];
     calcHeight: number[];
-    calcThermalCoefficient: number[];
     calcThermalReactivity: number[];
     calcHeightReactivity: number[];
+    calcThermalPower: number[];
+    calcUraniumTemperature: number[];
 }

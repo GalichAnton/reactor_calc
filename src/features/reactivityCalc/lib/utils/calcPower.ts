@@ -3,9 +3,9 @@ import { roundToDecimal } from '@shared/lib/utils';
 import {
     betta,
     bettaSix,
-    kh,
+    K_U,
+    KH,
     Lambda,
-    lambda,
     lambdaSix,
 } from '../../constants/general';
 
@@ -19,7 +19,94 @@ interface CalcPowerProps {
     nominalPower: number;
     reactorHeight: number;
     prevC: number[];
+    prevThermalPower: number;
+    prevCalcUraniumTemperature: number;
+    prevCalcHeightReactivity: number;
+    prevCalcThermalReactivity: number;
+    uraniumVolume: number;
+    tauZero: number;
+    aCoef: number;
+    coolantTemp: number;
 }
+
+export const calcPowerSix = (props: CalcPowerProps) => {
+    const {
+        prevPower,
+        prevH,
+        interval,
+        prevC,
+        prevRo,
+        velocity,
+        mode,
+        nominalPower,
+        reactorHeight,
+        prevThermalPower,
+        tauZero,
+        aCoef,
+        prevCalcUraniumTemperature,
+        coolantTemp,
+        prevCalcHeightReactivity,
+        prevCalcThermalReactivity,
+        uraniumVolume,
+    } = props;
+
+    const newH = calculateNewHeight(
+        prevH,
+        velocity,
+        mode,
+        interval,
+        reactorHeight,
+    );
+    const dH = (newH - prevH) / interval;
+    const sigma = prevC.reduce((acc, c, i) => acc + lambdaSix[i] * c, 0);
+
+    const newC = prevC.map((c, i) => {
+        return (
+            c +
+            interval * ((bettaSix[i] * prevPower) / Lambda - lambdaSix[i] * c)
+        );
+    });
+
+    const newPower =
+        (prevPower + interval * sigma) /
+        (1 - interval * ((prevRo - betta) / Lambda));
+
+    const rel = calculateRelativePower(prevPower, nominalPower);
+
+    const thermalPower = prevThermalPower * rel;
+
+    const thermalDensity = thermalPower / uraniumVolume;
+
+    const uraniumTemp =
+        (prevCalcUraniumTemperature +
+            (interval / tauZero) * (aCoef * thermalDensity + coolantTemp)) /
+        (1 + interval / tauZero);
+
+    const uraniumTempSh =
+        (aCoef * thermalDensity + coolantTemp - uraniumTemp) / tauZero;
+
+    const heightReactivity = prevCalcHeightReactivity + KH * dH * interval;
+
+    const thermalReactivity =
+        prevCalcThermalReactivity + K_U * uraniumTempSh * interval;
+
+    const newRo = prevRo + thermalReactivity + heightReactivity;
+
+    return {
+        newH,
+        newC,
+        newRo,
+        newPower,
+        rel,
+        dH,
+        thermalPower,
+        uraniumTemp,
+        uraniumTempSh,
+        heightReactivity,
+        thermalReactivity,
+        thermalDensity,
+    };
+};
 
 const calculateNewHeight = (
     prevH: number,
@@ -38,90 +125,6 @@ const calculateNewHeight = (
     return newH;
 };
 
-const calculateNewReactivity = (
-    prevRo: number,
-    dH: number,
-    interval: number,
-) => {
-    return prevRo + kh * interval * dH;
-};
-
-const calculateNewPower = (
-    prevPower: number,
-    interval: number,
-    newRo: number,
-    prevC: number,
-) => {
-    return roundToDecimal(
-        (prevPower + interval * lambda * prevC) /
-            (1 - interval * ((newRo - betta) / Lambda)),
-        2,
-    );
-};
-
-const calculateNewConcentration = (
-    prevC: number,
-    interval: number,
-    newPower: number,
-) => {
-    return prevC + interval * ((newPower * betta) / Lambda - lambda * prevC);
-};
-
 const calculateRelativePower = (prevPower: number, nominalPower: number) => {
     return prevPower / (0.5 * nominalPower);
-};
-
-const calculateUraniumVolume = (
-    radius: number,
-    H_AZ: number,
-    nTvel: number,
-    nTvs: number,
-) => {
-    return Math.PI * radius ** 2 * H_AZ * nTvel * nTvs;
-};
-
-export const calcPowerSix = (props: CalcPowerProps) => {
-    const {
-        prevPower,
-        prevH,
-        interval,
-        prevC,
-        prevRo,
-        velocity,
-        mode,
-        nominalPower,
-        reactorHeight,
-    } = props;
-    console.log('props', props);
-
-    const newH = calculateNewHeight(
-        prevH,
-        velocity,
-        mode,
-        interval,
-        reactorHeight,
-    );
-    const dH = (newH - prevH) / interval;
-    const newRo = calculateNewReactivity(prevRo, dH, interval);
-    const sigma = prevC.reduce((acc, c, i) => acc + lambdaSix[i] * c, 0);
-    const newPower =
-        (prevPower + interval * sigma) /
-        (1 - interval * ((newRo - betta) / Lambda));
-
-    const newC = prevC.map((c, i) => {
-        return (
-            c +
-            interval * ((bettaSix[i] * prevPower) / Lambda - lambdaSix[i] * c)
-        );
-    });
-    const rel = calculateRelativePower(prevPower, nominalPower);
-
-    return {
-        newH,
-        newC,
-        newRo,
-        newPower,
-        rel,
-        dH,
-    };
 };

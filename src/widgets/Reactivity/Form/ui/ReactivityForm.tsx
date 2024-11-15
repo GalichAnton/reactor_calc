@@ -31,6 +31,9 @@ export const ReactivityForm = () => {
             nTvel,
             nTvs,
             height,
+            corePowerDensity,
+            averageUraniumTemp,
+            coolantTemp,
         },
         setInitialParams,
         setInitialParam,
@@ -94,6 +97,45 @@ export const ReactivityForm = () => {
                                 placeholder={'Мощность тепловая'}
                                 value={thermalPower}
                                 addonAfter={'МВт'}
+                            />
+                        </Form.Item>
+                    </Col>
+                    <Col span={span}>
+                        <Form.Item
+                            id={'averageUraniumTemp'}
+                            label={<strong>Средняя температура урана</strong>}
+                        >
+                            <InputNumber
+                                style={{ width: '100%' }}
+                                placeholder={'Средняя температура урана'}
+                                value={averageUraniumTemp}
+                                addonAfter={'°C'}
+                            />
+                        </Form.Item>
+                    </Col>
+                    <Col span={span}>
+                        <Form.Item
+                            id={'coolantTemp'}
+                            label={<strong>Температура теплоносителя</strong>}
+                        >
+                            <InputNumber
+                                style={{ width: '100%' }}
+                                placeholder={'Температура теплоносителя'}
+                                value={coolantTemp}
+                                addonAfter={'°C'}
+                            />
+                        </Form.Item>
+                    </Col>
+                    <Col span={span}>
+                        <Form.Item
+                            id={'corePowerDensity'}
+                            label={<strong>Энергонапряженность</strong>}
+                        >
+                            <InputNumber
+                                style={{ width: '100%' }}
+                                placeholder={'Энергонапряженность'}
+                                value={corePowerDensity}
+                                addonAfter={'(кВт/л)'}
                             />
                         </Form.Item>
                     </Col>
