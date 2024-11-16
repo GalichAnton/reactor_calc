@@ -271,6 +271,7 @@ interface XenonAbsorptionParameters {
     meanFissionCrossSection9: number; // ¯Σ_f9(z)
     neutronFlux: number; // Φ
     meanAbsorptionCrossSectionXe: number; // ¯σ_a^Xe
+    z: number;
 }
 
 /**
@@ -286,10 +287,11 @@ export function calculateXenonAbsorptionCrossSection(
         meanFissionCrossSection9,
         neutronFlux,
         meanAbsorptionCrossSectionXe,
+        z,
     } = params;
-    const numerator =
-        YIELD_PER_FISSION_XE *
-        (meanFissionCrossSection5 + meanFissionCrossSection9);
+    const w = z === 0 ? 0 : YIELD_PER_FISSION_XE;
+
+    const numerator = w * (meanFissionCrossSection5 + meanFissionCrossSection9);
     const denominator =
         1 + DECAY_CONSTANT_XE / (neutronFlux * meanAbsorptionCrossSectionXe);
     return numerator / denominator;
@@ -298,6 +300,7 @@ export function calculateXenonAbsorptionCrossSection(
 interface SamariumAbsorptionParameters {
     meanFissionCrossSection5: number; // ¯Σ_f5(z)
     meanFissionCrossSection9: number; // ¯Σ_f9(z)
+    z: number;
 }
 
 /**
@@ -308,11 +311,10 @@ interface SamariumAbsorptionParameters {
 export function calculateSamariumAbsorptionCrossSection(
     params: SamariumAbsorptionParameters,
 ): number {
-    const { meanFissionCrossSection5, meanFissionCrossSection9 } = params;
-    return (
-        YIELD_PER_FISSION_SM *
-        (meanFissionCrossSection5 + meanFissionCrossSection9)
-    );
+    const { meanFissionCrossSection5, meanFissionCrossSection9, z } = params;
+
+    const w = z === 0 ? 0 : YIELD_PER_FISSION_SM;
+    return w * (meanFissionCrossSection5 + meanFissionCrossSection9);
 }
 
 interface AverageNeutronsParameters {
