@@ -43,6 +43,8 @@ const companyParamsDefaults: CompanyParams = {
     year: createComputedValuesDefaults('год'),
     withoutPu: createComputedValuesDefaults('без учета Pu'),
     middle: createComputedValuesDefaults('середина кампании'),
+    otr: createComputedValuesDefaults('отравленный'),
+    fuelCompany: createComputedValuesDefaults('Компания топлива'),
 
     dN5: {
         name: 'dN5, %',

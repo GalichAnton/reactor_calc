@@ -12,6 +12,8 @@ export interface CompanyParams {
     year: ComputedValues;
     withoutPu: ComputedValues;
     middle: ComputedValues;
+    otr: ComputedValues;
+    fuelCompany: ComputedValues;
 
     dN5: Param;
 }

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 
+import { precision } from '@shared/constants/precision.ts';
 import { useTheme } from '@shared/lib/hooks';
 import classNames from 'classnames';
 import {
@@ -44,15 +45,16 @@ export const KefChart = () => {
             company: { z },
             year: { z: zYear },
             withoutPu: { z: zWithoutPu },
+            otr: { z: z_otr, k_ef: k_efOtr },
         },
     } = useCompanyParamsStore();
-    console.log(z, zYear, zWithoutPu);
+
     const { isLight, theme } = useTheme();
 
     const data = zRelationsParams?.map((p) => ({
         reactorOperationalTime: p.reactorOperationalTime.toFixed(3),
         k_ef: p.effectiveNeutronMultiplicationFactor.toExponential(3),
-        z: p.z.toFixed(2),
+        z: p.z.toExponential(precision),
         reactivity: p.reactivity.toExponential(3),
     }));
 
@@ -61,6 +63,7 @@ export const KefChart = () => {
     const [showReactivity, setShowReactivity] = useState(true);
 
     const themeColors = isLight(theme) ? lightThemeColors : darkThemeColors;
+
     return (
         <div
             className={classNames(styles.chartContainer, {
@@ -134,7 +137,7 @@ export const KefChart = () => {
                     yAxisId="reactivity"
                     dataKey="reactivity"
                     type="number"
-                    domain={[0, 0.25]}
+                    domain={[-0.3, 0.3]}
                     allowDataOverflow
                     label={{
                         value: 'reactivity',
@@ -172,24 +175,40 @@ export const KefChart = () => {
                         const { cx, cy, payload } = props;
                         const labels = [
                             {
+                                value: 1e-24,
+                                label: 'K_ef отравленный',
+                                color: 'red',
+                                positionY: cy - 10,
+                                positionX: cx + 60,
+                            },
+                            {
                                 value: z.value,
                                 label: 'K_ef кампании',
                                 color: 'red',
+                                positionY: cy - 5,
+                                positionX: cx + 50,
                             },
                             {
                                 value: zWithoutPu.value,
                                 label: 'K_ef кампании без учета Pu',
                                 color: 'red',
+                                positionY: cy - 10,
+                                positionX: cx + 70,
                             },
                             {
                                 value: zYear.value,
                                 label: 'K_ef через год',
                                 color: 'red',
+                                positionY: cy - 10,
+                                positionX: cx - 20,
                             },
                         ];
 
                         for (let i = 0; i < labels.length; i++) {
-                            if (payload.z === labels[i].value.toFixed(2)) {
+                            if (
+                                payload.z ===
+                                labels[i].value.toExponential(precision)
+                            ) {
                                 return (
                                     <>
                                         <circle
@@ -200,10 +219,11 @@ export const KefChart = () => {
                                             stroke="none"
                                         />
                                         <text
-                                            x={cx}
-                                            y={i % 2 === 0 ? cy - 10 : cy + 15} // Немного поднять текст выше точки
+                                            x={labels[i].positionX}
+                                            y={labels[i].positionY} // Немного поднять текст выше точки
                                             textAnchor="middle"
                                             fill="#333"
+                                            fontWeight="bold"
                                         >
                                             {labels[i].label}
                                         </text>
