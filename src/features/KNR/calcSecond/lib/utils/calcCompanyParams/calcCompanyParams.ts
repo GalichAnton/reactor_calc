@@ -73,6 +73,12 @@ interface CompanyParamsResult {
         reactorOperationalTime: number;
         reactivity: number;
     };
+    zero: {
+        z: number;
+        k_ef: number;
+        reactorOperationalTime: number;
+        reactivity: number;
+    };
 }
 
 /**
@@ -123,9 +129,9 @@ export const calculateCompanyParams = async (
         const companyReactivity = values.reactivity[companyIndex];
 
         //Расчет при отравлении реактора
-        const slagParams = findClosestToTarget(values.z, values.k_ef, 1e-24);
-        const z_slag = slagParams.x;
-        const slagKef = slagParams.y;
+        const slagParams = findClosestToTarget(values.k_ef, values.z, 1e-24);
+        const z_slag = slagParams.y;
+        const slagKef = slagParams.x;
         const slagIndex = slagParams.index;
         const slagReactivity = values.reactivity[slagIndex];
         const slagReactorTime = values.reactorOperationalTime[slagIndex];
@@ -171,6 +177,16 @@ export const calculateCompanyParams = async (
         const fuelCompanyZ = fuelCompany.x;
         const fuelCompanyKef = fuelCompany.y;
         const fuelCompanyIndex = fuelCompany.index;
+        const fuelCompanyReactivity = values.reactivity[fuelCompanyIndex];
+        const fuelCompanyReactorOperTime =
+            values.reactorOperationalTime[fuelCompanyIndex];
+
+        console.log({
+            k_ef: fuelCompanyKef,
+            z: fuelCompanyZ,
+            reactorOperationalTime: fuelCompanyReactorOperTime,
+            reactivity: fuelCompanyReactivity,
+        });
 
         // Формирование результата
         return {
@@ -205,10 +221,16 @@ export const calculateCompanyParams = async (
                     reactivity: slagReactivity,
                 },
                 fuelCompany: {
-                    k_ef: fuelCompanyKefCalc,
+                    k_ef: fuelCompanyKef,
                     z: fuelCompanyZ,
-                    reactorOperationalTime: fuelCompanyKef,
-                    reactivity: 0,
+                    reactorOperationalTime: fuelCompanyReactorOperTime,
+                    reactivity: fuelCompanyReactivity,
+                },
+                zero: {
+                    k_ef: values.k_ef[0],
+                    reactivity: values.reactivity[0],
+                    reactorOperationalTime: values.reactorOperationalTime[0],
+                    z: values.z[0],
                 },
             },
             dN5,

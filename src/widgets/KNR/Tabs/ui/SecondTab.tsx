@@ -6,6 +6,7 @@ import {
     KefChart,
     KefZTable,
 } from '@features/KNR/calcSecond';
+import { CompensationTable } from '@features/KNR/calcSecond/ui/tables/compensationTable.tsx';
 import { ReactivityTable } from '@features/KNR/calcSecond/ui/tables/ReactivityTable.tsx';
 import { Space, Text } from '@shared/ui';
 import { Col, Divider, Row } from 'antd';
@@ -58,6 +59,12 @@ export const SecondTab = () => {
                 <ReactivityTable />
             </Col>
             <Divider />
+            <Col span={24}>
+                <Text>
+                    <strong>5. РАСЧЕТ КОМПЕНСИРУЕМОСТИ РЕАКТОРА</strong>
+                </Text>
+                <CompensationTable />
+            </Col>
         </Row>
     );
 };

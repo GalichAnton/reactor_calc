@@ -2,9 +2,11 @@ import {
     AVERAGE_N_PER_F_PU9,
     MICRO_SIGMA_A_PU9,
     MICRO_SIGMA_F_PU9,
-    VESKOT_GA_PU9,
-    VESKOT_GF_PU9,
 } from '@features/KNR/VVER/setInitialValues';
+import {
+    calculatePu9AbsorptionGFactor,
+    calculatePu9FissionGFactor,
+} from '@shared/lib/utils';
 
 /**
  * Интерфейс для параметров расчета коэффициента воспроизводства.
@@ -195,7 +197,7 @@ export function calcAverageFissionCrossSection239Pu(
         (Math.sqrt(Math.PI) / 2) *
         MICRO_SIGMA_F_PU9 *
         Math.sqrt(293 / neutronGasTemperature) *
-        VESKOT_GF_PU9
+        calculatePu9FissionGFactor(neutronGasTemperature)
     );
 }
 
@@ -207,11 +209,12 @@ export function calcAverageFissionCrossSection239Pu(
 export function calcAverageAbsorptionCrossSection239Pu(
     neutronGasTemperature: number,
 ): number {
+    console.log('g', calculatePu9AbsorptionGFactor(neutronGasTemperature));
     return (
         (Math.sqrt(Math.PI) / 2) *
         MICRO_SIGMA_A_PU9 *
         Math.sqrt(293 / neutronGasTemperature) *
-        VESKOT_GA_PU9
+        calculatePu9AbsorptionGFactor(neutronGasTemperature)
     );
 }
 

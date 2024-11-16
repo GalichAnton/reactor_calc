@@ -9,16 +9,6 @@ export const MICRO_SIGMA_F_PU9 = 742e-24;
 export const MICRO_SIGMA_A_PU9 = 1028e-24;
 
 /**
- * g-фактор Весткотта для деления Pu-239.
- */
-export const VESKOT_GF_PU9 = 2.0514;
-
-/**
- * g-фактор Весткотта для поглощения Pu-239.
- */
-export const VESKOT_GA_PU9 = 2.3419;
-
-/**
  * Среднее количество нейтронов на акт деления для изотопа Pu-239.
  */
 export const AVERAGE_N_PER_F_PU9 = 2.87;

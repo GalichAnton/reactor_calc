@@ -45,6 +45,7 @@ const companyParamsDefaults: CompanyParams = {
     middle: createComputedValuesDefaults('середина кампании'),
     otr: createComputedValuesDefaults('отравленный'),
     fuelCompany: createComputedValuesDefaults('Компания топлива'),
+    zero: createComputedValuesDefaults('Начальные значения'),
 
     dN5: {
         name: 'dN5, %',

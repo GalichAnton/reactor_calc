@@ -28,7 +28,7 @@ const azPhysParamsDefaults: AZPhysParams = {
         value: 0,
     },
     geometricParameter: {
-        name: 'B, см^-1',
+        name: 'B^2, см^-1',
         description: 'Геометрический параметр',
         value: 0,
     },
