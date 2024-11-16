@@ -139,7 +139,7 @@ export const Chart = () => {
                     yAxisId="height"
                     dataKey="height"
                     type="number"
-                    domain={[100, reactorHeight]}
+                    domain={[0, reactorHeight]}
                     allowDataOverflow
                     orientation="right"
                     label={{

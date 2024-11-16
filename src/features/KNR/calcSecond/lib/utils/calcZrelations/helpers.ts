@@ -538,11 +538,9 @@ export function calculateDiffusionLength(
         averageSumTransportCrossSection,
     } = params;
 
-    return Math.sqrt(
+    return (
         1 /
-            (3 *
-                averageSumAbsorptionCrossSection *
-                averageSumTransportCrossSection),
+        (3 * averageSumAbsorptionCrossSection * averageSumTransportCrossSection)
     );
 }
 

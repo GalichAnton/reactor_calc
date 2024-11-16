@@ -98,7 +98,7 @@ export const ReactivitiesChart = () => {
                     yAxisId="reactivity"
                     dataKey="reactivity"
                     type="number"
-                    domain={[-3, 3]}
+                    domain={[-5, 5]}
                     allowDataOverflow
                     label={{
                         value: 'reactivity',

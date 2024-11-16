@@ -174,7 +174,7 @@ export const useCalc = () => {
                 calcPrevSigma: newParams.newSigma,
                 calcUraniumTemperature: newParams.uraniumTemp,
             });
-        }, interval * 1000);
+        }, interval * 500);
 
         return () => {
             clearInterval(timeInterval);

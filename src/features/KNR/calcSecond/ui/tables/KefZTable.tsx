@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 
 import { useZRelationsStore } from '@features/KNR/calcSecond';
+import { precision } from '@shared/constants/precision.ts';
 import { Tooltip } from '@shared/ui';
 import { Table } from 'antd';
 import { ColumnsType } from 'antd/es/table';
@@ -49,7 +50,7 @@ export const KefZTable = () => {
                 key: 'infiniteMediumNeutronMultiplicationFactor',
                 dataIndex: 'infiniteMediumNeutronMultiplicationFactor',
                 align: 'center',
-                render: (value: number) => value.toExponential(3),
+                render: (value: number) => value.toExponential(precision),
             },
             {
                 title: (
@@ -62,14 +63,14 @@ export const KefZTable = () => {
                 key: 'effectiveNeutronMultiplicationFactor',
                 dataIndex: 'effectiveNeutronMultiplicationFactor',
                 align: 'center',
-                render: (value: number) => value.toExponential(3),
+                render: (value: number) => value.toExponential(precision),
             },
             {
                 title: <Tooltip title={'Реактивность'}>ro</Tooltip>,
                 key: 'reactivity',
                 dataIndex: 'reactivity',
                 align: 'center',
-                render: (value: number) => value.toExponential(3),
+                render: (value: number) => value.toExponential(precision),
             },
         ];
     }, []);

@@ -66,6 +66,11 @@ export const ReactivityForm = () => {
         setInitialParam('velocity', val);
     };
 
+    const onChangeInterval = (val: number | null) => {
+        if (val === null) return;
+        setInitialParam('interval', val);
+    };
+
     return (
         <Card
             style={{ width: '100%', boxShadow: '0 4px 30px #0000001a' }}
@@ -219,6 +224,7 @@ export const ReactivityForm = () => {
                                 value={interval}
                                 addonAfter={'с'}
                                 step="0.01"
+                                onChange={onChangeInterval}
                             />
                         </Form.Item>
                     </Col>
