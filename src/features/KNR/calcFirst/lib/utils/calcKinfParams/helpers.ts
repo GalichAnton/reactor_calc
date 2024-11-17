@@ -51,8 +51,6 @@ interface ThermalNeutronParams {
 export function calculateThermalNeutronCoef(
     params: ThermalNeutronParams,
 ): number {
-    console.log('theha0', params);
-
     const {
         blockVolume,
         fuelVolume,

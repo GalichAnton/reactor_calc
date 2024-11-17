@@ -20,7 +20,7 @@ const fuelParamsDefaults: FuelParams = {
         value: 0,
     },
     specificFuelConsumption: {
-        name: 'B, г/МВт∙сут',
+        name: 'ψ, г/МВт∙сут',
         description: 'Удельный расход горючего (г/МВт∙сут)',
         value: 0,
     },
@@ -45,8 +45,15 @@ const fuelParamsDefaults: FuelParams = {
         value: 0,
     },
     fuelBurnupPerCompany: {
-        name: 'B_комп, МВт∙сут/кг',
-        description: 'Глубина выгорания топлива за компанию (МВт∙сут/кг)',
+        name: 'B_комп_реак, МВт∙сут/кг',
+        description:
+            'Глубина выгорания топлива за компанию реактора (МВт∙сут/кг)',
+        value: 0,
+    },
+    fuelBurnupPerFuelCompany: {
+        name: 'B_комп_топ, МВт∙сут/кг',
+        description:
+            'Глубина выгорания топлива за компанию реактора (МВт∙сут/кг)',
         value: 0,
     },
     fuelBurnupPerYear: {

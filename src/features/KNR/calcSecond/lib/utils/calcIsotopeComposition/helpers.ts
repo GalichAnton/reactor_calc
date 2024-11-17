@@ -209,7 +209,6 @@ export function calcAverageFissionCrossSection239Pu(
 export function calcAverageAbsorptionCrossSection239Pu(
     neutronGasTemperature: number,
 ): number {
-    console.log('g', calculatePu9AbsorptionGFactor(neutronGasTemperature));
     return (
         (Math.sqrt(Math.PI) / 2) *
         MICRO_SIGMA_A_PU9 *

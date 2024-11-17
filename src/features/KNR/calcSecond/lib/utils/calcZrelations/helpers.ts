@@ -160,7 +160,7 @@ export function calculateMeanXenonAbsorptionCrossSection(
     neutronGasTemperature: number,
 ): number {
     const sqrtFactor =
-        (Math.sqrt(Math.PI) / 2) * Math.sqrt(293 / neutronGasTemperature);
+        Math.sqrt(Math.PI / 2) * Math.sqrt(293 / neutronGasTemperature);
     return MICRO_SIGMA_A_XE135 * sqrtFactor;
 }
 
@@ -414,7 +414,7 @@ export function calculateTransportCrossSectionU235(
 
     return (
         meanMacroscopicAbsorptionCrossSectionU235 +
-        10 * nuclearConcentrationU235 * (1 - cosineTheta5)
+        10 * 1e-24 * nuclearConcentrationU235 * (1 - cosineTheta5)
     );
 }
 
@@ -439,7 +439,7 @@ export function calculateTransportCrossSectionPu239(
 
     return (
         meanMacroscopicAbsorptionCrossSectionPu239 +
-        10 * nuclearConcentrationPu239 * (1 - cosineTheta9)
+        10 * 1e-24 * nuclearConcentrationPu239 * (1 - cosineTheta9)
     );
 }
 
@@ -589,10 +589,10 @@ export function calculateThermalNeutronUtilization(
     } = params;
 
     const numerator =
-        blockVolume *
+        fuelVolume *
         (u235MacroAbsorptionCrossSection + PuMacroAbsorptionCrossSection);
     const denominator =
-        fuelVolume * blockMacroAbsorptionCrossSection +
+        blockVolume * blockMacroAbsorptionCrossSection +
         lossFactor * moderatorVolume * moderatorMacroAbsorptionCrossSection;
 
     return numerator / denominator;

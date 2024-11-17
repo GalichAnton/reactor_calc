@@ -140,43 +140,6 @@ export function calculateNuclearConcentrationPuByBat(
             fastNeutronReproductionCoefficient *
             (1 - resonanceEscapeProbability);
 
-    if (z === 0) {
-        console.group();
-        console.log(
-            'averageAbsorptionCrossSection238U',
-            averageAbsorptionCrossSection238U.toExponential(),
-        );
-        console.log(
-            'averageAbsorptionCrossSection235U',
-            averageAbsorptionCrossSection235U.toExponential(),
-        );
-        console.log(
-            'initialNuclearConcentration235U',
-            initialNuclearConcentration235U.toExponential(),
-        );
-        console.log(
-            'averageAbsorptionCrossSection239Pu',
-            averageAbsorptionCrossSection239Pu.toExponential(),
-        );
-        console.log(
-            'initialNuclearConcentration239Pu',
-            initialNuclearConcentration239Pu.toExponential(),
-        );
-        console.log(
-            'initialNuclearConcentration238U',
-            initialNuclearConcentration238U.toExponential(),
-        );
-        console.log(
-            'fastNeutronReproductionCoefficient',
-            fastNeutronReproductionCoefficient.toExponential(),
-        );
-        console.log(
-            'resonanceEscapeProbability',
-            resonanceEscapeProbability.toExponential(),
-        );
-        console.log('sigma', sigma);
-        console.groupEnd();
-    }
     return (
         (initialNuclearConcentration239Pu -
             (sigma * initialNuclearConcentration238U) /

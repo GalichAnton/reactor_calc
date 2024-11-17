@@ -20,7 +20,7 @@ export const ReactivityTable = () => {
     const [coldParams, setColdParams] = useState<any>();
     const { setCompensationParams } = useCompensationsStore();
     const {
-        companyParams: { company, middle, year, zero },
+        companyParams: { company, middle, year, zero, otr },
     } = useCompanyParamsStore();
     const { initialParams } = useInitialParamsStore();
     const {
@@ -58,10 +58,10 @@ export const ReactivityTable = () => {
             dro / (initialParams.coolantTemperature - coolantTemperature);
 
         const compensationParams = calculateCompensationParams({
-            KefYear: company.k_ef.value,
-            reactivitySlug: company.reactivity.value,
+            KefYear: year.k_ef.value,
+            reactivitySlug: otr.reactivity.value,
             reactivityPure: zero.reactivity.value,
-            dRoThermalCoef: thermalD,
+            dRoThermalCoef: dro,
             transportCrossSectionTotal: transportMacroTotal.value,
             transportCrossSectionTotal1EV: transportMacroTotal1eV.value,
             radiusControls: initialParams.controlRodRadius,

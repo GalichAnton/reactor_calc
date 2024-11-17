@@ -32,7 +32,7 @@ const createComputedValuesDefaults = (prefix: string): ComputedValues => ({
         value: 0,
     },
     reactivity: {
-        name: `ro, o.e`,
+        name: `ro_${prefix}, o.e`,
         description: `Реактивность ${prefix}`,
         value: 0,
     },
@@ -48,8 +48,9 @@ const companyParamsDefaults: CompanyParams = {
     zero: createComputedValuesDefaults('Начальные значения'),
 
     dN5: {
-        name: 'dN5, %',
-        description: 'Изменение концентрации U235',
+        name: 'dN5, см^-3',
+        description:
+            'Изменение ядерной плотности урана-235 за кампанию реактора',
         value: 0,
     },
 };

@@ -91,11 +91,10 @@ export const calcPowerSix = (props: CalcPowerProps): ReturnParams => {
         (1 - interval * ((prevRo - betta) / Lambda));
 
     const rel = calculateRelativePower(prevPower, nominalPower);
-    console.log('rel', rel);
+
     const thermalPower = nominalThermalPower * rel;
 
     const thermalDensity = thermalPower / uraniumVolume;
-    console.log('thermalDensity', thermalDensity);
 
     const uraniumTemp = calculateUraniumTemperature(
         prevCalcUraniumTemperature,

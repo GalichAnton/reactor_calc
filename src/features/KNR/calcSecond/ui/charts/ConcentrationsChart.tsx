@@ -160,7 +160,7 @@ export const ConcentrationsChart = (props: ConcentrationsChartProps) => {
                     dataKey="N5ByRum"
                     yAxisId="nuclearConcentration"
                     stroke={themeColors.nuclearConcentration235UByRum}
-                    strokeWidth={2}
+                    strokeWidth={4}
                     dot={false}
                     hide={!showByRum}
                     strokeDasharray="4"
@@ -174,7 +174,7 @@ export const ConcentrationsChart = (props: ConcentrationsChartProps) => {
                     dot={false}
                     hide={!showByRum}
                     strokeDasharray="4"
-                    strokeWidth={2}
+                    strokeWidth={4}
                 />
                 <Line
                     name="Концентрация U235 по методу конечных-разностей"

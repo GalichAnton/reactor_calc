@@ -119,6 +119,7 @@ export const calculateZrelationsParams = async (
 
         for (let i = 0; i < params.START_Z.length; i++) {
             const z = params.START_Z[i];
+            const dZ = i === 0 ? 0 : z - params.START_Z[i - 1];
 
             const averageNuclearConcentration235UByRum =
                 calculateNuclearConcentrationU5ByRum(
@@ -260,13 +261,6 @@ export const calculateZrelationsParams = async (
                         meanMacroscopicFissionCrossSection239Pu,
                     z,
                 });
-
-            if (i === 0 || i === 1) {
-                console.log(
-                    xenonAbsorptionCrossSection,
-                    samariumAbsorptionCrossSection,
-                );
-            }
 
             const averageSecondaryNeutronsPerAbsorption =
                 calculateAverageSecondaryNeutronsPerAbsorption({
@@ -448,7 +442,7 @@ export const calculateZrelationsParams = async (
                 nuclearConcentration238UByKR,
                 nuclearConcentration239PuByKR,
             } = calculateNuclearConcentrationByKR({
-                dz: 0.01,
+                dz: dZ,
                 initialNuclearConcentration235U:
                     KRParams.initialNuclearConcentration235U,
                 initialNuclearConcentration239Pu:
@@ -470,33 +464,6 @@ export const calculateZrelationsParams = async (
                 averageFissionCrossSection239Pu:
                     params.isotopesParams.averageFissionCrossSection239Pu,
             });
-
-            if (z === 0) {
-                console.log({
-                    dz: 0.01,
-                    initialNuclearConcentration235U:
-                        KRParams.initialNuclearConcentration235U,
-                    initialNuclearConcentration239Pu:
-                        KRParams.initialNuclearConcentration239Pu,
-                    initialNuclearConcentration238U:
-                        KRParams.initialNuclearConcentration238U,
-                    averageAbsorptionCrossSection238U:
-                        params.averagedCrossSections.averagedMicroAU8,
-                    averageAbsorptionCrossSection235U:
-                        params.averagedCrossSections.averagedMicroAU5,
-                    averageAbsorptionCrossSection239Pu:
-                        params.isotopesParams
-                            .averageAbsorptionCrossSection239Pu,
-                    fastNeutronReproductionCoefficient:
-                        params.kInfParams.reproductionFactor,
-                    resonanceEscapeProbability:
-                        params.kInfParams.resonanceEscapeProbability,
-                    averageFissionCrossSection235U:
-                        params.averagedCrossSections.averagedMicroFU5,
-                    averageFissionCrossSection239Pu:
-                        params.isotopesParams.averageFissionCrossSection239Pu,
-                });
-            }
 
             const reactivity =
                 (effectiveNeutronMultiplicationFactor - 1) /
@@ -535,7 +502,7 @@ export const calculateZrelationsParams = async (
                 nuclearConcentration238UByKR,
                 reactivity,
             };
-            if (i === 0 || i === 1) {
+            if (z === 0.445) {
                 console.group('data');
                 console.log(
                     'averageNuclearConcentration235U',

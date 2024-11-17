@@ -35,9 +35,14 @@ export interface FuelParams extends Params {
     uraniumEnrichment: Param;
 
     /**
-     * Глубина выгорания топлива за компанию (МВт∙сут/кг).
+     * Глубина выгорания топлива за компанию реактора (МВт∙сут/кг).
      */
     fuelBurnupPerCompany: Param;
+
+    /**
+     * Глубина выгорания топлива за компанию топлива (МВт∙сут/кг).
+     */
+    fuelBurnupPerFuelCompany: Param;
 
     /**
      * Глубина выгорания топлива за год (МВт∙сут/кг).

@@ -58,7 +58,6 @@ export const calculateCompensationParams = (
 
         const D1 = 1 / (3 * transportCrossSectionTotal1EV);
         const D2 = 1 / (3 * transportCrossSectionTotal);
-
         const unknownCoef = radiusControls * transportCrossSectionTotal;
 
         const rodBlackness = gammaFunc(unknownCoef);
@@ -105,35 +104,13 @@ export const calculateCompensationParams = (
 
         const centralRodCompensation =
             (2 * C * (neutronAge + diffusionLength)) /
-            (Math.pow(azDiameter / 2, 2) * besselJ0 ** 2 + besselJ1 ** 2);
-
+            (Math.pow(azDiameter / 2, 2) * (besselJ0 ** 2 + besselJ1 ** 2));
+        console.log('centralRodCompensation', centralRodCompensation);
         const nControlRoads =
             Math.log(1 + totalReactivity) /
             (centralRodCompensation * (besselJ0 ** 2 + besselJ1 ** 2));
 
         const nSUZ = nControlRoads / 18;
-
-        console.log({
-            dRoOtr,
-            dRoYear,
-            dRoThermalCoef,
-            totalReactivity,
-            D1,
-            D2,
-            w1,
-            w2,
-            alpha2,
-            unknownCoef,
-            besselJ1,
-            besselJ0,
-            besselK0,
-            besselK1,
-            epsilon2,
-            C,
-            centralRodCompensation,
-            nControlRoads,
-            nSUZ,
-        });
 
         return {
             nControlRoads,

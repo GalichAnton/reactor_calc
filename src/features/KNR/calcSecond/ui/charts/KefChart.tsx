@@ -50,6 +50,7 @@ export const KefChart = () => {
             withoutPu: { z: zWithoutPum, k_ef: KefWithoutPu },
             otr: { z: z_otr, k_ef: k_efOtr },
             fuelCompany: { z: z_fuel, k_ef: KefFuel },
+            middle: { z: z_middle, k_ef: KefMiddle },
         },
     } = useCompanyParamsStore();
     const { isLight, theme } = useTheme();
@@ -230,6 +231,20 @@ export const KefChart = () => {
                     fill={themeColors.k_ef}
                     label={{
                         value: `K_ef отравленый=${k_efOtr.value.toFixed(precision)}`,
+                        position: 'insideBottomLeft',
+                        fill: themeColors.text,
+                        fontSize: 12,
+                        fontWeight: 'normal',
+                    }}
+                />
+                <ReferenceDot
+                    yAxisId={'k_ef'}
+                    x={z_middle.value}
+                    y={KefMiddle.value}
+                    r={4}
+                    fill={themeColors.k_ef}
+                    label={{
+                        value: `K_ef середины=${KefMiddle.value.toFixed(precision)}`,
                         position: 'insideBottomLeft',
                         fill: themeColors.text,
                         fontSize: 12,

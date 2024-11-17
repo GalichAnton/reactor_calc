@@ -304,6 +304,8 @@ export const performAllCalculations = async (params: InitialParams) => {
         coreHeight,
         thermalPower,
         reactorOperationalTime:
+            companyParams.params.company.reactorOperationalTime,
+        reactorOperationalTimePerFuelCompany:
             companyParams.params.fuelCompany.reactorOperationalTime,
         dN5: companyParams.dN5,
         numFuelAssemblies: aZparams.numFuelAssemblies,

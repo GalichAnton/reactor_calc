@@ -22,8 +22,10 @@ interface FuelParamsProps {
     numFuelAssemblies: number;
     /** Изменение концентрации U-235 за кампанию (1/см^3) */
     dN5: number;
-    /** Время работы реактора в течение кампании (сут) */
+    /** Время работы реактора в течение кампании реактора(сут) */
     reactorOperationalTime: number;
+    /** Время работы реактора в течение кампании топлива(сут) */
+    reactorOperationalTimePerFuelCompany: number;
 }
 
 /**
@@ -46,6 +48,7 @@ export const calculateFuelParams = async (
         numFuelAssemblies,
         dN5,
         reactorOperationalTime,
+        reactorOperationalTimePerFuelCompany,
     } = params;
 
     try {
@@ -87,10 +90,14 @@ export const calculateFuelParams = async (
         const fuelBurnupPerCompany =
             (thermalPower * reactorOperationalTime) / totalInitialUraniumMass;
 
+        const fuelBurnupPerFuelCompany =
+            (thermalPower * reactorOperationalTimePerFuelCompany) /
+            totalInitialUraniumMass;
+
         const fuelBurnupPerYear =
             (thermalPower * 330) / totalInitialUraniumMass;
 
-        const numberOfReloads = fuelBurnupPerCompany / fuelBurnupPerYear;
+        const numberOfReloads = fuelBurnupPerFuelCompany / fuelBurnupPerYear;
 
         return {
             depletedUranium235Mass,
@@ -102,6 +109,7 @@ export const calculateFuelParams = async (
             fuelBurnupPerCompany,
             fuelBurnupPerYear,
             numberOfReloads,
+            fuelBurnupPerFuelCompany,
         };
     } catch (error) {
         throw new Error(`Ошибка при расчете параметров топлива: ${error}`);

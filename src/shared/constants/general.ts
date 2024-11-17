@@ -36,12 +36,12 @@ export const DECAY_CONSTANT_XE = 2.09e-5;
 /**
  * Микроскопическое сечение поглощения для изотопа Xe-135, в барнах.
  */
-export const MICRO_SIGMA_A_XE135 = 2.65e6;
+export const MICRO_SIGMA_A_XE135 = 2.65e-18;
 
 /**
  * Z - для построения зависимостей.
  */
-export const START_Z = Array.from({ length: 201 }, (_, i) => i * 0.01);
+export const START_Z = Array.from({ length: 401 }, (_, i) => i * 0.005);
 START_Z[1] = 1e-24;
 /**
  * Число Авогадро, в яд/моль.

@@ -151,9 +151,9 @@ export const calculateCompanyParams = async (
             values.z,
             z_company / 2,
         );
-        const middleKef = middleParams.x;
         const middleZ = middleParams.y;
         const middleIndex = middleParams.index;
+        const middleKef = values.k_ef[middleIndex];
         const middleReactivity = values.reactivity[middleIndex];
 
         // Расчет параметров без плутония
@@ -180,13 +180,6 @@ export const calculateCompanyParams = async (
         const fuelCompanyReactivity = values.reactivity[fuelCompanyIndex];
         const fuelCompanyReactorOperTime =
             values.reactorOperationalTime[fuelCompanyIndex];
-
-        console.log({
-            k_ef: fuelCompanyKef,
-            z: fuelCompanyZ,
-            reactorOperationalTime: fuelCompanyReactorOperTime,
-            reactivity: fuelCompanyReactivity,
-        });
 
         // Формирование результата
         return {

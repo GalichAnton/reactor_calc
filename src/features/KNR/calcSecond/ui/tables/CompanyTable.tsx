@@ -4,7 +4,7 @@ import { ParamsTable } from '@shared/ui';
 
 export const CompanyTable = () => {
     const {
-        companyParams: { company, withoutPu, year },
+        companyParams: { company, withoutPu, year, dN5 },
     } = useCompanyParamsStore();
 
     const params: Params = {
@@ -15,6 +15,7 @@ export const CompanyTable = () => {
         withoutPuZ: withoutPu.z,
         withoutPuKef: withoutPu.k_ef,
         withoutPuTime: withoutPu.reactorOperationalTime,
+        dN5: dN5,
     };
 
     return (
