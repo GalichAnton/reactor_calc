@@ -41,7 +41,6 @@ export const useCalc = () => {
             nominalThermalPower,
         },
         setComputedParams,
-        setComputedParam,
         setInitialParam,
         config: { start },
         computedParams,
