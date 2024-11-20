@@ -102,18 +102,16 @@ export const useCalc = () => {
                 return;
             }
             const lastIndex = computedParams.calcReactivity.length - 1;
-            const currentHeight = computedParams.calcHeight[lastIndex];
+            const currentHeight = initialParams.height;
+            const currentUraniumTemp = initialParams.averageUraniumTemp;
             const currentTime = computedParams.calcTime[lastIndex];
-            if (currentHeight >= reactorHeight) {
-                setComputedParam('calcHeight', reactorHeight);
-            }
-
-            if (currentHeight <= 0) {
-                setComputedParam('calcHeight', 0);
-            }
+            const dh = currentHeight - computedParams.calcHeight[lastIndex];
+            const dt =
+                currentUraniumTemp -
+                computedParams.calcUraniumTemperature[lastIndex];
 
             const newParams = calcPowerSix({
-                prevH: currentHeight,
+                prevH: computedParams.calcHeight[lastIndex],
                 prevRo: computedParams.calcReactivity[lastIndex],
                 prevPower: computedParams.calcPower[lastIndex],
                 prevC: computedParams.calcC[lastIndex],
@@ -134,6 +132,8 @@ export const useCalc = () => {
                 nominalPower,
                 tauZero,
                 aCoef,
+                dh,
+                dt,
             });
 
             setInitialParam(
@@ -174,7 +174,7 @@ export const useCalc = () => {
                 calcPrevSigma: newParams.newSigma,
                 calcUraniumTemperature: newParams.uraniumTemp,
             });
-        }, interval * 500);
+        }, interval * 1000);
 
         return () => {
             clearInterval(timeInterval);

@@ -23,9 +23,9 @@ const lightThemeColors = {
     grid: '#333',
     nU5con: '#1f5316',
     nPu9con: '#55278d',
-    time: 'red',
+    time: 'green',
     k_ef: '#0c233d',
-    reactivity: '#210741',
+    reactivity: 'red',
     text: '#2C3E50', // темно-синий для текста
     background: '#FFFFFF', // белый фон
 };
@@ -36,7 +36,7 @@ const darkThemeColors = {
     grid: '#eee',
     nU5con: '#55e13b',
     nPu9con: '#8c3dee',
-    time: '#ff6666',
+    time: 'green',
     k_ef: '#389aff',
     reactivity: '#c391ff',
 };
@@ -141,7 +141,7 @@ export const KefChart = () => {
                     yAxisId="reactivity"
                     dataKey="reactivity"
                     type="number"
-                    domain={[-0.3, 0.3]}
+                    domain={[-0.2, 0.3]}
                     allowDataOverflow
                     label={{
                         value: 'reactivity',

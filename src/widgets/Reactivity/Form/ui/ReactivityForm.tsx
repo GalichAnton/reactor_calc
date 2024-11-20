@@ -66,9 +66,19 @@ export const ReactivityForm = () => {
         setInitialParam('velocity', val);
     };
 
+    const onChangeHeight = (val: number | null) => {
+        if (val === null) return;
+        setInitialParam('height', val);
+    };
+
     const onChangeInterval = (val: number | null) => {
         if (val === null) return;
         setInitialParam('interval', val);
+    };
+
+    const onChangeUraniumTemp = (val: number | null) => {
+        if (val === null) return;
+        setInitialParam('averageUraniumTemp', val);
     };
 
     return (
@@ -119,6 +129,7 @@ export const ReactivityForm = () => {
                                 placeholder={'Средняя температура урана'}
                                 value={averageUraniumTemp}
                                 addonAfter={'°C'}
+                                onChange={onChangeUraniumTemp}
                             />
                         </Form.Item>
                     </Col>
@@ -197,6 +208,7 @@ export const ReactivityForm = () => {
                                 style={{ width: '100%' }}
                                 placeholder={'Положение группы ОР СУЗ'}
                                 addonAfter={'см'}
+                                onChange={onChangeHeight}
                                 value={height}
                             />
                         </Form.Item>

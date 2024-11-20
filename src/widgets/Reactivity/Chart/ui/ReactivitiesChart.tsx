@@ -22,8 +22,8 @@ const lightThemeColors = {
     grid: '#333',
     reactivity: 'red',
     rel: '#8884d8',
-    power: '#82ca9d',
-    height: '#0c233d',
+    thermalReactivity: '#82ca9d',
+    heightReactivity: '#0c233d',
 };
 
 const darkThemeColors = {
@@ -31,8 +31,8 @@ const darkThemeColors = {
     grid: '#eee',
     reactivity: '#ff6666',
     rel: '#7a66ff',
-    power: '#66cc99',
-    height: '#389aff',
+    thermalReactivity: '#66cc99',
+    heightReactivity: '#389aff',
 };
 
 export const ReactivitiesChart = () => {
@@ -98,17 +98,17 @@ export const ReactivitiesChart = () => {
                     yAxisId="reactivity"
                     dataKey="reactivity"
                     type="number"
-                    domain={[-5, 5]}
+                    domain={[-10, 10]}
                     allowDataOverflow
                     label={{
                         value: 'reactivity',
                         angle: -90,
                         offset: 50,
                         position: 'insideTop',
-                        style: { fill: themeColors.rel },
+                        style: { fill: themeColors.reactivity },
                     }}
                     tick={{
-                        fill: themeColors.rel,
+                        fill: themeColors.reactivity,
                     }}
                 />
                 <YAxis
@@ -122,10 +122,10 @@ export const ReactivitiesChart = () => {
                         angle: -90,
                         offset: 50,
                         position: 'insideTop',
-                        style: { fill: themeColors.reactivity },
+                        style: { fill: themeColors.thermalReactivity },
                     }}
                     tick={{
-                        fill: themeColors.reactivity,
+                        fill: themeColors.thermalReactivity,
                     }}
                 />
                 <YAxis
@@ -139,10 +139,10 @@ export const ReactivitiesChart = () => {
                         angle: -90,
                         offset: 50,
                         position: 'insideTop',
-                        style: { fill: themeColors.power },
+                        style: { fill: themeColors.heightReactivity },
                     }}
                     tick={{
-                        fill: themeColors.power,
+                        fill: themeColors.heightReactivity,
                     }}
                 />
                 <Tooltip
@@ -174,7 +174,7 @@ export const ReactivitiesChart = () => {
                     type="monotone"
                     dataKey="heightReactivity"
                     yAxisId={'heightReactivity'}
-                    stroke={themeColors.power}
+                    stroke={themeColors.heightReactivity}
                     dot={false}
                     hide={!showHeightReactivity}
                     strokeWidth={2}
@@ -184,7 +184,7 @@ export const ReactivitiesChart = () => {
                     type="monotone"
                     dataKey="thermalReactivity"
                     yAxisId={'thermalReactivity'}
-                    stroke={themeColors.height}
+                    stroke={themeColors.thermalReactivity}
                     dot={false}
                     hide={!showThermalReactivity}
                     strokeWidth={2}

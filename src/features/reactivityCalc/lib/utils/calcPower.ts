@@ -29,6 +29,8 @@ interface CalcPowerProps {
     aCoef: number;
     coolantTemp: number;
     prevSigma: number;
+    dh: number;
+    dt: number;
 }
 
 interface ReturnParams {
@@ -67,28 +69,36 @@ export const calcPowerSix = (props: CalcPowerProps): ReturnParams => {
         prevCalcThermalReactivity,
         uraniumVolume,
         prevSigma,
+        dh,
+        dt,
     } = props;
+
+    const newInterwal = interval;
+
     const newH = calculateNewHeight(
         prevH,
         velocity,
         mode,
         interval,
         reactorHeight,
+        dh,
     );
-    const dH = roundToDecimal((newH - prevH) / interval, precision);
+
+    const dH = roundToDecimal((newH - prevH) / newInterwal, precision);
     const newSigma =
         prevSigma + prevC.reduce((acc, c, i) => acc + lambdaSix[i] * c, 0);
 
     const newC = prevC.map((c, i) => {
         return (
             c +
-            interval * ((bettaSix[i] * prevPower) / Lambda - lambdaSix[i] * c)
+            newInterwal *
+                ((bettaSix[i] * prevPower) / Lambda - lambdaSix[i] * c)
         );
     });
 
     const newPower =
-        (prevPower + interval * newSigma) /
-        (1 - interval * ((prevRo - betta) / Lambda));
+        (prevPower + newInterwal * newSigma) /
+        (1 - newInterwal * ((prevRo - betta) / Lambda));
 
     const rel = calculateRelativePower(prevPower, nominalPower);
 
@@ -98,20 +108,21 @@ export const calcPowerSix = (props: CalcPowerProps): ReturnParams => {
 
     const uraniumTemp = calculateUraniumTemperature(
         prevCalcUraniumTemperature,
-        interval,
+        newInterwal,
         tauZero,
         aCoef,
         thermalDensity,
         coolantTemp,
+        dt,
     );
 
     const uraniumTempSh =
         (aCoef * thermalDensity + coolantTemp - uraniumTemp) / tauZero;
 
-    const heightReactivity = prevCalcHeightReactivity + KH * dH * interval;
+    const heightReactivity = prevCalcHeightReactivity + KH * dH * newInterwal;
 
     const thermalReactivity =
-        prevCalcThermalReactivity + K_U * uraniumTempSh * interval;
+        prevCalcThermalReactivity + K_U * uraniumTempSh * newInterwal;
 
     const newRo = prevRo + thermalReactivity + heightReactivity;
 
@@ -140,8 +151,12 @@ const calculateNewHeight = (
     mode: number,
     interval: number,
     reactorHeight: number,
+    dh: number,
 ) => {
-    let newH = roundToDecimal(prevH + velocity * mode * interval, precision);
+    let newH = roundToDecimal(
+        prevH + dh + velocity * mode * interval,
+        precision,
+    );
     if (newH >= reactorHeight) {
         newH = reactorHeight;
     }
@@ -172,6 +187,7 @@ const calculateUraniumTemperature = (
     aCoef: number,
     thermalDensity: number,
     coolantTemp: number,
+    dt: number,
 ) => {
     // Проверяем условие: если предыдущая температура меньше температуры теплоносителя
     if (prevCalcUraniumTemperature < coolantTemp) {
@@ -181,6 +197,7 @@ const calculateUraniumTemperature = (
     // Основной расчет температуры урана
     const uraniumTemp =
         (prevCalcUraniumTemperature +
+            dt +
             (interval / tauZero) * (aCoef * thermalDensity + coolantTemp)) /
         (1 + interval / tauZero);
 
