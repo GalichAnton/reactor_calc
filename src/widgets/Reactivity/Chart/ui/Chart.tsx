@@ -73,10 +73,7 @@ export const Chart = () => {
                 <XAxis
                     dataKey="time"
                     type="number"
-                    domain={[
-                        0,
-                        (dataMax: number) => (dataMax > 150 ? dataMax : 150),
-                    ]}
+                    domain={[0, 200]}
                     allowDataOverflow
                     label={{
                         value: 'Время (с)',
@@ -168,7 +165,7 @@ export const Chart = () => {
                     <Label value="Отношение = 1" position="insideTop" />
                 </ReferenceLine>
                 <Line
-                    name="Мощность/(0.5×номинальная мощность)"
+                    name="Мощность/Номинальная мощность"
                     type="monotone"
                     dataKey="rel"
                     yAxisId="rel"

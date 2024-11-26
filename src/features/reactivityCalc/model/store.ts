@@ -50,7 +50,7 @@ const initialState: initialStoreValues = {
         velocity: 2,
         mode: OPERATING_MODE.STOP,
         startReactivity: 0,
-        height: 187.5,
+        height: 373,
         power: 0,
         thermalPower: 0,
         interval: 0.1,

@@ -68,10 +68,7 @@ export const ReactivitiesChart = () => {
                 <XAxis
                     dataKey="time"
                     type="number"
-                    domain={[
-                        0,
-                        (dataMax: number) => (dataMax > 150 ? dataMax : 150),
-                    ]}
+                    domain={[0, 200]}
                     allowDataOverflow
                     label={{
                         value: 'Время (с)',
@@ -98,7 +95,7 @@ export const ReactivitiesChart = () => {
                     yAxisId="reactivity"
                     dataKey="reactivity"
                     type="number"
-                    domain={[-10, 10]}
+                    domain={domain}
                     allowDataOverflow
                     label={{
                         value: 'reactivity',

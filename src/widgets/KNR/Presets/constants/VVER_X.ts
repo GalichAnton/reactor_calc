@@ -1,15 +1,14 @@
 import { REACTOR_TYPES } from '@entities/reactor';
+import { VVER } from '@widgets/KNR/Presets/model/types.ts';
 
-import { VVER } from '../model/types';
-
-export const VVER_1300: VVER = {
+export const VVER_X: VVER = {
     initialParams: {
-        electricalPower: 1300,
+        electricalPower: 440,
         thermalPower: 3900,
         coolantTemperature: 538,
-        uraniumEnrichment: 4.9,
+        uraniumEnrichment: 4.8,
         corePowerDensity: 111,
-        primaryCircuitPressure: 15,
+        primaryCircuitPressure: 13,
         nTvel: 312,
         latticePitch: 23.6,
         fuelRodLatticePitch: 1.275,

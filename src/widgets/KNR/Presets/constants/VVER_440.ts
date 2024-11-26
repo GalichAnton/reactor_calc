@@ -1,16 +1,12 @@
-import { InitialParams } from '@entities/KNR';
 import { REACTOR_TYPES } from '@entities/reactor';
+import { VVER } from '@widgets/KNR/Presets/model/types.ts';
 
-export interface VVER_440 {
-    initialParams: InitialParams;
-}
-
-export const VVER_440: VVER_440 = {
+export const VVER_440: VVER = {
     initialParams: {
         electricalPower: 440, //
         thermalPower: 1320, //
         coolantTemperature: 538, //
-        uraniumEnrichment: 2.4, //
+        uraniumEnrichment: 4.8, //
         corePowerDensity: 83, //
         primaryCircuitPressure: 15,
         nTvel: 126, //

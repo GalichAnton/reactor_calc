@@ -41,7 +41,6 @@ export const useCalc = () => {
             nominalThermalPower,
         },
         setComputedParams,
-        setComputedParam,
         setInitialParam,
         config: { start },
         computedParams,
@@ -103,12 +102,8 @@ export const useCalc = () => {
             }
             const lastIndex = computedParams.calcReactivity.length - 1;
             const currentHeight = initialParams.height;
-            const currentUraniumTemp = initialParams.averageUraniumTemp;
             const currentTime = computedParams.calcTime[lastIndex];
             const dh = currentHeight - computedParams.calcHeight[lastIndex];
-            const dt =
-                currentUraniumTemp -
-                computedParams.calcUraniumTemperature[lastIndex];
 
             const newParams = calcPowerSix({
                 prevH: computedParams.calcHeight[lastIndex],
@@ -127,13 +122,11 @@ export const useCalc = () => {
                     computedParams.calcHeightReactivity[lastIndex],
                 nominalThermalPower,
                 coolantTemp: coolantTemp,
-                prevSigma: computedParams.calcPrevSigma[lastIndex],
                 uraniumVolume,
                 nominalPower,
                 tauZero,
                 aCoef,
                 dh,
-                dt,
             });
 
             setInitialParam(
@@ -171,7 +164,7 @@ export const useCalc = () => {
                 calcHeightReactivity: newParams.heightReactivity,
                 calcThermalReactivity: newParams.thermalReactivity,
                 calcThermalPower: newParams.thermalPower,
-                calcPrevSigma: newParams.newSigma,
+                calcPrevSigma: 0,
                 calcUraniumTemperature: newParams.uraniumTemp,
             });
         }, interval * 1000);

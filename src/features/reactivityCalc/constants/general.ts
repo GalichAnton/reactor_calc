@@ -1,5 +1,5 @@
-export const KH = 2.7e-5;
-export const K_U = -1e-5;
+export const KH = 2.681e-5;
+export const K_U = -0.00001;
 export const lambda = 0.078;
 export const betta = 0.0064;
 
