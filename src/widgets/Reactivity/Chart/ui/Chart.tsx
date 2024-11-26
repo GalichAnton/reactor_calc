@@ -102,7 +102,7 @@ export const Chart = () => {
                     yAxisId="rel"
                     dataKey="rel"
                     type="number"
-                    domain={[-2, 15]}
+                    domain={[0, 2]}
                     allowDataOverflow
                     label={{
                         value: 'rel',
@@ -119,7 +119,7 @@ export const Chart = () => {
                     yAxisId="uTemp"
                     dataKey="uTemp"
                     type="number"
-                    domain={[0, 5e3]}
+                    domain={[0, 1500]}
                     allowDataOverflow
                     label={{
                         value: 'uTemp',
@@ -136,7 +136,7 @@ export const Chart = () => {
                     yAxisId="height"
                     dataKey="height"
                     type="number"
-                    domain={[0, reactorHeight]}
+                    domain={[0, 2 * reactorHeight]}
                     allowDataOverflow
                     orientation="right"
                     label={{
