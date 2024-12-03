@@ -62,6 +62,8 @@ export const useCalc = () => {
                 calcThermalPower: nominalThermalPower,
                 calcUraniumTemperature: averageUraniumTemp,
                 calcPrevSigma: 0,
+                calcWaterReactivity: 0,
+                calcCoolantTemperature: 0,
             };
 
             const uraniumVolume =
@@ -80,11 +82,15 @@ export const useCalc = () => {
 
             const aCoef = r_t / (2 * thermalTransferCoeff);
 
+            const S = 2 * Math.PI * r_t * 3.73 * 311 * 163;
+
             setComputedParams(initialParams);
             setInitialParam('uraniumVolume', uraniumVolume);
             setInitialParam('thermalTransferCoeff', thermalTransferCoeff);
             setInitialParam('tauZero', tauZero);
             setInitialParam('aCoef', aCoef);
+            setInitialParam('aCoef', aCoef);
+            setInitialParam('S', S);
         }
     }, [start]);
 
@@ -121,12 +127,19 @@ export const useCalc = () => {
                 prevCalcHeightReactivity:
                     computedParams.calcHeightReactivity[lastIndex],
                 nominalThermalPower,
-                coolantTemp: coolantTemp,
+                prevCalcCoolantTemp: coolantTemp,
+                prevCalcWaterReactivity:
+                    computedParams.calcWaterReactivity[lastIndex],
+                prevCalcCoolantTemperature:
+                    computedParams.calcCoolantTemperature[lastIndex],
                 uraniumVolume,
                 nominalPower,
                 tauZero,
                 aCoef,
                 dh,
+                S: initialParams.S,
+                thermalTransferCoeff: initialParams.thermalTransferCoeff,
+                enterTemp: initialParams.enterTemp,
             });
 
             setInitialParam(
@@ -153,6 +166,10 @@ export const useCalc = () => {
                 'corePowerDensity',
                 roundToDecimal(newParams.thermalDensity, precision),
             );
+            setInitialParam(
+                'coolantTemp',
+                roundToDecimal(newParams.calcCoolantTemperature, precision),
+            );
 
             setComputedParams({
                 calcHeight: newParams.newH,
@@ -166,8 +183,10 @@ export const useCalc = () => {
                 calcThermalPower: newParams.thermalPower,
                 calcPrevSigma: 0,
                 calcUraniumTemperature: newParams.uraniumTemp,
+                calcWaterReactivity: newParams.waterReactivity,
+                calcCoolantTemperature: newParams.calcCoolantTemperature,
             });
-        }, interval * 1000);
+        }, 100);
 
         return () => {
             clearInterval(timeInterval);

@@ -1,5 +1,6 @@
 export const KH = 2.681e-5;
 export const K_U = -0.00001;
+export const K_H2O = -1.82e-4;
 export const lambda = 0.078;
 export const betta = 0.0064;
 
@@ -37,3 +38,12 @@ export const ALPHA_COEF = 3e4;
  * Характеризует количество теплоты, необходимое для изменения температуры 1 кг урана на 1 К
  */
 export const URANIUM_HEAT_CAPACITY = 300;
+
+/**
+ * Удельная теплоёмкость теплоностителя
+ */
+export const PV_HEAT_CAPACITY = 5.6e3;
+
+export const G = 1.9e4;
+
+export const m = 1e4;

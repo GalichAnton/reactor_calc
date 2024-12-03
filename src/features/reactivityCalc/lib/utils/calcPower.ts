@@ -4,10 +4,14 @@ import { roundToDecimal } from '@shared/lib/utils';
 import {
     betta,
     bettaSix,
+    G,
+    K_H2O,
     K_U,
     KH,
     Lambda,
     lambdaSix,
+    m,
+    PV_HEAT_CAPACITY,
 } from '../../constants/general';
 
 interface CalcPowerProps {
@@ -24,11 +28,16 @@ interface CalcPowerProps {
     prevCalcUraniumTemperature: number;
     prevCalcHeightReactivity: number;
     prevCalcThermalReactivity: number;
+    prevCalcWaterReactivity: number;
+    prevCalcCoolantTemperature: number;
     uraniumVolume: number;
     tauZero: number;
     aCoef: number;
-    coolantTemp: number;
+    prevCalcCoolantTemp: number;
+    thermalTransferCoeff: number;
+    enterTemp: number;
     dh: number;
+    S: number;
 }
 
 interface ReturnParams {
@@ -43,6 +52,8 @@ interface ReturnParams {
     uraniumTempSh: number;
     heightReactivity: number;
     thermalReactivity: number;
+    waterReactivity: number;
+    calcCoolantTemperature: number;
     thermalDensity: number;
 }
 
@@ -61,11 +72,15 @@ export const calcPowerSix = (props: CalcPowerProps): ReturnParams => {
         tauZero,
         aCoef,
         prevCalcUraniumTemperature,
-        coolantTemp,
+        prevCalcCoolantTemp,
         prevCalcHeightReactivity,
         prevCalcThermalReactivity,
+        prevCalcWaterReactivity,
+        enterTemp,
         uraniumVolume,
+        thermalTransferCoeff,
         dh,
+        S,
     } = props;
 
     const newInterwal = interval;
@@ -100,25 +115,43 @@ export const calcPowerSix = (props: CalcPowerProps): ReturnParams => {
 
     const thermalDensity = thermalPower / uraniumVolume;
 
+    const Qv =
+        S *
+        thermalTransferCoeff *
+        (prevCalcUraniumTemperature - prevCalcCoolantTemp);
+
     const uraniumTemp = calculateUraniumTemperature(
         prevCalcUraniumTemperature,
         newInterwal,
         tauZero,
         aCoef,
         thermalDensity,
-        coolantTemp,
+        prevCalcCoolantTemp,
     );
 
+    const coolantTempSh =
+        (Qv / 2 + PV_HEAT_CAPACITY * G * (enterTemp - prevCalcCoolantTemp)) /
+        ((PV_HEAT_CAPACITY * m) / 2);
+
+    const calcCoolantTemperature =
+        prevCalcCoolantTemp + interval * coolantTempSh;
+
     const uraniumTempSh =
-        (aCoef * thermalDensity + coolantTemp - uraniumTemp) / tauZero;
+        (aCoef * thermalDensity + prevCalcCoolantTemp - uraniumTemp) / tauZero;
 
     const heightReactivity = prevCalcHeightReactivity + KH * dH * newInterwal;
 
     const thermalReactivity =
         prevCalcThermalReactivity + K_U * uraniumTempSh * newInterwal;
 
+    const waterReactivity =
+        prevCalcWaterReactivity + K_H2O * coolantTempSh * interval;
+
     const newRo =
-        prevRo + K_U * uraniumTempSh * newInterwal + KH * dH * newInterwal;
+        prevRo +
+        K_U * uraniumTempSh * newInterwal +
+        KH * dH * newInterwal +
+        K_H2O * coolantTempSh * interval;
 
     const data: ReturnParams = {
         newH,
@@ -132,6 +165,8 @@ export const calcPowerSix = (props: CalcPowerProps): ReturnParams => {
         uraniumTempSh,
         heightReactivity,
         thermalReactivity,
+        waterReactivity,
+        calcCoolantTemperature,
         thermalDensity,
     };
 

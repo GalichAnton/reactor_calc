@@ -34,6 +34,7 @@ export const ReactivityForm = () => {
             corePowerDensity,
             averageUraniumTemp,
             coolantTemp,
+            enterTemp,
         },
         setInitialParams,
         setInitialParam,
@@ -79,6 +80,11 @@ export const ReactivityForm = () => {
     const onChangeUraniumTemp = (val: number | null) => {
         if (val === null) return;
         setInitialParam('averageUraniumTemp', val);
+    };
+
+    const onChangeEnterTemp = (val: number | null) => {
+        if (val === null) return;
+        setInitialParam('enterTemp', val);
     };
 
     return (
@@ -130,6 +136,20 @@ export const ReactivityForm = () => {
                                 value={averageUraniumTemp}
                                 addonAfter={'°C'}
                                 onChange={onChangeUraniumTemp}
+                            />
+                        </Form.Item>
+                    </Col>
+                    <Col span={span}>
+                        <Form.Item
+                            id={'coolantTemp'}
+                            label={<strong>Входная температура</strong>}
+                        >
+                            <InputNumber
+                                style={{ width: '100%' }}
+                                placeholder={'Входная температура'}
+                                value={enterTemp}
+                                addonAfter={'°C'}
+                                onChange={onChangeEnterTemp}
                             />
                         </Form.Item>
                     </Col>

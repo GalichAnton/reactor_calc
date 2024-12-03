@@ -10,4 +10,6 @@ export interface ComputedParams {
     calcThermalPower: number[];
     calcUraniumTemperature: number[];
     calcPrevSigma: number[];
+    calcWaterReactivity: number[];
+    calcCoolantTemperature: number[];
 }

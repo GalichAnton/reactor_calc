@@ -73,7 +73,7 @@ export const Chart = () => {
                 <XAxis
                     dataKey="time"
                     type="number"
-                    domain={[0, 200]}
+                    domain={[0, 600]}
                     allowDataOverflow
                     label={{
                         value: 'Время (с)',

@@ -8,7 +8,6 @@ import { Radio, RadioChangeEvent } from 'antd';
 import { DefaultOptionType } from 'antd/es/select';
 
 import { VVER_1300 } from '../constants/VVER_1300.ts';
-import { VVER_440 } from '../constants/VVER_440.ts';
 
 export const Presets = () => {
     const {
@@ -19,7 +18,6 @@ export const Presets = () => {
 
     const powerOptions: DefaultOptionType[] = [
         { value: 1300, label: '1300 МВт' },
-        { value: 440, label: '440 МВт' },
         { value: 440, label: '440_МВт-Вероника' },
     ];
 
@@ -42,10 +40,10 @@ export const Presets = () => {
             case 'ВВЭР-1300':
                 setInitialParams(VVER_1300.initialParams);
                 break;
+            // case 'ВВЭР-440':
+            //     setInitialParams(VVER_440.initialParams);
+            //     break;
             case 'ВВЭР-440':
-                setInitialParams(VVER_440.initialParams);
-                break;
-            case 'ВВЭР-440_МВт-Вероника':
                 setInitialParams(VVER_X.initialParams);
                 break;
             default:

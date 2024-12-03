@@ -68,6 +68,8 @@ const initialState: initialStoreValues = {
         thermalTransferCoeff: 0,
         nominalThermalPower: 3200e6,
         aCoef: 0,
+        S: 0,
+        enterTemp: 300,
     },
     computedParams: {
         calcTime: [],
@@ -81,6 +83,8 @@ const initialState: initialStoreValues = {
         calcThermalPower: [],
         calcUraniumTemperature: [],
         calcPrevSigma: [],
+        calcWaterReactivity: [],
+        calcCoolantTemperature: [],
     },
     config: {
         isSix: false,

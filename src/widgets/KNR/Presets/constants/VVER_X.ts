@@ -3,7 +3,7 @@ import { VVER } from '@widgets/KNR/Presets/model/types.ts';
 
 export const VVER_X: VVER = {
     initialParams: {
-        electricalPower: 440,
+        electricalPower: 210,
         thermalPower: 1375,
         coolantTemperature: 558,
         uraniumEnrichment: 3.7,
@@ -17,9 +17,9 @@ export const VVER_X: VVER = {
         claddingInnerRadius: 0.395,
         claddingOuterRadius: 0.455,
         claddingMaterial: 'Zr+1%Nb',
-        coreHeight: 244,
+        coreHeight: 250,
         controlRodRadius: 0.41,
-        nominalPower: 440,
+        nominalPower: 210,
         reactorType: REACTOR_TYPES.VVER,
     },
 };

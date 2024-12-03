@@ -56,6 +56,9 @@ export interface InitialReactivityParams {
     /** Температура теплоносителя (в градусах Цельсия) */
     coolantTemp: number;
 
+    /** Температура на входе (в градусах Цельсия) */
+    enterTemp: number;
+
     /** Удельное энерговыделение в активной зоне (в ваттах на кубический метр) */
     corePowerDensity: number;
 
@@ -67,4 +70,7 @@ export interface InitialReactivityParams {
 
     /** Коэффициент a */
     aCoef: number;
+
+    /** Площадь S */
+    S: number;
 }

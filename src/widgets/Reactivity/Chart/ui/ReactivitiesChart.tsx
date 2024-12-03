@@ -24,6 +24,7 @@ const lightThemeColors = {
     rel: '#8884d8',
     thermalReactivity: '#82ca9d',
     heightReactivity: '#0c233d',
+    waterReactivity: '#b6bb07',
 };
 
 const darkThemeColors = {
@@ -33,6 +34,7 @@ const darkThemeColors = {
     rel: '#7a66ff',
     thermalReactivity: '#66cc99',
     heightReactivity: '#389aff',
+    waterReactivity: '#dfe192',
 };
 
 export const ReactivitiesChart = () => {
@@ -43,12 +45,14 @@ export const ReactivitiesChart = () => {
         time: t.toFixed(1),
         thermalReactivity: params?.calcThermalReactivity[i],
         heightReactivity: params?.calcHeightReactivity[i],
+        waterReactivity: params?.calcWaterReactivity[i],
         reactivity: params?.calcReactivity[i],
     }));
 
     const [showReactivity, setShowReactivity] = useState(true);
     const [showThermalReactivity, setShowThermalReactivity] = useState(true);
     const [showHeightReactivity, setShowHeightReactivity] = useState(true);
+    const [showWaterReactivity, setShowWaterReactivity] = useState(true);
 
     const xTicks = [];
     for (let i = 0; i <= 120; i += 2) {
@@ -57,7 +61,7 @@ export const ReactivitiesChart = () => {
 
     const themeColors = isLight(theme) ? lightThemeColors : darkThemeColors;
 
-    const domain = [-0.05, 0.05];
+    const domain = [-0.02, 0.02];
     return (
         <div
             className={classNames(styles.chartContainer, {
@@ -68,7 +72,7 @@ export const ReactivitiesChart = () => {
                 <XAxis
                     dataKey="time"
                     type="number"
-                    domain={[0, 200]}
+                    domain={[0, 600]}
                     allowDataOverflow
                     label={{
                         value: 'Время (с)',
@@ -85,6 +89,8 @@ export const ReactivitiesChart = () => {
                             setShowThermalReactivity(!showThermalReactivity);
                         } else if (data.dataKey === 'heightReactivity') {
                             setShowHeightReactivity(!showHeightReactivity);
+                        } else if (data.dataKey === 'waterReactivity') {
+                            setShowWaterReactivity(!showWaterReactivity);
                         }
                     }}
                     wrapperStyle={{
@@ -142,6 +148,23 @@ export const ReactivitiesChart = () => {
                         fill: themeColors.heightReactivity,
                     }}
                 />
+                <YAxis
+                    yAxisId="waterReactivity"
+                    dataKey="waterReactivity"
+                    type="number"
+                    domain={domain}
+                    allowDataOverflow
+                    label={{
+                        value: 'waterReactivity',
+                        angle: -90,
+                        offset: 50,
+                        position: 'insideTop',
+                        style: { fill: themeColors.waterReactivity },
+                    }}
+                    tick={{
+                        fill: themeColors.waterReactivity,
+                    }}
+                />
                 <Tooltip
                     labelFormatter={(label) => `Время (с): ${label}`}
                     contentStyle={{
@@ -184,6 +207,16 @@ export const ReactivitiesChart = () => {
                     stroke={themeColors.thermalReactivity}
                     dot={false}
                     hide={!showThermalReactivity}
+                    strokeWidth={2}
+                />
+                <Line
+                    name="Реактивность от температуры воды"
+                    type="monotone"
+                    dataKey="waterReactivity"
+                    yAxisId={'waterReactivity'}
+                    stroke={themeColors.waterReactivity}
+                    dot={false}
+                    hide={!showWaterReactivity}
                     strokeWidth={2}
                 />
             </LineChart>
