@@ -150,10 +150,7 @@ export const useCalc = () => {
                 'power',
                 roundToDecimal(newParams.newPower, precision),
             );
-            setInitialParam(
-                'startReactivity',
-                roundToDecimal(newParams.newRo, precision),
-            );
+            setInitialParam('startReactivity', newParams.newRo);
             setInitialParam(
                 'thermalPower',
                 roundToDecimal(newParams.thermalPower, precision),
